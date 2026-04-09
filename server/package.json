@@ -1,0 +1,32 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "commonjs",
+  "scripts": {
+    "start:production": "NODE_ENV=production npm run start",
+    "start:development": "NODE_ENV=development npm run start",
+    "start": "chmod +x ./scripts/start.sh && NODE_ENV=${NODE_ENV:-development} ./scripts/start.sh",
+    "build": "npx tsc",
+    "unit-test": "jest"
+  },
+  "author": "beniciosamuel",
+  "license": "ISC",
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/express": "^5.0.6",
+    "@types/jest": "^30.0.0",
+    "eslint": "^9.39.4",
+    "eslint-plugin-import": "^2.32.0",
+    "globals": "^17.4.0",
+    "jest": "^30.3.0",
+    "jiti": "^2.6.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^6.0.2",
+    "typescript-eslint": "^8.58.1"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}

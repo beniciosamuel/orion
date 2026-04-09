@@ -1,0 +1,33 @@
+{
+  "name": "orion",
+  "version": "0.1.0",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "workspaces": [
+    "client",
+    "server"
+  ],
+  "scripts": {
+    "start:client": "npm --prefix client start",
+    "start:server": "npm --prefix server start",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "prepare": "husky"
+  },
+  "author": "beniciosamuel",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "knex": "^3.2.9"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "husky": "^9.1.7",
+    "jiti": "^2.6.1",
+    "nodemon": "^3.1.14"
+  }
+}
