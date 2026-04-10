@@ -21,13 +21,9 @@
     "start": "chmod +x src/scripts/start.sh && src/scripts/start.sh",
     "build": "react-scripts build && mkdir -p build/.env && cp -R .env build/.env && cp .env/secrets.json build/.env/secrets.json",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+    "eject": "react-scripts eject",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "browserslist": {
     "production": [
@@ -42,17 +38,18 @@
     ]
   },
   "devDependencies": {
-    "@eslint/js": "^8.57.1",
-    "@typescript-eslint/eslint-plugin": "^5.62.0",
-    "@typescript-eslint/parser": "^5.62.0",
-    "eslint": "^8.57.1",
-    "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-jsx-a11y": "^6.10.2",
-    "eslint-plugin-prettier": "^5.5.5",
+    "@storybook/addon-a11y": "^10.3.5",
+    "@storybook/addon-docs": "^10.3.5",
+    "@storybook/addon-onboarding": "^10.3.5",
+    "@storybook/preset-create-react-app": "^10.3.5",
+    "@storybook/react-webpack5": "^10.3.5",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.0.1",
-    "globals": "^13.24.0",
+    "eslint-plugin-storybook": "^10.3.5",
     "prettier": "^3.8.1",
-    "typescript-eslint": "^8.58.1"
+    "prop-types": "^15.8.1",
+    "storybook": "^10.3.5",
+    "typescript-eslint": "^8.58.1",
+    "webpack": "^5.106.1"
   }
 }
