@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react-webpack5";
 import { expect } from "storybook/test";
-import { ChevronDownIcon } from "./ChevronDown";
+import { SearchIcon } from ".";
 
-const meta: Meta<typeof ChevronDownIcon> = {
-  title: "Components/Icons/ChevronDown",
-  component: ChevronDownIcon,
+const meta: Meta<typeof SearchIcon> = {
+  title: "Components/Icons/Search",
+  component: SearchIcon,
   parameters: {
     layout: "centered",
   },
@@ -12,27 +12,27 @@ const meta: Meta<typeof ChevronDownIcon> = {
 
 export default meta;
 
-type Story = StoryObj<typeof ChevronDownIcon>;
+type Story = StoryObj<typeof SearchIcon>;
 
 export const Default: Story = {
   render: () => (
     <div
       style={{
-        width: 14,
-        height: 9,
-        color: "#121113",
+        width: 9,
+        height: 14,
+        color: "#131211",
         display: "grid",
         placeItems: "center",
       }}
-      data-testid="chevron-down-wrapper"
+      data-testid="search-wrapper"
     >
-      <ChevronDownIcon />
+      <SearchIcon />
     </div>
   ),
   play: async ({ canvasElement }) => {
     const svg = canvasElement.querySelector("svg");
 
     await expect(svg).toBeInTheDocument();
-    await expect(svg).toHaveAttribute("viewBox", "0 0 14 9");
+    await expect(svg).toHaveAttribute("viewBox", "0 0 17 15");
   },
 };

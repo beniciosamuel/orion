@@ -1,0 +1,32 @@
+{
+  "auth": {
+    "title": "Welcome back",
+    "subtitle": "Sign in or create your account to continue.",
+    "login": {
+      "title": "Log in",
+      "email": "Email",
+      "emailPlaceholder": "Enter your email",
+      "password": "Password",
+      "passwordPlaceholder": "Enter your password",
+      "forgotPassword": "I forgot my password",
+      "submit": "Log in",
+      "submitting": "Logging in..."
+    },
+    "signup": {
+      "title": "Create account",
+      "name": "Name",
+      "namePlaceholder": "Enter your name",
+      "email": "Email",
+      "emailPlaceholder": "Enter your email",
+      "phone": "Phone",
+      "phonePlaceholder": "Enter your phone number",
+      "password": "Password",
+      "passwordPlaceholder": "Create a password",
+      "confirmPassword": "Confirm password",
+      "confirmPasswordPlaceholder": "Repeat your password",
+      "optional": "optional",
+      "submit": "Sign up",
+      "submitting": "Creating account..."
+    }
+  }
+}

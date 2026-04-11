@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react-webpack5";
 import { expect } from "storybook/test";
-import { ChevronLeftIcon } from "./ChevronLeft";
+import { Logo } from ".";
 
-const meta: Meta<typeof ChevronLeftIcon> = {
-  title: "Components/Icons/ChevronLeft",
-  component: ChevronLeftIcon,
+const meta: Meta<typeof Logo> = {
+  title: "Components/Logo",
+  component: Logo,
   parameters: {
     layout: "centered",
   },
@@ -12,27 +12,27 @@ const meta: Meta<typeof ChevronLeftIcon> = {
 
 export default meta;
 
-type Story = StoryObj<typeof ChevronLeftIcon>;
+type Story = StoryObj<typeof Logo>;
 
 export const Default: Story = {
   render: () => (
     <div
       style={{
-        width: 9,
-        height: 14,
+        width: 160,
+        height: 160,
         color: "#121113",
         display: "grid",
         placeItems: "center",
       }}
-      data-testid="chevron-left-wrapper"
+      data-testid="logo-wrapper"
     >
-      <ChevronLeftIcon />
+      <Logo />
     </div>
   ),
   play: async ({ canvasElement }) => {
     const svg = canvasElement.querySelector("svg");
 
     await expect(svg).toBeInTheDocument();
-    await expect(svg).toHaveAttribute("viewBox", "0 0 9 14");
+    await expect(svg).toHaveAttribute("viewBox", "0 0 143 140");
   },
 };

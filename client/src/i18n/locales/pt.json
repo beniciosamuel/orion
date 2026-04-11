@@ -1,0 +1,32 @@
+{
+  "auth": {
+    "title": "Bem-vindo de volta",
+    "subtitle": "Entre ou crie sua conta para continuar.",
+    "login": {
+      "title": "Entrar",
+      "email": "E-mail",
+      "emailPlaceholder": "Digite seu e-mail",
+      "password": "Senha",
+      "passwordPlaceholder": "Digite sua senha",
+      "forgotPassword": "Esqueci minha senha",
+      "submit": "Entrar",
+      "submitting": "Entrando..."
+    },
+    "signup": {
+      "title": "Criar conta",
+      "name": "Nome",
+      "namePlaceholder": "Digite seu nome",
+      "email": "E-mail",
+      "emailPlaceholder": "Digite seu e-mail",
+      "phone": "Telefone",
+      "phonePlaceholder": "Digite seu telefone",
+      "password": "Senha",
+      "passwordPlaceholder": "Digite sua senha",
+      "confirmPassword": "Confirmação de Senha",
+      "confirmPasswordPlaceholder": "Digite sua senha novamente",
+      "optional": "opcional",
+      "submit": "Cadastrar",
+      "submitting": "Criando conta..."
+    }
+  }
+}

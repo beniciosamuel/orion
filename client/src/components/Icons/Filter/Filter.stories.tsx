@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react-webpack5";
 import { expect } from "storybook/test";
-import { SearchIcon } from "./Search";
+import { FilterIcon } from ".";
 
-const meta: Meta<typeof SearchIcon> = {
-  title: "Components/Icons/Search",
-  component: SearchIcon,
+const meta: Meta<typeof FilterIcon> = {
+  title: "Components/Icons/Filter",
+  component: FilterIcon,
   parameters: {
     layout: "centered",
   },
@@ -12,7 +12,7 @@ const meta: Meta<typeof SearchIcon> = {
 
 export default meta;
 
-type Story = StoryObj<typeof SearchIcon>;
+type Story = StoryObj<typeof FilterIcon>;
 
 export const Default: Story = {
   render: () => (
@@ -24,15 +24,15 @@ export const Default: Story = {
         display: "grid",
         placeItems: "center",
       }}
-      data-testid="search-wrapper"
+      data-testid="filter-wrapper"
     >
-      <SearchIcon />
+      <FilterIcon />
     </div>
   ),
   play: async ({ canvasElement }) => {
     const svg = canvasElement.querySelector("svg");
 
     await expect(svg).toBeInTheDocument();
-    await expect(svg).toHaveAttribute("viewBox", "0 0 17 15");
+    await expect(svg).toHaveAttribute("viewBox", "0 0 24 24");
   },
 };

@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react-webpack5";
 import { expect } from "storybook/test";
-import { ChevronUpIcon } from "./ChevronUp";
+import { SunIcon } from ".";
 
-const meta: Meta<typeof ChevronUpIcon> = {
-  title: "Components/Icons/ChevronUp",
-  component: ChevronUpIcon,
+const meta: Meta<typeof SunIcon> = {
+  title: "Components/Icons/Sun",
+  component: SunIcon,
   parameters: {
     layout: "centered",
   },
@@ -12,7 +12,7 @@ const meta: Meta<typeof ChevronUpIcon> = {
 
 export default meta;
 
-type Story = StoryObj<typeof ChevronUpIcon>;
+type Story = StoryObj<typeof SunIcon>;
 
 export const Default: Story = {
   render: () => (
@@ -20,13 +20,13 @@ export const Default: Story = {
       style={{
         width: 9,
         height: 14,
-        color: "#121113",
+        color: "#131211",
         display: "grid",
         placeItems: "center",
       }}
-      data-testid="chevron-up-wrapper"
+      data-testid="sun-wrapper"
     >
-      <ChevronUpIcon />
+      <SunIcon />
     </div>
   ),
   play: async ({ canvasElement }) => {

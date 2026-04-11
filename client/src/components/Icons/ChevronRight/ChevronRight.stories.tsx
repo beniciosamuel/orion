@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react-webpack5";
 import { expect } from "storybook/test";
-import { MoonIcon } from "./Moon";
+import { ChevronRightIcon } from ".";
 
-const meta: Meta<typeof MoonIcon> = {
-  title: "Components/Icons/Moon",
-  component: MoonIcon,
+const meta: Meta<typeof ChevronRightIcon> = {
+  title: "Components/Icons/ChevronRight",
+  component: ChevronRightIcon,
   parameters: {
     layout: "centered",
   },
@@ -12,7 +12,7 @@ const meta: Meta<typeof MoonIcon> = {
 
 export default meta;
 
-type Story = StoryObj<typeof MoonIcon>;
+type Story = StoryObj<typeof ChevronRightIcon>;
 
 export const Default: Story = {
   render: () => (
@@ -24,15 +24,15 @@ export const Default: Story = {
         display: "grid",
         placeItems: "center",
       }}
-      data-testid="moon-wrapper"
+      data-testid="chevron-right-wrapper"
     >
-      <MoonIcon />
+      <ChevronRightIcon />
     </div>
   ),
   play: async ({ canvasElement }) => {
     const svg = canvasElement.querySelector("svg");
 
     await expect(svg).toBeInTheDocument();
-    await expect(svg).toHaveAttribute("viewBox", "0 0 17 15");
+    await expect(svg).toHaveAttribute("viewBox", "0 0 9 14");
   },
 };
