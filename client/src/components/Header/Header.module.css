@@ -1,0 +1,76 @@
+.header {
+  width: 100%;
+  height: 76px;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 16px;
+  background-color: #12111380;
+}
+
+:global(body.theme-light) .header {
+  background-color: #ffffffe0;
+}
+
+.logo {
+  flex-shrink: 0;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: #ffffff;
+}
+
+:global(body.theme-light) .logo {
+  color: #1a1523;
+}
+
+.logoMark :global(svg) {
+  height: 36px;
+  display: block;
+  width: auto;
+}
+
+.logoLetter {
+  display: inline-flex;
+  align-items: center;
+}
+
+.logoLetter :global(svg) {
+  height: 18px;
+  width: auto;
+  display: block;
+}
+
+.logoText {
+  font-family: "Roboto", "Segoe UI", sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;
+  margin-right: 30px;
+}
+
+.headerIcon {
+  width: 44px;
+  height: 44px;
+}
+
+@media (max-width: 600px) {
+  .header {
+    padding: 0 16px;
+  }
+
+  .logoLetter,
+  .logoText {
+    display: none;
+  }
+}

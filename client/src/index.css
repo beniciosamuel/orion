@@ -1,3 +1,45 @@
+/* Global color tokens: single source of truth for action states. */
+:root {
+  --color-primary-default: #8e4ec6;
+  --color-primary-hover: #9a5cd0;
+  --color-primary-active: #8457aa;
+  --color-primary-disabled: #6f6d78;
+
+  --color-secondary-default: #b744f714;
+  --color-secondary-hover: #c150ff2e;
+  --color-secondary-active: #b412f90a;
+  --color-secondary-disabled: #ebeaf814;
+
+  --accent: var(--color-primary-default);
+  --accent-hover: var(--color-primary-hover);
+  --accent-active: var(--color-primary-active);
+  --accent-disabled: var(--color-primary-disabled);
+  --accent-alt: var(--color-primary-hover);
+
+  --accent-focus-ring: rgba(142, 78, 198, 0.22);
+  --accent-shadow: rgba(142, 78, 198, 0.34);
+  --accent-shadow-hover: rgba(142, 78, 198, 0.45);
+
+  --secondary: var(--color-secondary-default);
+  --secondary-hover: var(--color-secondary-hover);
+  --secondary-active: var(--color-secondary-active);
+  --secondary-disabled: var(--color-secondary-disabled);
+
+  --input-bg: #1a191b;
+  --input-text: #eeeef0;
+  --input-placeholder: #6f6d78;
+  --input-border-inactive: #3c393f;
+  --input-border-active: #8e4ec6;
+}
+
+body.theme-light {
+  --input-bg: #ffffff;
+  --input-text: #1a191b;
+  --input-placeholder: #6f6d78;
+  --input-border-inactive: #cfcdd4;
+  --input-border-active: #8e4ec6;
+}
+
 body {
   margin: 0;
   font-family:

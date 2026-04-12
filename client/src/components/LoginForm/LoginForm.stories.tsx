@@ -121,7 +121,7 @@ export const English: Story = {
     "Enter your email",
     "Password",
     "Enter your password",
-    "Forgot password?",
+    "I forgot my password",
     "Log in",
   ),
 };
@@ -135,7 +135,7 @@ export const Portuguese: Story = {
     "Digite seu e-mail",
     "Senha",
     "Digite sua senha",
-    "Esqueceu a senha?",
+    "Esqueci minha senha",
     "Entrar",
   ),
 };

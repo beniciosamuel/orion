@@ -1,6 +1,8 @@
 import { useTranslation } from "react-i18next";
 
 import { useState } from "react";
+import { Button } from "../Button";
+import { Input } from "../Input";
 import styles from "./SignUpForm.module.css";
 
 const handleLogin = (e: React.FormEvent) => {
@@ -10,13 +12,7 @@ const handleLogin = (e: React.FormEvent) => {
 
 export const SignUpForm: React.FC = () => {
   const { t } = useTranslation();
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  // Form state
-  const [loginForm, setLoginForm] = useState({
-    email: "",
-    password: "",
-  });
+  const [isSubmitting] = useState(false);
 
   const [signUpForm, setSignUpForm] = useState({
     name: "",
@@ -37,11 +33,7 @@ export const SignUpForm: React.FC = () => {
   };
 
   // Validation errors
-  const [loginErrors, setLoginErrors] = useState<{
-    email?: string;
-    password?: string;
-  }>({});
-  const [signUpErrors, setSignUpErrors] = useState<{
+  const [signUpErrors] = useState<{
     name?: string;
     email?: string;
     phone?: string;
@@ -56,10 +48,10 @@ export const SignUpForm: React.FC = () => {
           <label htmlFor="sign-up-name" className={styles.label}>
             {t("auth.signup.name")}
           </label>
-          <input
+          <Input
             id="sign-up-name"
             type="text"
-            className={`${styles.input} ${signUpErrors.name ? styles.inputError : ""}`}
+            hasError={Boolean(signUpErrors.name)}
             value={signUpForm.name}
             onChange={(e) => handleSignUpInputChange("name", e.target.value)}
             placeholder={t("auth.signup.namePlaceholder")}
@@ -74,10 +66,10 @@ export const SignUpForm: React.FC = () => {
           <label htmlFor="sign-up-email" className={styles.label}>
             {t("auth.signup.email")}
           </label>
-          <input
+          <Input
             id="sign-up-email"
             type="email"
-            className={`${styles.input} ${signUpErrors.email ? styles.inputError : ""}`}
+            hasError={Boolean(signUpErrors.email)}
             value={signUpForm.email}
             onChange={(e) => handleSignUpInputChange("email", e.target.value)}
             placeholder={t("auth.signup.emailPlaceholder")}
@@ -92,10 +84,10 @@ export const SignUpForm: React.FC = () => {
           <label htmlFor="sign-up-password" className={styles.label}>
             {t("auth.signup.password")}
           </label>
-          <input
+          <Input
             id="sign-up-password"
             type="password"
-            className={`${styles.input} ${signUpErrors.password ? styles.inputError : ""}`}
+            hasError={Boolean(signUpErrors.password)}
             value={signUpForm.password}
             onChange={(e) =>
               handleSignUpInputChange("password", e.target.value)
@@ -112,10 +104,10 @@ export const SignUpForm: React.FC = () => {
           <label htmlFor="sign-up-confirm-password" className={styles.label}>
             {t("auth.signup.confirmPassword")}
           </label>
-          <input
+          <Input
             id="sign-up-confirm-password"
             type="password"
-            className={`${styles.input} ${signUpErrors.confirmPassword ? styles.inputError : ""}`}
+            hasError={Boolean(signUpErrors.confirmPassword)}
             value={signUpForm.confirmPassword}
             onChange={(e) =>
               handleSignUpInputChange("confirmPassword", e.target.value)
@@ -130,13 +122,18 @@ export const SignUpForm: React.FC = () => {
           )}
         </div>
 
-        <button
-          type="submit"
-          className={styles.submitButton}
-          disabled={isSubmitting}
-        >
-          {isSubmitting ? t("auth.signup.submitting") : t("auth.signup.submit")}
-        </button>
+        <div className={styles.formActionsRow}>
+          <Button
+            type="submit"
+            variant="primary"
+            size="compact"
+            disabled={isSubmitting}
+          >
+            {isSubmitting
+              ? t("auth.signup.submitting")
+              : t("auth.signup.submit")}
+          </Button>
+        </div>
       </form>
     </div>
   );

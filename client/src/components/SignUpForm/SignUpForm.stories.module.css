@@ -5,7 +5,10 @@
   --text-primary: #f7f8fa;
   --text-secondary: #9aa3b2;
   --accent: #8e4ec6;
-  --accent-alt: #9a5cd0;
+  --accent-hover: #9a5cd0;
+  --accent-active: #8457aa;
+  --accent-disabled: #6f6d78;
+  --accent-alt: var(--accent-hover);
 
   background: #0b0d11;
   min-height: 100vh;

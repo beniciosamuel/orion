@@ -82,32 +82,41 @@ export default meta;
 type Story = StoryObj<typeof SignUpForm>;
 
 const assertSignUpFormCopy = (
+  nameLabel: string,
+  namePlaceholder: string,
   emailLabel: string,
   emailPlaceholder: string,
   passwordLabel: string,
   passwordPlaceholder: string,
-  forgotPasswordLabel: string,
+  confirmPasswordLabel: string,
+  confirmPasswordPlaceholder: string,
   submitLabel: string,
 ) => {
   return async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+    await expect(canvasElement).toHaveTextContent(nameLabel);
     await expect(canvasElement).toHaveTextContent(emailLabel);
     await expect(canvasElement).toHaveTextContent(passwordLabel);
-    await expect(canvasElement).toHaveTextContent(forgotPasswordLabel);
+    await expect(canvasElement).toHaveTextContent(confirmPasswordLabel);
     await expect(canvasElement).toHaveTextContent(submitLabel);
 
-    const emailInput = canvasElement.querySelector("#login-email");
-    const passwordInput = canvasElement.querySelector("#login-password");
-    const forgotPasswordButton = canvasElement.querySelector(
-      "button[type='button']",
+    const nameInput = canvasElement.querySelector("#sign-up-name");
+    const emailInput = canvasElement.querySelector("#sign-up-email");
+    const passwordInput = canvasElement.querySelector("#sign-up-password");
+    const confirmPasswordInput = canvasElement.querySelector(
+      "#sign-up-confirm-password",
     );
     const submitButton = canvasElement.querySelector("button[type='submit']");
 
+    await expect(nameInput).toHaveAttribute("placeholder", namePlaceholder);
     await expect(emailInput).toHaveAttribute("placeholder", emailPlaceholder);
     await expect(passwordInput).toHaveAttribute(
       "placeholder",
       passwordPlaceholder,
     );
-    await expect(forgotPasswordButton).toHaveTextContent(forgotPasswordLabel);
+    await expect(confirmPasswordInput).toHaveAttribute(
+      "placeholder",
+      confirmPasswordPlaceholder,
+    );
     await expect(submitButton).toHaveTextContent(submitLabel);
   };
 };
@@ -117,11 +126,14 @@ export const English: Story = {
     locale: "en",
   },
   play: assertSignUpFormCopy(
+    "Name",
+    "Enter your name",
     "Email",
     "Enter your email",
     "Password",
-    "Enter your password",
-    "Forgot password?",
+    "Create a password",
+    "Confirm password",
+    "Repeat your password",
     "Sign up",
   ),
 };
@@ -131,11 +143,14 @@ export const Portuguese: Story = {
     locale: "pt",
   },
   play: assertSignUpFormCopy(
+    "Nome",
+    "Digite seu nome",
     "E-mail",
     "Digite seu e-mail",
     "Senha",
     "Digite sua senha",
-    "Esqueceu a senha?",
-    "Entrar",
+    "Confirmação de Senha",
+    "Digite sua senha novamente",
+    "Cadastrar",
   ),
 };

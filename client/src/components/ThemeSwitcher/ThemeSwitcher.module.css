@@ -1,0 +1,44 @@
+.themeSwitcher {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: none;
+  color: #ffffff;
+  background: var(--color-secondary-default);
+  font: inherit;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+:global(body.theme-light) .themeSwitcher {
+  color: #1a1523;
+}
+
+.themeSwitcher :global(svg) {
+  width: 20px;
+  height: 20px;
+  display: block;
+  flex-shrink: 0;
+}
+
+.themeSwitcher:focus-visible {
+  outline: 2px solid var(--accent, #8e4ec6);
+  outline-offset: 2px;
+}
+
+.themeSwitcher:hover {
+  background-color: var(--color-secondary-hover);
+}
+
+.themeSwitcher:active {
+  background-color: var(--color-secondary-active);
+}
+
+.themeSwitcher:disabled {
+  background-color: var(--color-secondary-disabled);
+  cursor: not-allowed;
+}

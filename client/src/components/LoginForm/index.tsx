@@ -1,6 +1,8 @@
 import { useTranslation } from "react-i18next";
 
 import { useState } from "react";
+import { Button } from "../Button";
+import { Input } from "../Input";
 import styles from "./LoginForm.module.css";
 
 const handleLogin = (e: React.FormEvent) => {
@@ -10,7 +12,7 @@ const handleLogin = (e: React.FormEvent) => {
 
 export const LoginForm: React.FC = () => {
   const { t } = useTranslation();
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitting] = useState(false);
 
   // Form state
   const [loginForm, setLoginForm] = useState({
@@ -29,7 +31,7 @@ export const LoginForm: React.FC = () => {
   };
 
   // Validation errors
-  const [loginErrors, setLoginErrors] = useState<{
+  const [loginErrors] = useState<{
     email?: string;
     password?: string;
   }>({});
@@ -41,10 +43,10 @@ export const LoginForm: React.FC = () => {
           <label htmlFor="login-email" className={styles.label}>
             {t("auth.login.email")}
           </label>
-          <input
+          <Input
             id="login-email"
             type="email"
-            className={`${styles.input} ${loginErrors.email ? styles.inputError : ""}`}
+            hasError={Boolean(loginErrors.email)}
             value={loginForm.email}
             onChange={(e) => handleLoginInputChange("email", e.target.value)}
             placeholder={t("auth.login.emailPlaceholder")}
@@ -59,10 +61,10 @@ export const LoginForm: React.FC = () => {
           <label htmlFor="login-password" className={styles.label}>
             {t("auth.login.password")}
           </label>
-          <input
+          <Input
             id="login-password"
             type="password"
-            className={`${styles.input} ${loginErrors.password ? styles.inputError : ""}`}
+            hasError={Boolean(loginErrors.password)}
             value={loginForm.password}
             onChange={(e) => handleLoginInputChange("password", e.target.value)}
             placeholder={t("auth.login.passwordPlaceholder")}
@@ -74,17 +76,17 @@ export const LoginForm: React.FC = () => {
         </div>
 
         <div className={styles.formActionsRow}>
-          <button type="button" className={styles.forgotPasswordButton}>
+          <Button type="button" variant="link" size="full">
             {t("auth.login.forgotPassword")}
-          </button>
-
-          <button
+          </Button>
+          <Button
             type="submit"
-            className={`${styles.submitButton} ${styles.submitButtonInline}`}
+            variant="primary"
+            size="compact"
             disabled={isSubmitting}
           >
             {isSubmitting ? t("auth.login.submitting") : t("auth.login.submit")}
-          </button>
+          </Button>
         </div>
       </form>
     </div>
