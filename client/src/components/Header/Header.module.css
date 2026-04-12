@@ -69,8 +69,7 @@
     padding: 0 16px;
   }
 
-  .logoLetter,
-  .logoText {
+  .logoLetter {
     display: none;
   }
 }

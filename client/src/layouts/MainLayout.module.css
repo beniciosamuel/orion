@@ -16,9 +16,6 @@
       rgba(0, 0, 0, 1) 100%
     ),
     url("../assets/img/background.png");
-  background-position: center -180px;
-  /* background-repeat: no-repeat;
-  background-size: cover; */
 }
 
 .main {
