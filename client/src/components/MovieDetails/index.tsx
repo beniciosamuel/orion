@@ -237,6 +237,25 @@ export const MovieDetails: React.FC<MovieDetailsProps> = ({
           posterUrl={posterUrl}
         />
 
+        <div className={styles.mobileActions}>
+          <Button
+            variant="primary"
+            size="compact"
+            type="button"
+            onClick={onEdit}
+          >
+            {t("auth.movieDetails.edit", { defaultValue: "Editar" })}
+          </Button>
+          <Button
+            variant="secondary"
+            size="compact"
+            type="button"
+            onClick={onDelete}
+          >
+            {t("auth.movieDetails.delete", { defaultValue: "Excluir" })}
+          </Button>
+        </div>
+
         <div className={styles.body}>
           <section className={styles.copySection}>
             <p className={styles.sectionContent}>{resolvedUserComment}</p>
@@ -263,32 +282,39 @@ export const MovieDetails: React.FC<MovieDetailsProps> = ({
             </div>
           </section>
 
+          <div
+            className={[
+              styles.infoLine,
+              styles.firstRow,
+              styles.infoLineWithVote,
+            ].join(" ")}
+          >
+            <article className={styles.infoCard}>
+              <p className={styles.infoLabel}>{ratingInfo?.label}</p>
+              <p className={styles.infoValue}>{ratingInfo?.value}</p>
+            </article>
+            <article className={styles.infoCard}>
+              <p className={styles.infoLabel}>{votesInfo?.label}</p>
+              <p className={styles.infoValue}>{votesInfo?.value}</p>
+            </article>
+            <div
+              className={styles.voteCircle}
+              aria-label={`User vote percentile: ${safeVotePercentile}%`}
+              style={voteCircleStyle}
+            >
+              <span className={styles.voteValue}>
+                <span className={styles.voteNumber}>{safeVotePercentile}</span>
+                <span className={styles.votePercent}>%</span>
+              </span>
+            </div>
+          </div>
+
           <section
             className={styles.infoGrid}
             aria-label={t("auth.movieDetails.detailsAriaLabel", {
               defaultValue: "Detalhes do filme",
             })}
           >
-            <div
-              className={[styles.infoLine, styles.infoLineWithVote].join(" ")}
-            >
-              <article className={styles.infoCard}>
-                <p className={styles.infoLabel}>{ratingInfo?.label}</p>
-                <p className={styles.infoValue}>{ratingInfo?.value}</p>
-              </article>
-              <article className={styles.infoCard}>
-                <p className={styles.infoLabel}>{votesInfo?.label}</p>
-                <p className={styles.infoValue}>{votesInfo?.value}</p>
-              </article>
-              <div
-                className={styles.voteCircle}
-                aria-label={`User vote percentile: ${safeVotePercentile}%`}
-                style={voteCircleStyle}
-              >
-                <span className={styles.voteValue}>{safeVotePercentile}%</span>
-              </div>
-            </div>
-
             <div className={styles.infoLine}>
               <article className={styles.infoCard}>
                 <p className={styles.infoLabel}>{releaseInfo?.label}</p>

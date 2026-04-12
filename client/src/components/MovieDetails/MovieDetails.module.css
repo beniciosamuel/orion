@@ -72,6 +72,10 @@
   gap: 10px;
 }
 
+.mobileActions {
+  display: none;
+}
+
 .content {
   margin-top: 20px;
   display: grid;
@@ -93,8 +97,20 @@
 }
 
 .copySection {
+  grid-column: 1;
+  grid-row: 1 / span 2;
   display: grid;
   gap: 12px;
+}
+
+.firstRow {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.infoGrid {
+  grid-column: 2;
+  grid-row: 2;
 }
 
 .overviewBox {
@@ -213,7 +229,7 @@
   border-radius: 50%;
   padding: 4px;
   background: conic-gradient(
-    from -90deg,
+    from 0deg,
     #ffe000 0 calc(var(--vote-percent) * 1%),
     rgba(255, 224, 0, 0.16) 0 100%
   );
@@ -244,9 +260,19 @@
   font-size: 0.95rem;
   font-weight: 700;
   line-height: 1;
-  color: #ffffff;
   letter-spacing: 0.01em;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.55);
+  display: inline-flex;
+  align-items: baseline;
+  gap: 1px;
+}
+
+.voteNumber {
+  color: #ffe000;
+}
+
+.votePercent {
+  color: #ffffff;
 }
 
 @media (max-width: 980px) {
@@ -260,6 +286,13 @@
 
   .body {
     grid-template-columns: 1fr;
+  }
+
+  .copySection,
+  .firstRow,
+  .infoGrid {
+    grid-column: auto;
+    grid-row: auto;
   }
 
   .infoGrid {
@@ -303,5 +336,56 @@
 
   .infoLineWithVote {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .posterCard {
+    width: 100%;
+    max-width: 100%;
+    justify-self: center;
+  }
+
+  .actions {
+    display: none;
+  }
+
+  .mobileActions {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+  }
+
+  .mobileActions > button {
+    flex: 1;
+  }
+
+  .infoLine {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .infoLineThreeColumns {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .infoLineWithVote {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) max-content;
+    align-items: center;
+  }
+
+  .infoLineWithVote .voteCircle {
+    justify-self: end;
+  }
+
+  .firstRow {
+    order: -1;
+  }
+
+  .copySection {
+    order: 0;
+  }
+
+  .infoGrid {
+    order: 1;
   }
 }

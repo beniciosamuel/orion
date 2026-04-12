@@ -35,7 +35,10 @@ export const MovieCard: React.FC<MovieCardProps> = ({
         aria-label={`User vote percentile: ${safeVotePercentile}%`}
         style={voteCircleStyle}
       >
-        <span className={styles.voteValue}>{safeVotePercentile}%</span>
+        <span className={styles.voteValue}>
+          <span className={styles.voteNumber}>{safeVotePercentile}</span>
+          <span className={styles.votePercent}>%</span>
+        </span>
       </div>
       <p className={styles.categories}>{categoriesLabel}</p>
       <p className={styles.title}>{title}</p>
