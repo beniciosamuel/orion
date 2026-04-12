@@ -15,6 +15,7 @@ export async function up(knex: Knex): Promise<void> {
       .references("id")
       .inTable("file")
       .onDelete("CASCADE");
+    table.boolean("is_poster").notNullable().defaultTo(false);
     table.boolean("is_cover").notNullable().defaultTo(false);
     table.datetime("created_at").notNullable().defaultTo(knex.fn.now());
     table.datetime("updated_at").notNullable().defaultTo(knex.fn.now());

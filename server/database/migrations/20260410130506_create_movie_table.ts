@@ -4,8 +4,10 @@ import * as utils from "../helpers/utils";
 export async function up(knex: Knex): Promise<void> {
   await knex.schema.createTable("movie", (table) => {
     table.uuid("id").primary().defaultTo(knex.raw("gen_random_uuid()"));
+    table.string("resume_title").notNullable();
     table.string("title").notNullable();
     table.string("description").notNullable();
+    table.string("user_comment").nullable();
     table.string("director").notNullable();
     table.integer("duration").notNullable();
     table.string("genres").notNullable();
