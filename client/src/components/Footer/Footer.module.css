@@ -5,13 +5,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #000;
+  background-color: #f1e6fd30;
   border-top: 1px solid #f1e6fd30;
   color: #6f6d78;
 }
 
 :global(body.theme-light) .footer {
-  background-color: #ffffff;
+  background-color: #f1e6fd30;
   border-top-color: #dedbe6;
 }
 

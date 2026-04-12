@@ -2,20 +2,36 @@
   min-height: 100vh;
   width: 100%;
   max-width: 100%;
+  position: relative;
   display: flex;
   flex-direction: column;
   overflow-x: hidden;
-  background-image:
-    linear-gradient(
-      to bottom,
-      rgba(0, 0, 0, 1) 0%,
-      rgba(0, 0, 0, 1) 25%,
-      rgba(0, 0, 0, 0.78) 48%,
-      rgba(0, 0, 0, 0.98) 85%,
-      rgba(0, 0, 0, 1) 92%,
-      rgba(0, 0, 0, 1) 100%
-    ),
-    url("../assets/img/background.png");
+  background-image: url("../assets/img/background.png");
+  background-repeat: repeat;
+  background-size: 100% auto;
+}
+
+.container::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    #121113f5 0%,
+    #121113ee 30%,
+    #121113cc 50%,
+    #121113dd 62%,
+    #121113f0 78%,
+    #121113fa 90%,
+    #121113ff 100%
+  );
+  z-index: 1;
+}
+
+.container > * {
+  position: relative;
+  z-index: 2;
 }
 
 .main {

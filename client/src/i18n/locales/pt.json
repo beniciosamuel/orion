@@ -27,6 +27,11 @@
       "optional": "opcional",
       "submit": "Cadastrar",
       "submitting": "Criando conta..."
+    },
+    "movieList": {
+      "title": "Lista de Filmes",
+      "loading": "Carregando filmes...",
+      "searchPlaceholder": "Pesquisar por filmes..."
     }
   }
 }

@@ -7,6 +7,7 @@
   justify-content: flex-start;
   gap: 16px;
   background-color: #12111380;
+  border-bottom: 1px solid #f1e6fd30;
 }
 
 :global(body.theme-light) .header {

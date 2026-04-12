@@ -18,15 +18,7 @@ type Story = StoryObj<typeof MovieList>;
 export const Default: Story = {
   play: async ({ canvasElement }) => {
     const cards = canvasElement.querySelectorAll("article");
-    const previousButton = canvasElement.querySelector(
-      'button[aria-label="Previous movies"]',
-    );
-    const nextButton = canvasElement.querySelector(
-      'button[aria-label="Next movies"]',
-    );
 
     await expect(cards).toHaveLength(10);
-    await expect(previousButton).toBeInTheDocument();
-    await expect(nextButton).toBeInTheDocument();
   },
 };

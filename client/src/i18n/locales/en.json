@@ -27,6 +27,11 @@
       "optional": "optional",
       "submit": "Sign up",
       "submitting": "Creating account..."
+    },
+    "movieList": {
+      "title": "Movies List",
+      "loading": "Loading movies...",
+      "searchPlaceholder": "Search movies..."
     }
   }
 }
