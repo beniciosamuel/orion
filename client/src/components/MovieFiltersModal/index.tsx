@@ -72,20 +72,40 @@ export const MovieFiltersModal: React.FC<MovieFiltersModalProps> = ({
         aria-describedby="movie-filters-description"
       >
         <div className={styles.header}>
-          <div>
-            <p className={styles.eyebrow}>Listagem de filmes</p>
-            <h2 id="movie-filters-title" className={styles.title}>
-              Filtros
-            </h2>
-          </div>
+          <h2 id="movie-filters-title" className={styles.title}>
+            Filtro
+          </h2>
 
           <button
             ref={closeButtonRef}
             type="button"
             className={styles.closeButton}
             onClick={onClose}
+            aria-label="Fechar"
           >
-            Fechar
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+            >
+              <path
+                d="M18 6L6 18"
+                stroke="white"
+                strokeWidth="2"
+                strokeLinecap="square"
+                strokeLinejoin="round"
+              />
+              <path
+                d="M6 6L18 18"
+                stroke="white"
+                strokeWidth="2"
+                strokeLinecap="square"
+                strokeLinejoin="round"
+              />
+            </svg>
           </button>
         </div>
 
@@ -94,50 +114,57 @@ export const MovieFiltersModal: React.FC<MovieFiltersModalProps> = ({
         </p>
 
         <form className={styles.form} onSubmit={handleSubmit}>
-          <section className={styles.section}>
-            <h3 className={styles.sectionTitle}>Gêneros</h3>
+          <div className={styles.fieldsLimit}>
+            <section className={styles.section}>
+              <h3 className={styles.sectionTitle}>Gêneros</h3>
 
-            <div className={styles.genreGrid}>
-              {genreOptions.map((genre) => (
-                <label key={genre} className={styles.checkboxCard}>
-                  <input type="checkbox" name="genres" value={genre} />
-                  <span>{genre}</span>
-                </label>
-              ))}
+              <div className={styles.genreGrid}>
+                {genreOptions.map((genre) => (
+                  <label key={genre} className={styles.checkboxCard}>
+                    <input type="checkbox" name="genres" value={genre} />
+                    <span>{genre}</span>
+                  </label>
+                ))}
+              </div>
+            </section>
+
+            <div className={styles.columns}>
+              <label className={styles.field}>
+                <span className={styles.fieldLabel}>Ano inicial</span>
+                <Input type="number" min="1900" placeholder="Ex.: 2020" />
+              </label>
+
+              <label className={styles.field}>
+                <span className={styles.fieldLabel}>Ano final</span>
+                <Input type="number" min="1900" placeholder="Ex.: 2026" />
+              </label>
             </div>
-          </section>
-
-          <div className={styles.columns}>
-            <label className={styles.field}>
-              <span className={styles.fieldLabel}>Ano inicial</span>
-              <Input type="number" min="1900" placeholder="Ex.: 2020" />
-            </label>
 
             <label className={styles.field}>
-              <span className={styles.fieldLabel}>Ano final</span>
-              <Input type="number" min="1900" placeholder="Ex.: 2026" />
+              <span className={styles.fieldLabel}>Ordenar por</span>
+              <select className={styles.select} defaultValue="popularidade">
+                <option value="popularidade">Maior popularidade</option>
+                <option value="recentes">Mais recentes</option>
+                <option value="avaliacao">Maior avaliação</option>
+              </select>
             </label>
           </div>
-
-          <label className={styles.field}>
-            <span className={styles.fieldLabel}>Ordenar por</span>
-            <select className={styles.select} defaultValue="popularidade">
-              <option value="popularidade">Maior popularidade</option>
-              <option value="recentes">Mais recentes</option>
-              <option value="avaliacao">Maior avaliação</option>
-            </select>
-          </label>
 
           <div className={styles.actions}>
             <Button
               variant="secondary"
               size="compact"
+              className={styles.actionButton}
               type="button"
               onClick={onClose}
             >
               Cancelar
             </Button>
-            <Button size="compact" type="submit">
+            <Button
+              size="compact"
+              className={styles.actionButton}
+              type="submit"
+            >
               Aplicar filtros
             </Button>
           </div>

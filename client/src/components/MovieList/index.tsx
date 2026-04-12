@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { MovieCard } from "../MovieCard";
 import styles from "./MovieList.module.css";
 import { movieListMock } from "./movieListMock";
@@ -23,11 +24,9 @@ export const MovieList: React.FC<MovieListProps> = ({
       <section className={styles.listSection}>
         <div className={styles.listGrid}>
           {movies.map((movie) => (
-            <a
+            <Link
               key={movie.id}
-              href={movie.url}
-              target="_blank"
-              rel="noreferrer"
+              to={`/movies/${movie.id}`}
               className={styles.movieLink}
             >
               <MovieCard
@@ -37,7 +36,7 @@ export const MovieList: React.FC<MovieListProps> = ({
                 votePercentile={movie.votePercentile}
                 posterUrl={movie.posterUrl}
               />
-            </a>
+            </Link>
           ))}
         </div>
       </section>

@@ -17,7 +17,9 @@
   max-height: 100vh;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 16px;
+  opacity: 1;
+  transform: rotate(0deg);
   overflow-x: hidden;
   overflow-y: auto;
   border: 1px solid rgba(255, 255, 255, 0.08);
@@ -30,7 +32,7 @@
   box-shadow: 0 24px 80px rgba(0, 0, 0, 0.4);
   color: #f5f4f7;
   box-sizing: border-box;
-  padding: 24px;
+  padding: 16px;
 }
 
 .header {
@@ -71,9 +73,15 @@
   transform: translateY(-1px);
 }
 
+.description {
+  margin: 12px 0 0;
+  color: #c8c0cf;
+  line-height: 1.5;
+}
+
 .form {
   display: grid;
-  gap: 16px;
+  gap: 20px;
   min-height: 0;
 }
 
@@ -106,17 +114,30 @@
   font-weight: 600;
 }
 
-.columns {
-  display: grid;
-  gap: 16px;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+.textarea {
+  width: 100%;
+  min-height: 46px;
+  padding: 12px 16px;
+  border: 1px solid var(--input-border-inactive);
+  border-radius: 4px;
+  background: var(--input-bg);
+  color: var(--input-text);
+  font: inherit;
+  box-sizing: border-box;
+  resize: vertical;
+}
+
+.textarea:focus {
+  outline: none;
+  border-color: var(--input-border-active);
+  box-shadow: 0 0 0 3px var(--accent-focus-ring, rgba(142, 78, 198, 0.22));
 }
 
 .actions {
   display: flex;
   justify-content: flex-end;
   gap: 12px;
-  padding-top: 8px;
+  padding-top: 4px;
 }
 
 .actionButton {
@@ -131,16 +152,7 @@
 
   .sidebar {
     width: 100%;
-    padding: 16px;
-  }
-
-  .columns {
-    grid-template-columns: 1fr;
-  }
-
-  .fieldsLimit {
-    padding: 16px;
-    gap: 16px;
+    max-height: 100vh;
   }
 
   .actions {

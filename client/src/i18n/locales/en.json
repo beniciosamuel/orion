@@ -32,6 +32,29 @@
       "title": "Movies List",
       "loading": "Loading movies...",
       "searchPlaceholder": "Search movies..."
+    },
+    "movieDetails": {
+      "originalTitle": "Original title: {{title}}",
+      "edit": "Edit",
+      "delete": "Delete",
+      "userComment": "User comment",
+      "overview": "Overview",
+      "detailsAriaLabel": "Movie details",
+      "details": {
+        "ratingLabel": "Parental rating",
+        "ratingValue": "12 years",
+        "votesLabel": "Votes",
+        "releaseLabel": "Release",
+        "durationLabel": "Duration",
+        "durationValue": "120 minutes",
+        "statusLabel": "Status",
+        "statusValue": "Released",
+        "languageLabel": "Language",
+        "languageValue": "Portuguese",
+        "budgetLabel": "Budget",
+        "revenueLabel": "Revenue",
+        "profitLabel": "Profit"
+      }
     }
   }
 }

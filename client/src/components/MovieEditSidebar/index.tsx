@@ -1,19 +1,48 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { Button } from "../Button";
 import { Input } from "../Input";
-import styles from "./MovieAddSidebar.module.css";
+import styles from "./MovieEditSidebar.module.css";
 
-type MovieAddSidebarProps = {
+type MovieEditSidebarProps = {
   isOpen: boolean;
   onClose: () => void;
+  initialValues?: {
+    title?: string;
+    userComment?: string;
+    overview?: string;
+  };
 };
 
-export const MovieAddSidebar: React.FC<MovieAddSidebarProps> = ({
+type FormValues = {
+  title: string;
+  userComment: string;
+  overview: string;
+};
+
+export const MovieEditSidebar: React.FC<MovieEditSidebarProps> = ({
   isOpen,
   onClose,
+  initialValues,
 }) => {
   const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const [formValues, setFormValues] = useState<FormValues>({
+    title: "",
+    userComment: "",
+    overview: "",
+  });
+
+  useEffect(() => {
+    if (!isOpen) {
+      return;
+    }
+
+    setFormValues({
+      title: initialValues?.title ?? "",
+      userComment: initialValues?.userComment ?? "",
+      overview: initialValues?.overview ?? "",
+    });
+  }, [initialValues, isOpen]);
 
   useEffect(() => {
     if (!isOpen) {
@@ -53,24 +82,29 @@ export const MovieAddSidebar: React.FC<MovieAddSidebarProps> = ({
     onClose();
   };
 
+  const setFieldValue = (field: keyof FormValues, value: string) => {
+    setFormValues((current) => ({ ...current, [field]: value }));
+  };
+
   return (
     <div className={styles.overlay} onClick={handleOverlayClick}>
       <aside
         className={styles.sidebar}
         role="dialog"
         aria-modal="true"
-        aria-labelledby="movie-add-sidebar-title"
+        aria-labelledby="movie-edit-sidebar-title"
+        aria-describedby="movie-edit-sidebar-description"
       >
-        <header className={styles.header}>
-          <h2 id="movie-add-sidebar-title" className={styles.title}>
-            Adicionar filme
+        <div className={styles.header}>
+          <h2 id="movie-edit-sidebar-title" className={styles.title}>
+            Editar filme
           </h2>
 
           <button
             ref={closeButtonRef}
             type="button"
-            onClick={onClose}
             className={styles.closeButton}
+            onClick={onClose}
             aria-label="Fechar"
           >
             <svg
@@ -97,63 +131,47 @@ export const MovieAddSidebar: React.FC<MovieAddSidebarProps> = ({
               />
             </svg>
           </button>
-        </header>
+        </div>
+
+        <p id="movie-edit-sidebar-description" className={styles.description}>
+          Atualize os dados abaixo e salve as alteracoes.
+        </p>
 
         <form className={styles.form} onSubmit={handleSubmit}>
           <div className={styles.fieldsLimit}>
             <label className={styles.field}>
-              <span className={styles.fieldLabel}>Título</span>
-              <Input name="title" placeholder="Ex.: Interestelar" required />
-            </label>
-
-            <label className={styles.field}>
-              <span className={styles.fieldLabel}>Categorias</span>
+              <span className={styles.fieldLabel}>Titulo</span>
               <Input
-                name="categories"
-                placeholder="Ex.: Ficção científica, Drama"
-                required
-              />
-            </label>
-
-            <div className={styles.columns}>
-              <label className={styles.field}>
-                <span className={styles.fieldLabel}>Ano</span>
-                <Input
-                  type="number"
-                  name="year"
-                  min="1888"
-                  max="2100"
-                  placeholder="2026"
-                  required
-                />
-              </label>
-
-              <label className={styles.field}>
-                <span className={styles.fieldLabel}>Nota (%)</span>
-                <Input
-                  type="number"
-                  name="rating"
-                  min="0"
-                  max="100"
-                  placeholder="85"
-                  required
-                />
-              </label>
-            </div>
-
-            <label className={styles.field}>
-              <span className={styles.fieldLabel}>URL do pôster</span>
-              <Input
-                type="url"
-                name="posterUrl"
-                placeholder="https://..."
-                required
+                value={formValues.title}
+                onChange={(event) => setFieldValue("title", event.target.value)}
+                placeholder="Ex.: Bumblebee"
               />
             </label>
 
             <label className={styles.field}>
-              <span className={styles.fieldLabel}>Link do filme</span>
-              <Input type="url" name="url" placeholder="https://..." required />
+              <span className={styles.fieldLabel}>Comentario</span>
+              <textarea
+                className={styles.textarea}
+                value={formValues.userComment}
+                onChange={(event) =>
+                  setFieldValue("userComment", event.target.value)
+                }
+                rows={3}
+                placeholder="Seu comentario sobre o filme"
+              />
+            </label>
+
+            <label className={styles.field}>
+              <span className={styles.fieldLabel}>Sinopse</span>
+              <textarea
+                className={styles.textarea}
+                value={formValues.overview}
+                onChange={(event) =>
+                  setFieldValue("overview", event.target.value)
+                }
+                rows={5}
+                placeholder="Descricao do filme"
+              />
             </label>
           </div>
 
@@ -172,7 +190,7 @@ export const MovieAddSidebar: React.FC<MovieAddSidebarProps> = ({
               className={styles.actionButton}
               type="submit"
             >
-              Adicionar filme
+              Editar filme
             </Button>
           </div>
         </form>

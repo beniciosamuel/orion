@@ -32,6 +32,29 @@
       "title": "Lista de Filmes",
       "loading": "Carregando filmes...",
       "searchPlaceholder": "Pesquisar por filmes..."
+    },
+    "movieDetails": {
+      "originalTitle": "Título original: {{title}}",
+      "edit": "Editar",
+      "delete": "Excluir",
+      "userComment": "Comentário do usuário",
+      "overview": "Sinopse",
+      "detailsAriaLabel": "Detalhes do filme",
+      "details": {
+        "ratingLabel": "Classificação indicativa",
+        "ratingValue": "12 anos",
+        "votesLabel": "Votos",
+        "releaseLabel": "Lançamento",
+        "durationLabel": "Duração",
+        "durationValue": "120 minutos",
+        "statusLabel": "Situação",
+        "statusValue": "Lançado",
+        "languageLabel": "Idioma",
+        "languageValue": "Português",
+        "budgetLabel": "Orçamento",
+        "revenueLabel": "Receita",
+        "profitLabel": "Lucro"
+      }
     }
   }
 }
