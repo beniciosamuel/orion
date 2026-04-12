@@ -1,0 +1,127 @@
+.listWrapper {
+  width: 1322px;
+  max-width: 100%;
+}
+
+.listSection {
+  width: 1322px;
+  height: 782px;
+  max-width: 100%;
+  padding: 24px;
+  background: #ebeaf814;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border-radius: 4px;
+  transform: rotate(0deg);
+  opacity: 1;
+  box-sizing: border-box;
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: 1fr auto;
+}
+
+.listGrid {
+  display: grid;
+  grid-template-columns: repeat(5, 235px);
+  gap: 24px;
+  min-width: 1271px;
+  overflow: auto;
+  align-content: start;
+}
+
+.movieLink {
+  display: block;
+  text-decoration: none;
+}
+
+.movieLink:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.movieCard {
+  width: 235px;
+  height: 355px;
+  transform: rotate(0deg);
+  opacity: 1;
+}
+
+.movieCard img {
+  width: 100%;
+  height: 355px;
+  object-fit: cover;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  padding-top: 24px;
+}
+
+.paginationButton {
+  min-width: 38px;
+  height: 38px;
+  padding: 0 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--color-primary-default);
+  border-radius: 4px;
+  background: var(--color-primary-default);
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.paginationButton:hover:not(:disabled) {
+  background: var(--color-primary-hover);
+  border-color: var(--color-primary-hover);
+}
+
+.paginationButton[data-active="true"] {
+  background: var(--color-primary-active);
+  border-color: var(--color-primary-active);
+}
+
+.paginationButton:disabled {
+  background: var(--color-primary-disabled);
+  border-color: var(--color-primary-disabled);
+  color: #ffffff;
+  opacity: 1;
+  cursor: not-allowed;
+}
+
+@media (max-width: 860px) {
+  .listSection {
+    padding: 16px;
+  }
+
+  .pagination {
+    padding-top: 16px;
+    gap: 8px;
+  }
+}
+
+@media (max-width: 600px) {
+  .listWrapper {
+    width: 100%;
+  }
+
+  .listSection {
+    width: 100%;
+    height: auto;
+    display: block;
+    overflow: visible;
+  }
+
+  .listGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    min-width: 0;
+    overflow: visible;
+  }
+
+  .movieCard {
+    width: 100%;
+  }
+}
