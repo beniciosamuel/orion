@@ -1,4 +1,5 @@
 import { Context } from "../../services/Context";
+import { EmailService } from "../../services/Notifier";
 import { UserCreateDTO, UserThemeUpdateDTO, UserUpdateDTO } from "./UserDTO";
 import { UserEntity } from "./UserEntity";
 import { UserRepository } from "./UserRepository";
@@ -63,5 +64,34 @@ export class UserUseCase {
     }
 
     return UserRepository.updateTheme(args, context);
+  }
+
+  static async sendEmailByUserId(
+    args: {
+      userId: string;
+      subject: string;
+      html: string;
+      text?: string;
+    },
+    context: Context,
+  ): Promise<{ id: string; success: boolean }> {
+    const user = await UserRepository.fromId(args.userId, context);
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    if (!user.email) {
+      throw new Error("User email not found");
+    }
+
+    const emailService = await EmailService.initialize();
+
+    return emailService.sendEmail(
+      user.email,
+      args.subject,
+      args.html,
+      args.text,
+    );
   }
 }

@@ -1,0 +1,31 @@
+project_id                      = "my-gcp-project"
+region                          = "us-central1"
+scheduler_service_account_email = "scheduler-invoker@my-gcp-project.iam.gserviceaccount.com"
+cloud_run_base_url              = "https://orion-worker-abc-uc.a.run.app"
+
+pubsub_topics = [
+  "orion-movie-events",
+  "orion-notifications"
+]
+
+cloud_run_cron_jobs = {
+  "orion-sync-every-15-min" = {
+    description = "Trigger sync worker every 15 minutes"
+    schedule    = "*/15 * * * *"
+    time_zone   = "America/Sao_Paulo"
+    http_method = "POST"
+    path        = "jobs/sync"
+    body        = jsonencode({
+      source = "cloud-scheduler"
+      job    = "orion-sync-every-15-min"
+    })
+  }
+
+  "orion-daily-cleanup" = {
+    description = "Daily cleanup at 02:30"
+    schedule    = "30 2 * * *"
+    time_zone   = "America/Sao_Paulo"
+    http_method = "POST"
+    path        = "jobs/cleanup"
+  }
+}

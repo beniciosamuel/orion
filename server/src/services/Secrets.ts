@@ -89,4 +89,10 @@ export class Secrets {
 
     return `https://storage.googleapis.com/${bucketName}`;
   }
+
+  async getResendApiKey(): Promise<string> {
+    return this.getString("RESEND_API_KEY").catch(() => {
+      throw new Error("RESEND_API_KEY secret is required");
+    });
+  }
 }

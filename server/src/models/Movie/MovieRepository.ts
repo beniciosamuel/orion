@@ -17,7 +17,29 @@ interface PaginatedMovieResult {
   total: number;
 }
 
+interface MovieContributorResult {
+  userId: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 export class MovieRepository {
+  static async listContributorsByMovieId(
+    movieId: string,
+    context: Context,
+  ): Promise<MovieContributorResult[]> {
+    const results = await context
+      .database("movie_contributors")
+      .where({ movie_id: movieId })
+      .select("user_id", "created_at", "updated_at");
+
+    return results.map((result) => ({
+      userId: result.user_id,
+      createdAt: result.created_at,
+      updatedAt: result.updated_at,
+    }));
+  }
+
   static async fromId(
     id: string,
     context: Context,

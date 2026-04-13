@@ -11,6 +11,12 @@ type MovieWithRating = MovieEntity & {
   hasUserVoted: boolean;
 };
 
+type MovieContributor = {
+  userId: string;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
 export class MovieUseCase {
   private static async enrichWithRatings(
     movies: MovieEntity[],
@@ -51,6 +57,13 @@ export class MovieUseCase {
     context: Context,
   ): Promise<MovieEntity | null> {
     return MovieRepository.fromId(id, context);
+  }
+
+  static async listContributorsByMovieId(
+    movieId: string,
+    context: Context,
+  ): Promise<MovieContributor[]> {
+    return MovieRepository.listContributorsByMovieId(movieId, context);
   }
 
   static async fromIdWithRating(
