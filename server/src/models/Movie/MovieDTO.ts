@@ -43,6 +43,7 @@ export interface MovieEntityInterface {
 }
 
 export interface MovieCreateDTO {
+  userId: string;
   resumeTitle: string;
   title: string;
   description: string;

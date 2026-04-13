@@ -21,6 +21,7 @@ export interface FileEntityInterface {
 }
 
 export interface FileCreateDTO {
+  movieId: string;
   originalName: string;
   fileName: string;
   uri: string;

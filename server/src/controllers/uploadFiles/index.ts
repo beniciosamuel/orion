@@ -45,6 +45,7 @@ export class UploadFileController {
           isPoster: true,
           isCover: false,
         },
+        dataRequestParsed.movieId,
         context,
       );
 
@@ -55,6 +56,7 @@ export class UploadFileController {
           isPoster: false,
           isCover: true,
         },
+        dataRequestParsed.movieId,
         context,
       );
 

@@ -9,6 +9,7 @@ import { UploadFileController } from "./controllers/uploadFiles";
 import { SearchMovieController } from "./controllers/searchMovie";
 import { GetMovieByIdController } from "./controllers/getMovieById";
 import { ListMoviesController } from "./controllers/listMovies";
+import { SetMovieVoteController } from "./controllers/setMovieVote";
 
 class PrivateExpress {
   private App: express.Application | null = null;
@@ -56,6 +57,7 @@ class PrivateExpress {
     this.App.post("/movies/search", SearchMovieController.handler);
     this.App.post("/movies/list", ListMoviesController.handler);
     this.App.post("/movies/getById", GetMovieByIdController.handler);
+    this.App.post("/movies/setMovieVote", SetMovieVoteController.handler);
 
     const secretsService = new Secrets();
 

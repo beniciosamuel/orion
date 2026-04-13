@@ -121,26 +121,34 @@ export class MovieRepository {
     args: MovieCreateDTO,
     context: Context,
   ): Promise<MovieEntity> {
-    const [result] = await context
-      .database("movie")
-      .insert({
-        resume_title: args.resumeTitle,
-        title: args.title,
-        description: args.description,
-        user_comment: args.userComment,
-        director: args.director,
-        duration: args.duration,
-        genres: args.genres,
-        language: args.language,
-        age_rating: args.ageRating,
-        budget: args.budget,
-        revenue: args.revenue,
-        profit: args.profit,
-        production_company: args.productionCompany,
-        trailer_url: args.trailerUrl,
-        release_date: args.releaseDate,
-      })
-      .returning("*");
+    const result = await context.database.transaction(async (trx) => {
+      const [createdMovie] = await trx("movie")
+        .insert({
+          resume_title: args.resumeTitle,
+          title: args.title,
+          description: args.description,
+          user_comment: args.userComment,
+          director: args.director,
+          duration: args.duration,
+          genres: args.genres,
+          language: args.language,
+          age_rating: args.ageRating,
+          budget: args.budget,
+          revenue: args.revenue,
+          profit: args.profit,
+          production_company: args.productionCompany,
+          trailer_url: args.trailerUrl,
+          release_date: args.releaseDate,
+        })
+        .returning("*");
+
+      await trx("movie_contributors").insert({
+        movie_id: createdMovie.id,
+        user_id: args.userId,
+      });
+
+      return createdMovie;
+    });
 
     return MovieEntity.fromRecord(result);
   }

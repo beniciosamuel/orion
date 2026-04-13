@@ -23,7 +23,20 @@ const usersSeedData = [
 
 export async function seed(knex: Knex): Promise<void> {
   await knex("movie_rating").del();
+  await knex("user_settings").del();
   await knex("user").del();
 
   await knex("user").insert(usersSeedData);
+
+  const insertedUsers = await knex("user")
+    .select("id")
+    .whereIn(
+      "email",
+      usersSeedData.map((user) => user.email),
+    );
+
+  await knex("user_settings")
+    .insert(insertedUsers.map((user) => ({ user_id: user.id })))
+    .onConflict("user_id")
+    .ignore();
 }

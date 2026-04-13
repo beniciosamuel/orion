@@ -10,9 +10,32 @@ export class CreateMovieController {
 
       const context = req.context ?? (await Context.initialize());
 
+      const authenticatedUser = (
+        context as Context & {
+          model?: {
+            user?: {
+              id: string;
+              scope: "viewer" | "editor" | "admin";
+            };
+          };
+        }
+      ).model?.user;
+
+      if (!authenticatedUser) {
+        return res.status(401).json({ error: "Unauthorized" });
+      }
+
+      if (
+        authenticatedUser.scope !== "editor" &&
+        authenticatedUser.scope !== "admin"
+      ) {
+        return res.status(403).json({ error: "Forbidden" });
+      }
+
       const movie = await MovieUseCase.create(
         {
           ...dataRequestParsed,
+          userId: authenticatedUser.id,
           releaseDate: dataRequestParsed.releaseDate as unknown as Date,
         },
         context,

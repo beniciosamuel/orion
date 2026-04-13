@@ -36,15 +36,25 @@ export class FileRepository {
     args: FileCreateDTO,
     context: Context,
   ): Promise<FileEntity> {
-    const [result] = await context
-      .database("file")
-      .insert({
-        original_name: args.originalName,
-        file_name: args.fileName,
-        uri: args.uri,
-        width: args.width,
-      })
-      .returning("*");
+    const result = await context.database.transaction(async (trx) => {
+      const [createdFile] = await trx("file")
+        .insert({
+          original_name: args.originalName,
+          file_name: args.fileName,
+          uri: args.uri,
+          width: args.width,
+        })
+        .returning("*");
+
+      await trx("movie_file").insert({
+        movie_id: args.movieId,
+        file_id: createdFile.id,
+        is_poster: Boolean(args.isPoster),
+        is_cover: Boolean(args.isCover),
+      });
+
+      return createdFile;
+    });
 
     return FileEntity.fromRecord(result);
   }

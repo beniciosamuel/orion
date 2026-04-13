@@ -25,7 +25,7 @@ export class MovieUseCase {
     args: MovieCreateDTO,
     context: Context,
   ): Promise<MovieEntity> {
-    const movie = await MovieRepository.create(args, context);
+    const movie = await MovieRepository.create(args, createdByUserId, context);
     return movie;
   }
 

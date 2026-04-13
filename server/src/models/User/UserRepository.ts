@@ -46,14 +46,22 @@ export class UserRepository {
   ): Promise<UserEntity> {
     const passwordHash = await context.password.encrypt(args.password);
 
-    const [result] = await context
-      .database("users")
-      .insert({
-        full_name: args.fullName,
-        email: args.email,
-        password_hash: passwordHash,
-      })
-      .returning("*");
+    const result = await context.database.transaction(async (trx) => {
+      const [createdUser] = await trx("users")
+        .insert({
+          full_name: args.fullName,
+          email: args.email,
+          password_hash: passwordHash,
+        })
+        .returning("*");
+
+      await trx("user_settings")
+        .insert({ user_id: createdUser.id })
+        .onConflict("user_id")
+        .ignore();
+
+      return createdUser;
+    });
 
     return UserEntity.fromRecord(result);
   }
