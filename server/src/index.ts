@@ -7,6 +7,8 @@ import { Secrets } from "./services/Secrets";
 import { AuthContextMiddleware } from "./middlewares/AuthContextMiddleware";
 import { UploadFileController } from "./controllers/uploadFiles";
 import { SearchMovieController } from "./controllers/searchMovie";
+import { GetMovieByIdController } from "./controllers/getMovieById";
+import { ListMoviesController } from "./controllers/listMovies";
 
 class PrivateExpress {
   private App: express.Application | null = null;
@@ -51,7 +53,9 @@ class PrivateExpress {
       UploadFileController.handler,
     );
 
-    this.App.get("/movies/search", SearchMovieController.handler);
+    this.App.post("/movies/search", SearchMovieController.handler);
+    this.App.post("/movies/list", ListMoviesController.handler);
+    this.App.post("/movies/getById", GetMovieByIdController.handler);
 
     const secretsService = new Secrets();
 

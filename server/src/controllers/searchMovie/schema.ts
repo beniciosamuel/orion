@@ -35,6 +35,10 @@ export const SearchMovieRequestSchema = z
       },
       z.array(z.string().min(1)).min(1).optional(),
     ),
+    pagination: z.object({
+      page: z.number().int().min(1),
+      pageSize: z.number().int().min(1),
+    }),
   })
   .refine((value) => Boolean(value.title || value.genres?.length), {
     message: "At least one filter must be provided",

@@ -4,6 +4,23 @@ import { MovieEntity } from "./MovieEntity";
 import { MovieRepository } from "./MovieRepository";
 
 export class MovieUseCase {
+  static async list(
+    pagination: {
+      page: number;
+      pageSize: number;
+    },
+    context: Context,
+  ): Promise<{ data: MovieEntity[]; total: number }> {
+    return MovieRepository.list(pagination, context);
+  }
+
+  static async fromId(
+    id: string,
+    context: Context,
+  ): Promise<MovieEntity | null> {
+    return MovieRepository.fromId(id, context);
+  }
+
   static async create(
     args: MovieCreateDTO,
     context: Context,
@@ -28,9 +45,20 @@ export class MovieUseCase {
     filters: {
       title?: string;
       genres?: string[];
+      pagination: {
+        page: number;
+        pageSize: number;
+      };
     },
     context: Context,
-  ): Promise<MovieEntity[]> {
-    return MovieRepository.search(filters, context);
+  ): Promise<{ data: MovieEntity[]; total: number }> {
+    return MovieRepository.search(
+      {
+        title: filters.title,
+        genres: filters.genres,
+      },
+      filters.pagination,
+      context,
+    );
   }
 }

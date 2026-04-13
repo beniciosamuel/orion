@@ -7,6 +7,16 @@ interface SearchMovieFilters {
   genres?: string[];
 }
 
+interface PaginationInput {
+  page: number;
+  pageSize: number;
+}
+
+interface PaginatedMovieResult {
+  data: MovieEntity[];
+  total: number;
+}
+
 export class MovieRepository {
   static async fromId(
     id: string,
@@ -39,8 +49,9 @@ export class MovieRepository {
 
   static async search(
     filters: SearchMovieFilters,
+    pagination: PaginationInput,
     context: Context,
-  ): Promise<MovieEntity[]> {
+  ): Promise<PaginatedMovieResult> {
     const query = context.database("movie").whereNull("deleted_at");
 
     if (filters.title) {
@@ -60,9 +71,50 @@ export class MovieRepository {
       });
     }
 
-    const results = await query;
+    const [{ count }] = await query
+      .clone()
+      .clearSelect()
+      .clearOrder()
+      .count<{ count: string }>("id as count");
 
-    return results.map((result) => MovieEntity.fromRecord(result));
+    const offset = (pagination.page - 1) * pagination.pageSize;
+
+    const results = await query
+      .clone()
+      .orderBy("created_at", "desc")
+      .offset(offset)
+      .limit(pagination.pageSize);
+
+    return {
+      data: results.map((result) => MovieEntity.fromRecord(result)),
+      total: Number(count),
+    };
+  }
+
+  static async list(
+    pagination: PaginationInput,
+    context: Context,
+  ): Promise<PaginatedMovieResult> {
+    const baseQuery = context.database("movie").whereNull("deleted_at");
+
+    const [{ count }] = await baseQuery
+      .clone()
+      .clearSelect()
+      .clearOrder()
+      .count<{ count: string }>("id as count");
+
+    const offset = (pagination.page - 1) * pagination.pageSize;
+
+    const results = await baseQuery
+      .clone()
+      .orderBy("created_at", "desc")
+      .offset(offset)
+      .limit(pagination.pageSize);
+
+    return {
+      data: results.map((result) => MovieEntity.fromRecord(result)),
+      total: Number(count),
+    };
   }
 
   static async create(
