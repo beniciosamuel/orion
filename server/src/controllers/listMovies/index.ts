@@ -11,7 +11,21 @@ export class ListMoviesController {
 
       const context = req.context ?? (await Context.initialize());
 
-      const result = await MovieUseCase.list(pagination, context);
+      const authenticatedUser = (
+        context as Context & {
+          model?: {
+            user?: {
+              id: string;
+            };
+          };
+        }
+      ).model?.user;
+
+      const result = await MovieUseCase.listWithRating(
+        pagination,
+        authenticatedUser?.id ?? null,
+        context,
+      );
       const totalPages = Math.ceil(result.total / pagination.pageSize);
 
       return res.status(200).json({

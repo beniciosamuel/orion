@@ -3,3 +3,10 @@ export interface MovieRatingCreateDTO {
   userId: string;
   rating: number;
 }
+
+export interface MovieRatingSummaryDTO {
+  movieId: string;
+  rating: number;
+  userRating: number | null;
+  hasUserVoted: boolean;
+}

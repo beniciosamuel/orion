@@ -13,12 +13,23 @@ export class SearchMovieController {
 
       const context = req.context ?? (await Context.initialize());
 
-      const result = await MovieUseCase.search(
+      const authenticatedUser = (
+        context as Context & {
+          model?: {
+            user?: {
+              id: string;
+            };
+          };
+        }
+      ).model?.user;
+
+      const result = await MovieUseCase.searchWithRating(
         {
           title,
           genres,
           pagination,
         },
+        authenticatedUser?.id ?? null,
         context,
       );
 

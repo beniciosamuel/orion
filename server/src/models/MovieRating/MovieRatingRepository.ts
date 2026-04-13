@@ -1,5 +1,5 @@
 import { Context } from "../../services/Context";
-import { MovieRatingCreateDTO } from "./MovieRatingDTO";
+import { MovieRatingCreateDTO, MovieRatingSummaryDTO } from "./MovieRatingDTO";
 
 export class MovieRatingRepository {
   static async setVote(
@@ -15,5 +15,35 @@ export class MovieRatingRepository {
       })
       .onConflict(["movie_id", "user_id"])
       .merge({ rating: args.rating });
+  }
+
+  static async getSummaryByMovieId(
+    movieId: string,
+    userId: string | null,
+    context: Context,
+  ): Promise<MovieRatingSummaryDTO> {
+    const [ratingRow] = await context
+      .database("movie_rating")
+      .where({ movie_id: movieId })
+      .select<{ rating: string | number }[]>(
+        context.database.raw("ROUND(AVG(rating)::numeric, 2) as rating"),
+      );
+
+    const userVoteRow = userId
+      ? await context
+          .database("movie_rating")
+          .select<{ rating: number }[]>("rating")
+          .where({ movie_id: movieId, user_id: userId })
+          .first()
+      : null;
+
+    const userRating = userVoteRow?.rating ?? null;
+
+    return {
+      movieId,
+      rating: Number(ratingRow?.rating) || 0,
+      userRating,
+      hasUserVoted: userRating !== null,
+    };
   }
 }

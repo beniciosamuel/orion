@@ -11,7 +11,21 @@ export class GetMovieByIdController {
 
       const context = req.context ?? (await Context.initialize());
 
-      const movie = await MovieUseCase.fromId(id, context);
+      const authenticatedUser = (
+        context as Context & {
+          model?: {
+            user?: {
+              id: string;
+            };
+          };
+        }
+      ).model?.user;
+
+      const movie = await MovieUseCase.fromIdWithRating(
+        id,
+        authenticatedUser?.id ?? null,
+        context,
+      );
 
       if (!movie) {
         return res.status(404).json({ error: "Movie not found" });
