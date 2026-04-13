@@ -17,16 +17,7 @@ export class FileRepository {
       return null;
     }
 
-    return new FileEntity({
-      id: result.id,
-      originalName: result.original_name,
-      fileName: result.file_name,
-      uri: result.uri,
-      width: result.width,
-      createdAt: result.created_at,
-      updatedAt: result.updated_at,
-      deletedAt: result.deleted_at,
-    });
+    return FileEntity.fromRecord(result);
   }
 
   static async fromFileName(
@@ -38,19 +29,7 @@ export class FileRepository {
       .where("file_name", "like", `%${fileName}%`)
       .whereNull("deleted_at");
 
-    return results.map(
-      (result) =>
-        new FileEntity({
-          id: result.id,
-          originalName: result.original_name,
-          fileName: result.file_name,
-          uri: result.uri,
-          width: result.width,
-          createdAt: result.created_at,
-          updatedAt: result.updated_at,
-          deletedAt: result.deleted_at,
-        }),
-    );
+    return results.map((result) => FileEntity.fromRecord(result));
   }
 
   static async create(
@@ -67,16 +46,7 @@ export class FileRepository {
       })
       .returning("*");
 
-    return new FileEntity({
-      id: result.id,
-      originalName: result.original_name,
-      fileName: result.file_name,
-      uri: result.uri,
-      width: result.width,
-      createdAt: result.created_at,
-      updatedAt: result.updated_at,
-      deletedAt: result.deleted_at,
-    });
+    return FileEntity.fromRecord(result);
   }
 
   static async update(

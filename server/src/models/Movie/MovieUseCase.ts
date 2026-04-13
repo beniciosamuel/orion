@@ -23,4 +23,14 @@ export class MovieUseCase {
   static async delete(id: string, context: Context): Promise<boolean> {
     return MovieRepository.delete(id, context);
   }
+
+  static async search(
+    filters: {
+      title?: string;
+      genres?: string[];
+    },
+    context: Context,
+  ): Promise<MovieEntity[]> {
+    return MovieRepository.search(filters, context);
+  }
 }

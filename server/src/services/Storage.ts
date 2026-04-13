@@ -1,25 +1,43 @@
 import { Storage } from "@google-cloud/storage";
+import { v4 as uuidv4 } from "uuid";
 
+import { Context } from "./Context";
 export class StorageService {
   private static instance: Storage;
 
-  static getInstance(): Storage {
-    if (!StorageService.instance) {
-      StorageService.instance = new Storage();
-    }
-    return StorageService.instance;
+  public generateFileName(): string {
+    return uuidv4();
   }
 
-  static async uploadFile(args: {
-    bucketName: string;
-    filePath: string;
-    destination: string;
-  }): Promise<boolean> {
-    const storage = StorageService.getInstance();
+  static getInstance(): Storage {
+    return new Storage();
+  }
 
-    await storage.bucket(args.bucketName).upload(args.filePath, {
-      destination: args.destination,
+  async uploadFile(
+    file: {
+      mimetype: string;
+      buffer: Buffer;
+    },
+    fileName: string,
+    context: Context,
+  ): Promise<string> {
+    const storage = StorageService.getInstance();
+    const bucketName = await context.secrets.getGCSBucketName();
+
+    const blob = storage.bucket(bucketName).file(fileName);
+
+    const blobStream = blob.createWriteStream({
+      resumable: false,
+      contentType: file.mimetype,
     });
-    return true;
+
+    blobStream.on("error", (err) => {
+      console.error("Error uploading file to GCS:", err);
+      throw err;
+    });
+
+    blobStream.end(file.buffer);
+
+    return `${bucketName}/${fileName}`;
   }
 }

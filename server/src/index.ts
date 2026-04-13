@@ -1,9 +1,12 @@
 import express from "express";
 import { createServer } from "http";
 import cors from "cors";
+import multer from "multer";
 
 import { Secrets } from "./services/Secrets";
 import { AuthContextMiddleware } from "./middlewares/AuthContextMiddleware";
+import { UploadFileController } from "./controllers/uploadFiles";
+import { SearchMovieController } from "./controllers/searchMovie";
 
 class PrivateExpress {
   private App: express.Application | null = null;
@@ -36,6 +39,19 @@ class PrivateExpress {
     );
 
     this.App.use(AuthContextMiddleware.handler);
+
+    const upload = multer({ storage: multer.memoryStorage() });
+
+    this.App.get(
+      "uploadFiles",
+      upload.fields([
+        { name: "poster", maxCount: 1 },
+        { name: "backdrop", maxCount: 1 },
+      ]),
+      UploadFileController.handler,
+    );
+
+    this.App.get("/movies/search", SearchMovieController.handler);
 
     const secretsService = new Secrets();
 

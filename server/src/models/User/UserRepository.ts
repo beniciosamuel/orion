@@ -13,16 +13,7 @@ export class UserRepository {
       return null;
     }
 
-    return new UserEntity({
-      id: result.id,
-      fullName: result.full_name,
-      email: result.email,
-      password: result.password_hash,
-      scope: result.scope,
-      createdAt: result.created_at,
-      updatedAt: result.updated_at,
-      deletedAt: result.deleted_at,
-    });
+    return UserEntity.fromRecord(result);
   }
 
   static async fromEmail(
@@ -35,16 +26,7 @@ export class UserRepository {
       return null;
     }
 
-    return new UserEntity({
-      id: result.id,
-      fullName: result.full_name,
-      email: result.email,
-      password: result.password_hash,
-      scope: result.scope,
-      createdAt: result.created_at,
-      updatedAt: result.updated_at,
-      deletedAt: result.deleted_at,
-    });
+    return UserEntity.fromRecord(result);
   }
 
   static async fromFullName(
@@ -55,19 +37,7 @@ export class UserRepository {
       .database("users")
       .where("full_name", "like", `%${fullName}%`);
 
-    return results.map(
-      (result) =>
-        new UserEntity({
-          id: result.id,
-          fullName: result.full_name,
-          email: result.email,
-          password: result.password_hash,
-          scope: result.scope,
-          createdAt: result.created_at,
-          updatedAt: result.updated_at,
-          deletedAt: result.deleted_at,
-        }),
-    );
+    return results.map((result) => UserEntity.fromRecord(result));
   }
 
   static async create(
@@ -85,16 +55,7 @@ export class UserRepository {
       })
       .returning("*");
 
-    return new UserEntity({
-      id: result.id,
-      fullName: result.full_name,
-      email: result.email,
-      password: result.password,
-      scope: result.scope,
-      createdAt: result.created_at,
-      updatedAt: result.updated_at,
-      deletedAt: result.deleted_at,
-    });
+    return UserEntity.fromRecord(result);
   }
 
   static async update(

@@ -25,6 +25,8 @@ export interface FileCreateDTO {
   fileName: string;
   uri: string;
   width?: number | null;
+  isPoster?: boolean;
+  isCover?: boolean;
 }
 
 export interface FileUpdateDTO {

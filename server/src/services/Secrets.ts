@@ -81,4 +81,12 @@ export class Secrets {
       password: secrets.REDIS_PASSWORD || "",
     };
   }
+
+  async getGCSBucketName(): Promise<string> {
+    const bucketName = await this.getString("GCS_BUCKET_NAME").catch(() => {
+      throw new Error("GCS_BUCKET_NAME secret is required");
+    });
+
+    return `https://storage.googleapis.com/${bucketName}`;
+  }
 }

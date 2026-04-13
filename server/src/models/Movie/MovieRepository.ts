@@ -2,6 +2,11 @@ import { Context } from "../../services/Context";
 import { MovieCreateDTO, MovieUpdateDTO } from "./MovieDTO";
 import { MovieEntity } from "./MovieEntity";
 
+interface SearchMovieFilters {
+  title?: string;
+  genres?: string[];
+}
+
 export class MovieRepository {
   static async fromId(
     id: string,
@@ -17,27 +22,7 @@ export class MovieRepository {
       return null;
     }
 
-    return new MovieEntity({
-      id: result.id,
-      resumeTitle: result.resume_title,
-      title: result.title,
-      description: result.description,
-      userComment: result.user_comment,
-      director: result.director,
-      duration: result.duration,
-      genres: result.genres,
-      language: result.language,
-      ageRating: result.age_rating,
-      budget: result.budget,
-      revenue: result.revenue,
-      profit: result.profit,
-      productionCompany: result.production_company,
-      trailerUrl: result.trailer_url,
-      releaseDate: result.release_date,
-      createdAt: result.created_at,
-      updatedAt: result.updated_at,
-      deletedAt: result.deleted_at,
-    });
+    return MovieEntity.fromRecord(result);
   }
 
   static async fromTitle(
@@ -49,30 +34,35 @@ export class MovieRepository {
       .where("title", "like", `%${title}%`)
       .whereNull("deleted_at");
 
-    return results.map(
-      (result) =>
-        new MovieEntity({
-          id: result.id,
-          resumeTitle: result.resume_title,
-          title: result.title,
-          description: result.description,
-          userComment: result.user_comment,
-          director: result.director,
-          duration: result.duration,
-          genres: result.genres,
-          language: result.language,
-          ageRating: result.age_rating,
-          budget: result.budget,
-          revenue: result.revenue,
-          profit: result.profit,
-          productionCompany: result.production_company,
-          trailerUrl: result.trailer_url,
-          releaseDate: result.release_date,
-          createdAt: result.created_at,
-          updatedAt: result.updated_at,
-          deletedAt: result.deleted_at,
-        }),
-    );
+    return results.map((result) => MovieEntity.fromRecord(result));
+  }
+
+  static async search(
+    filters: SearchMovieFilters,
+    context: Context,
+  ): Promise<MovieEntity[]> {
+    const query = context.database("movie").whereNull("deleted_at");
+
+    if (filters.title) {
+      query.where("title", "ilike", `%${filters.title}%`);
+    }
+
+    if (filters.genres?.length) {
+      query.andWhere((builder) => {
+        filters.genres?.forEach((genre, index) => {
+          if (index === 0) {
+            builder.where("genres", "ilike", `%${genre}%`);
+            return;
+          }
+
+          builder.orWhere("genres", "ilike", `%${genre}%`);
+        });
+      });
+    }
+
+    const results = await query;
+
+    return results.map((result) => MovieEntity.fromRecord(result));
   }
 
   static async create(
@@ -100,27 +90,7 @@ export class MovieRepository {
       })
       .returning("*");
 
-    return new MovieEntity({
-      id: result.id,
-      resumeTitle: result.resume_title,
-      title: result.title,
-      description: result.description,
-      userComment: result.user_comment,
-      director: result.director,
-      duration: result.duration,
-      genres: result.genres,
-      language: result.language,
-      ageRating: result.age_rating,
-      budget: result.budget,
-      revenue: result.revenue,
-      profit: result.profit,
-      productionCompany: result.production_company,
-      trailerUrl: result.trailer_url,
-      releaseDate: result.release_date,
-      createdAt: result.created_at,
-      updatedAt: result.updated_at,
-      deletedAt: result.deleted_at,
-    });
+    return MovieEntity.fromRecord(result);
   }
 
   static async update(
