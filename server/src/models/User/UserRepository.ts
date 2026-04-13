@@ -1,5 +1,10 @@
 import { Context } from "../../services/Context";
-import { UserCreateDTO, UserUpdateDTO } from "./UserDTO";
+import {
+  UserCreateDTO,
+  UserSettingsRecord,
+  UserThemeUpdateDTO,
+  UserUpdateDTO,
+} from "./UserDTO";
 import { UserEntity } from "./UserEntity";
 
 export class UserRepository {
@@ -98,5 +103,32 @@ export class UserRepository {
     }
 
     return true;
+  }
+
+  static async settingsFromUserId(
+    userId: string,
+    context: Context,
+  ): Promise<UserSettingsRecord | null> {
+    const result = await context
+      .database("user_settings")
+      .where({ user_id: userId })
+      .first();
+
+    return result ?? null;
+  }
+
+  static async updateTheme(
+    args: UserThemeUpdateDTO,
+    context: Context,
+  ): Promise<boolean> {
+    const updated = await context
+      .database("user_settings")
+      .where("user_id", args.userId)
+      .update({
+        theme: args.theme,
+        updated_at: context.database.fn.now(),
+      });
+
+    return updated > 0;
   }
 }

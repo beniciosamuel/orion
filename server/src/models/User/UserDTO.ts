@@ -34,3 +34,18 @@ export interface UserUpdateDTO {
   password?: string;
   scope?: "viewer" | "editor" | "admin";
 }
+
+export interface UserSettingsRecord {
+  user_id: string;
+  language: string;
+  theme: string;
+  timezone: string;
+  notify: boolean;
+  created_at: Date;
+  updated_at: Date;
+}
+
+export interface UserThemeUpdateDTO {
+  userId: string;
+  theme: "light" | "dark";
+}

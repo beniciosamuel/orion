@@ -1,5 +1,5 @@
 import { Context } from "../../services/Context";
-import { UserCreateDTO, UserUpdateDTO } from "./UserDTO";
+import { UserCreateDTO, UserThemeUpdateDTO, UserUpdateDTO } from "./UserDTO";
 import { UserEntity } from "./UserEntity";
 import { UserRepository } from "./UserRepository";
 
@@ -47,5 +47,21 @@ export class UserUseCase {
 
   static async delete(id: string, context: Context): Promise<boolean> {
     return UserRepository.delete(id, context);
+  }
+
+  static async updateTheme(
+    args: UserThemeUpdateDTO,
+    context: Context,
+  ): Promise<boolean> {
+    const currentSettings = await UserRepository.settingsFromUserId(
+      args.userId,
+      context,
+    );
+
+    if (!currentSettings) {
+      throw new Error("User settings not found");
+    }
+
+    return UserRepository.updateTheme(args, context);
   }
 }
