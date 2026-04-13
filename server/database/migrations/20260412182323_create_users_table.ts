@@ -5,13 +5,16 @@ export async function up(knex: Knex): Promise<void> {
   await knex.schema.createTable("user", (table) => {
     table.uuid("id").primary().defaultTo(knex.raw("gen_random_uuid()"));
     table.string("full_name").notNullable();
-    table.string("email").notNullable().unique();
+    table.string("email").unique().notNullable();
     table.string("password").notNullable();
-    table.date("birth_date").notNullable();
     table.string("scope").notNullable().defaultTo("viewer");
-    table.timestamp("created_at").defaultTo(knex.fn.now());
-    table.timestamp("updated_at").defaultTo(knex.fn.now());
-    table.timestamp("deleted_at").nullable();
+    table.datetime("created_at").notNullable().defaultTo(knex.fn.now());
+    table.datetime("updated_at").notNullable().defaultTo(knex.fn.now());
+    table.datetime("deleted_at").nullable();
+
+    table.index(["full_name"]);
+    table.index(["email"]);
+    table.index(["scope"]);
   });
 
   await knex.raw(utils.createOnUpdateTrigger("user"));

@@ -21,6 +21,13 @@ export async function up(knex: Knex): Promise<void> {
     table.date("release_date").notNullable();
     table.datetime("created_at").notNullable().defaultTo(knex.fn.now());
     table.datetime("updated_at").notNullable().defaultTo(knex.fn.now());
+    table.datetime("deleted_at").nullable();
+
+    table.index(["resume_title"]);
+    table.index(["title"]);
+    table.index(["director"]);
+    table.index(["genres"]);
+    table.index(["release_date"]);
   });
 
   await knex.raw(utils.createOnUpdateTrigger("movie"));

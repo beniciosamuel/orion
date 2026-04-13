@@ -1,0 +1,111 @@
+import { Context } from "../../services/Context";
+import { FileCreateDTO, FileUpdateDTO } from "./FileDTO";
+import { FileEntity } from "./FileEntity";
+
+export class FileRepository {
+  static async fromId(
+    id: string,
+    context: Context,
+  ): Promise<FileEntity | null> {
+    const result = await context
+      .database("file")
+      .where({ id })
+      .whereNull("deleted_at")
+      .first();
+
+    if (!result) {
+      return null;
+    }
+
+    return new FileEntity({
+      id: result.id,
+      originalName: result.original_name,
+      fileName: result.file_name,
+      uri: result.uri,
+      width: result.width,
+      createdAt: result.created_at,
+      updatedAt: result.updated_at,
+      deletedAt: result.deleted_at,
+    });
+  }
+
+  static async fromFileName(
+    fileName: string,
+    context: Context,
+  ): Promise<FileEntity[]> {
+    const results = await context
+      .database("file")
+      .where("file_name", "like", `%${fileName}%`)
+      .whereNull("deleted_at");
+
+    return results.map(
+      (result) =>
+        new FileEntity({
+          id: result.id,
+          originalName: result.original_name,
+          fileName: result.file_name,
+          uri: result.uri,
+          width: result.width,
+          createdAt: result.created_at,
+          updatedAt: result.updated_at,
+          deletedAt: result.deleted_at,
+        }),
+    );
+  }
+
+  static async create(
+    args: FileCreateDTO,
+    context: Context,
+  ): Promise<FileEntity> {
+    const [result] = await context
+      .database("file")
+      .insert({
+        original_name: args.originalName,
+        file_name: args.fileName,
+        uri: args.uri,
+        width: args.width,
+      })
+      .returning("*");
+
+    return new FileEntity({
+      id: result.id,
+      originalName: result.original_name,
+      fileName: result.file_name,
+      uri: result.uri,
+      width: result.width,
+      createdAt: result.created_at,
+      updatedAt: result.updated_at,
+      deletedAt: result.deleted_at,
+    });
+  }
+
+  static async update(
+    id: string,
+    data: FileUpdateDTO,
+    context: Context,
+  ): Promise<boolean> {
+    const updated = await context
+      .database("file")
+      .where("id", id)
+      .whereNull("deleted_at")
+      .update({
+        original_name: data.originalName,
+        file_name: data.fileName,
+        uri: data.uri,
+        width: data.width,
+        updated_at: new Date().toISOString(),
+      });
+
+    return updated > 0;
+  }
+
+  static async delete(id: string, context: Context): Promise<boolean> {
+    const deleted = await context
+      .database("file")
+      .where("id", id)
+      .whereNull("deleted_at")
+      .update({ deleted_at: new Date().toISOString() });
+
+    return deleted > 0;
+  }
+}

@@ -11,6 +11,9 @@ export async function up(knex: Knex): Promise<void> {
     table.datetime("created_at").notNullable().defaultTo(knex.fn.now());
     table.datetime("updated_at").notNullable().defaultTo(knex.fn.now());
     table.datetime("deleted_at").nullable();
+
+    table.index(["original_name"]);
+    table.index(["file_name"]);
   });
 
   await knex.raw(utils.createOnUpdateTrigger("file"));

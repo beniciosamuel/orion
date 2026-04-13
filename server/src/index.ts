@@ -3,6 +3,7 @@ import { createServer } from "http";
 import cors from "cors";
 
 import { Secrets } from "./services/Secrets";
+import { AuthContextMiddleware } from "./middlewares/AuthContextMiddleware";
 
 class PrivateExpress {
   private App: express.Application | null = null;
@@ -33,6 +34,8 @@ class PrivateExpress {
         allowedHeaders: ["Content-Type", "Authorization"],
       }),
     );
+
+    this.App.use(AuthContextMiddleware.handler);
 
     const secretsService = new Secrets();
 
