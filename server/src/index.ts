@@ -4,6 +4,8 @@ import cors from "cors";
 import multer from "multer";
 
 import { Secrets } from "./services/Secrets";
+import { MessageBroker } from "./services/MessageBroker";
+
 import { AuthContextMiddleware } from "./middlewares/AuthContextMiddleware";
 import { UploadFileController } from "./controllers/uploadFiles";
 import { SearchMovieController } from "./controllers/searchMovie";
@@ -11,6 +13,7 @@ import { GetMovieByIdController } from "./controllers/getMovieById";
 import { ListMoviesController } from "./controllers/listMovies";
 import { SetMovieVoteController } from "./controllers/setMovieVote";
 import { UpdateUserThemeController } from "./controllers/updateUserTheme";
+import { NotifyReleasesQueue } from "./queues/notifyReleases";
 
 class PrivateExpress {
   private App: express.Application | null = null;
@@ -60,6 +63,8 @@ class PrivateExpress {
     this.App.post("/movies/getById", GetMovieByIdController.handler);
     this.App.post("/movies/setMovieVote", SetMovieVoteController.handler);
     this.App.post("/users/updateTheme", UpdateUserThemeController.handler);
+
+    MessageBroker.subscribe("notifyReleases", NotifyReleasesQueue.handler);
 
     const secretsService = new Secrets();
 

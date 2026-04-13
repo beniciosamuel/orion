@@ -24,6 +24,22 @@ interface MovieContributorResult {
 }
 
 export class MovieRepository {
+  static async listReleasedFromDay(
+    day: Date,
+    context: Context,
+  ): Promise<MovieEntity[]> {
+    const targetDate = day.toISOString().split("T")[0];
+
+    const results = await context
+      .database("movie")
+      .whereRaw("release_date::date = ?", [targetDate])
+      .whereNull("deleted_at")
+      .orderBy("release_date", "asc")
+      .orderBy("created_at", "asc");
+
+    return results.map((result) => MovieEntity.fromRecord(result));
+  }
+
   static async listContributorsByMovieId(
     movieId: string,
     context: Context,
@@ -93,11 +109,12 @@ export class MovieRepository {
       });
     }
 
-    const [{ count }] = await query
+    const countResult = await query
       .clone()
       .clearSelect()
       .clearOrder()
-      .count<{ count: string }>("id as count");
+      .count<{ count: string }>("id as count")
+      .first();
 
     const offset = (pagination.page - 1) * pagination.pageSize;
 
@@ -109,7 +126,7 @@ export class MovieRepository {
 
     return {
       data: results.map((result) => MovieEntity.fromRecord(result)),
-      total: Number(count),
+      total: Number(countResult?.count ?? 0),
     };
   }
 
@@ -119,11 +136,12 @@ export class MovieRepository {
   ): Promise<PaginatedMovieResult> {
     const baseQuery = context.database("movie").whereNull("deleted_at");
 
-    const [{ count }] = await baseQuery
+    const countResult = await baseQuery
       .clone()
       .clearSelect()
       .clearOrder()
-      .count<{ count: string }>("id as count");
+      .count<{ count: string }>("id as count")
+      .first();
 
     const offset = (pagination.page - 1) * pagination.pageSize;
 
@@ -135,7 +153,7 @@ export class MovieRepository {
 
     return {
       data: results.map((result) => MovieEntity.fromRecord(result)),
-      total: Number(count),
+      total: Number(countResult?.count ?? 0),
     };
   }
 

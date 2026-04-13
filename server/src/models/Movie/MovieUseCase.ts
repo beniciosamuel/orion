@@ -66,6 +66,13 @@ export class MovieUseCase {
     return MovieRepository.listContributorsByMovieId(movieId, context);
   }
 
+  static async listReleasedFromDay(
+    day: Date,
+    context: Context,
+  ): Promise<MovieEntity[]> {
+    return MovieRepository.listReleasedFromDay(day, context);
+  }
+
   static async fromIdWithRating(
     id: string,
     userId: string | null,
