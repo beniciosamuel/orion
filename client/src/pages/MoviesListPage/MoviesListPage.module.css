@@ -8,11 +8,18 @@
   box-sizing: border-box;
 }
 
+.toolbar,
 .searchRow,
 .actions {
   width: 1322px;
   max-width: 100%;
   margin: 0 auto;
+}
+
+.toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .searchRow {
@@ -23,7 +30,7 @@
 .actions {
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-end;
+  justify-content: flex-start;
   align-items: center;
   gap: 12px;
 }
@@ -90,6 +97,7 @@
     gap: 16px;
   }
 
+  .toolbar,
   .searchRow,
   .actions {
     width: 100%;
@@ -100,7 +108,45 @@
   }
 }
 
+@media (min-width: 601px) {
+  .toolbar {
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: nowrap;
+    gap: 12px;
+    width: 1322px;
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  .searchRow {
+    width: auto;
+    max-width: none;
+    margin: 0;
+  }
+
+  .searchRow {
+    flex: 0 0 auto;
+    justify-content: flex-end;
+  }
+
+  .actions {
+    flex: 0 0 auto;
+    flex-wrap: nowrap;
+    width: auto;
+    max-width: none;
+    margin: 0;
+  }
+
+  .search {
+    width: 488px;
+    max-width: 100%;
+  }
+}
+
 @media (max-width: 600px) {
+  .toolbar,
   .searchRow,
   .actions {
     width: min(488px, 100%);

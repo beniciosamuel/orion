@@ -43,36 +43,38 @@ export const MoviesListPage: React.FC = () => {
   return (
     <MainLayout>
       <section className={styles.page}>
-        <div className={styles.searchRow}>
-          <SearchBar
-            wrapperClassName={styles.search}
-            placeholder={t("auth.movieList.searchPlaceholder")}
-            value={searchTerm}
-            onChange={(event) => setSearchTerm(event.target.value)}
-          />
-        </div>
+        <div className={styles.toolbar}>
+          <div className={styles.searchRow}>
+            <SearchBar
+              wrapperClassName={styles.search}
+              placeholder={t("auth.movieList.searchPlaceholder")}
+              value={searchTerm}
+              onChange={(event) => setSearchTerm(event.target.value)}
+            />
+          </div>
 
-        <div className={styles.actions}>
-          <Button
-            variant="secondary"
-            size="compact"
-            className={styles.filterButton}
-            onClick={() => setIsFiltersModalOpen(true)}
-          >
-            <span className={styles.filterButtonContent}>
-              <FilterIcon />
-              Filtros
-            </span>
-          </Button>
-          {canAddMovie && (
+          <div className={styles.actions}>
             <Button
+              variant="secondary"
               size="compact"
-              className={styles.addMovieButton}
-              onClick={() => setIsAddSidebarOpen(true)}
+              className={styles.filterButton}
+              onClick={() => setIsFiltersModalOpen(true)}
             >
-              Adicionar Filme
+              <span className={styles.filterButtonContent}>
+                <FilterIcon />
+                Filtros
+              </span>
             </Button>
-          )}
+            {canAddMovie && (
+              <Button
+                size="compact"
+                className={styles.addMovieButton}
+                onClick={() => setIsAddSidebarOpen(true)}
+              >
+                Adicionar Filme
+              </Button>
+            )}
+          </div>
         </div>
 
         <div className={styles.listContainer}>

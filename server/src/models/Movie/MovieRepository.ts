@@ -17,6 +17,33 @@ interface PaginatedMovieResult {
   total: number;
 }
 
+type CachedMovieEntity = {
+  id: string;
+  resumeTitle: string;
+  title: string;
+  description: string;
+  userComment: string | null;
+  director: string;
+  duration: number;
+  genres: string;
+  language: string;
+  ageRating: string;
+  budget: string | null;
+  revenue: string | null;
+  profit: string | null;
+  productionCompany: string | null;
+  trailerUrl: string | null;
+  releaseDate: string;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string | null;
+};
+
+interface CachedPaginatedMovieResult {
+  data: CachedMovieEntity[];
+  total: number;
+}
+
 interface MovieContributorResult {
   userId: string;
   createdAt: Date;
@@ -24,6 +51,68 @@ interface MovieContributorResult {
 }
 
 export class MovieRepository {
+  private static readonly listCachePrefix = "movies:list";
+
+  private static getListCacheKey(pagination: PaginationInput): string {
+    return `${this.listCachePrefix}#page#${pagination.page}#pageSize#${pagination.pageSize}`;
+  }
+
+  private static getListCachePattern(): string {
+    return `${this.listCachePrefix}#page#*#pageSize#*`;
+  }
+
+  private static toCachedMovieEntity(movie: MovieEntity): CachedMovieEntity {
+    return {
+      id: movie.id,
+      resumeTitle: movie.resumeTitle,
+      title: movie.title,
+      description: movie.description,
+      userComment: movie.userComment,
+      director: movie.director,
+      duration: movie.duration,
+      genres: movie.genres,
+      language: movie.language,
+      ageRating: movie.ageRating,
+      budget: movie.budget,
+      revenue: movie.revenue,
+      profit: movie.profit,
+      productionCompany: movie.productionCompany,
+      trailerUrl: movie.trailerUrl,
+      releaseDate: movie.releaseDate.toISOString(),
+      createdAt: movie.createdAt.toISOString(),
+      updatedAt: movie.updatedAt.toISOString(),
+      deletedAt: movie.deletedAt ? movie.deletedAt.toISOString() : null,
+    };
+  }
+
+  private static fromCachedMovieEntity(movie: CachedMovieEntity): MovieEntity {
+    return new MovieEntity({
+      id: movie.id,
+      resumeTitle: movie.resumeTitle,
+      title: movie.title,
+      description: movie.description,
+      userComment: movie.userComment,
+      director: movie.director,
+      duration: movie.duration,
+      genres: movie.genres,
+      language: movie.language,
+      ageRating: movie.ageRating,
+      budget: movie.budget,
+      revenue: movie.revenue,
+      profit: movie.profit,
+      productionCompany: movie.productionCompany,
+      trailerUrl: movie.trailerUrl,
+      releaseDate: new Date(movie.releaseDate),
+      createdAt: new Date(movie.createdAt),
+      updatedAt: new Date(movie.updatedAt),
+      deletedAt: movie.deletedAt ? new Date(movie.deletedAt) : null,
+    });
+  }
+
+  private static async invalidateListCache(context: Context): Promise<void> {
+    await context.cache.delByPattern(this.getListCachePattern());
+  }
+
   static async listReleasedFromDay(
     day: Date,
     context: Context,
@@ -134,6 +223,23 @@ export class MovieRepository {
     pagination: PaginationInput,
     context: Context,
   ): Promise<PaginatedMovieResult> {
+    const cacheKey = this.getListCacheKey(pagination);
+    const cachedList = await context.cache.get(cacheKey);
+
+    console.log(`Cache key for movie list: ${cacheKey}`);
+    console.log(`Cached list found: ${cachedList}`);
+
+    if (cachedList) {
+      const cachedResult = JSON.parse(cachedList) as CachedPaginatedMovieResult;
+
+      return {
+        data: cachedResult.data.map((movie) =>
+          this.fromCachedMovieEntity(movie),
+        ),
+        total: cachedResult.total,
+      };
+    }
+
     const baseQuery = context.database("movie").whereNull("deleted_at");
 
     const countResult = await baseQuery
@@ -151,10 +257,20 @@ export class MovieRepository {
       .offset(offset)
       .limit(pagination.pageSize);
 
-    return {
+    const result = {
       data: results.map((result) => MovieEntity.fromRecord(result)),
       total: Number(countResult?.count ?? 0),
     };
+
+    await context.cache.set(
+      cacheKey,
+      JSON.stringify({
+        data: result.data.map((movie) => this.toCachedMovieEntity(movie)),
+        total: result.total,
+      }),
+    );
+
+    return result;
   }
 
   static async create(
@@ -195,6 +311,8 @@ export class MovieRepository {
       return createdMovie;
     });
 
+    await this.invalidateListCache(context);
+
     return MovieEntity.fromRecord(result);
   }
 
@@ -226,6 +344,10 @@ export class MovieRepository {
         updated_at: new Date().toISOString(),
       });
 
+    if (updated > 0) {
+      await this.invalidateListCache(context);
+    }
+
     return updated > 0;
   }
 
@@ -235,6 +357,10 @@ export class MovieRepository {
       .where("id", id)
       .whereNull("deleted_at")
       .update({ deleted_at: new Date().toISOString() });
+
+    if (deleted > 0) {
+      await this.invalidateListCache(context);
+    }
 
     return deleted > 0;
   }
