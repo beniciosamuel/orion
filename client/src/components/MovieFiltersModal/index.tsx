@@ -1,12 +1,13 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { Button } from "../Button";
-import { Input } from "../Input";
 import styles from "./MovieFiltersModal.module.css";
 
 type MovieFiltersModalProps = {
   isOpen: boolean;
   onClose: () => void;
+  selectedGenres: string[];
+  onApplyGenres: (genres: string[]) => void;
 };
 
 const genreOptions = [
@@ -21,8 +22,18 @@ const genreOptions = [
 export const MovieFiltersModal: React.FC<MovieFiltersModalProps> = ({
   isOpen,
   onClose,
+  selectedGenres,
+  onApplyGenres,
 }) => {
   const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const [draftSelectedGenres, setDraftSelectedGenres] =
+    useState<string[]>(selectedGenres);
+
+  useEffect(() => {
+    if (isOpen) {
+      setDraftSelectedGenres(selectedGenres);
+    }
+  }, [isOpen, selectedGenres]);
 
   useEffect(() => {
     if (!isOpen) {
@@ -59,7 +70,18 @@ export const MovieFiltersModal: React.FC<MovieFiltersModalProps> = ({
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    onApplyGenres(draftSelectedGenres);
     onClose();
+  };
+
+  const toggleGenre = (genre: string) => {
+    setDraftSelectedGenres((currentGenres) => {
+      if (currentGenres.includes(genre)) {
+        return currentGenres.filter((value) => value !== genre);
+      }
+
+      return [...currentGenres, genre];
+    });
   };
 
   return (
@@ -121,33 +143,18 @@ export const MovieFiltersModal: React.FC<MovieFiltersModalProps> = ({
               <div className={styles.genreGrid}>
                 {genreOptions.map((genre) => (
                   <label key={genre} className={styles.checkboxCard}>
-                    <input type="checkbox" name="genres" value={genre} />
+                    <input
+                      type="checkbox"
+                      name="genres"
+                      value={genre}
+                      checked={draftSelectedGenres.includes(genre)}
+                      onChange={() => toggleGenre(genre)}
+                    />
                     <span>{genre}</span>
                   </label>
                 ))}
               </div>
             </section>
-
-            <div className={styles.columns}>
-              <label className={styles.field}>
-                <span className={styles.fieldLabel}>Ano inicial</span>
-                <Input type="number" min="1900" placeholder="Ex.: 2020" />
-              </label>
-
-              <label className={styles.field}>
-                <span className={styles.fieldLabel}>Ano final</span>
-                <Input type="number" min="1900" placeholder="Ex.: 2026" />
-              </label>
-            </div>
-
-            <label className={styles.field}>
-              <span className={styles.fieldLabel}>Ordenar por</span>
-              <select className={styles.select} defaultValue="popularidade">
-                <option value="popularidade">Maior popularidade</option>
-                <option value="recentes">Mais recentes</option>
-                <option value="avaliacao">Maior avaliação</option>
-              </select>
-            </label>
           </div>
 
           <div className={styles.actions}>

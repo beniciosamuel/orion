@@ -1,72 +1,44 @@
-import { useEffect, useMemo, useState } from "react";
+import { useState } from "react";
 import { MainLayout } from "../../layouts/MainLayout";
 import { MovieList } from "../../components/MovieList";
 import { PaginationControl } from "../../components/MovieList/PaginationControl";
 import { SearchBar } from "../../components/SearchBar";
 import { useTranslation } from "react-i18next";
 import { Button } from "../../components/Button";
-import { movieListMock } from "../../components/MovieList/movieListMock";
 import { MovieFiltersModal } from "../../components/MovieFiltersModal";
 import { MovieAddSidebar } from "../../components/MovieAddSidebar";
 import { FilterIcon } from "../../components/Icons";
+import { useMoviesList } from "../../hooks/useMoviesList";
 import styles from "./MoviesListPage.module.css";
 
 export const MoviesListPage: React.FC = () => {
   const { t } = useTranslation();
-  const moviesPerPage = 10;
-  const [currentPage, setCurrentPage] = useState(1);
-  const [searchTerm, setSearchTerm] = useState("");
+  const userScope = localStorage.getItem("userScope");
+  const isViewerUser = userScope === "viewer";
+  const {
+    movies,
+    currentPage,
+    totalPages,
+    pageNumbers,
+    searchTerm,
+    selectedGenres,
+    isLoading,
+    error,
+    setCurrentPage,
+    setSearchTerm,
+    setSelectedGenres,
+    fetchMovies,
+  } = useMoviesList();
   const [isFiltersModalOpen, setIsFiltersModalOpen] = useState(false);
   const [isAddSidebarOpen, setIsAddSidebarOpen] = useState(false);
 
-  const normalizedSearchTerm = useMemo(
-    () =>
-      searchTerm
-        .trim()
-        .toLowerCase()
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, ""),
-    [searchTerm],
-  );
+  const handlePageChange: React.Dispatch<React.SetStateAction<number>> = (
+    value,
+  ) => {
+    const nextPage = typeof value === "function" ? value(currentPage) : value;
 
-  const filteredMovies = useMemo(() => {
-    if (!normalizedSearchTerm) {
-      return movieListMock;
-    }
-
-    return movieListMock.filter((movie) =>
-      movie.title
-        .toLowerCase()
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "")
-        .includes(normalizedSearchTerm),
-    );
-  }, [normalizedSearchTerm]);
-
-  const totalPages = useMemo(
-    () => Math.max(1, Math.ceil(filteredMovies.length / moviesPerPage)),
-    [filteredMovies.length, moviesPerPage],
-  );
-
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [searchTerm]);
-
-  useEffect(() => {
-    if (currentPage > totalPages) {
-      setCurrentPage(totalPages);
-    }
-  }, [currentPage, totalPages]);
-
-  const paginatedMovies = useMemo(() => {
-    const startIndex = (currentPage - 1) * moviesPerPage;
-    return filteredMovies.slice(startIndex, startIndex + moviesPerPage);
-  }, [currentPage, filteredMovies, moviesPerPage]);
-
-  const pageNumbers = useMemo(
-    () => Array.from({ length: totalPages }, (_, index) => index + 1),
-    [totalPages],
-  );
+    setCurrentPage(nextPage);
+  };
 
   return (
     <MainLayout>
@@ -93,27 +65,46 @@ export const MoviesListPage: React.FC = () => {
             size="compact"
             className={styles.addMovieButton}
             onClick={() => setIsAddSidebarOpen(true)}
+            disabled={isViewerUser}
+            title={
+              isViewerUser
+                ? "Somente usuarios editor ou admin podem adicionar filmes."
+                : undefined
+            }
           >
             Adicionar Filme
           </Button>
         </div>
 
+        {isViewerUser && (
+          <p className={styles.scopeHintMessage}>
+            Seu usuario possui perfil viewer e nao pode adicionar filmes.
+          </p>
+        )}
+
         <div className={styles.listContainer}>
-          <MovieList movies={paginatedMovies} />
+          {error && <p className={styles.errorMessage}>{error}</p>}
+          {isLoading && (
+            <p className={styles.loadingMessage}>Loading movies...</p>
+          )}
+          {!isLoading && !error && <MovieList movies={movies} />}
           <PaginationControl
             currentPage={currentPage}
             totalPages={totalPages}
             pageNumbers={pageNumbers}
-            onPageChange={setCurrentPage}
+            onPageChange={handlePageChange}
           />
         </div>
         <MovieFiltersModal
           isOpen={isFiltersModalOpen}
           onClose={() => setIsFiltersModalOpen(false)}
+          selectedGenres={selectedGenres}
+          onApplyGenres={setSelectedGenres}
         />
         <MovieAddSidebar
           isOpen={isAddSidebarOpen}
           onClose={() => setIsAddSidebarOpen(false)}
+          onMovieCreated={() => fetchMovies()}
         />
       </section>
     </MainLayout>

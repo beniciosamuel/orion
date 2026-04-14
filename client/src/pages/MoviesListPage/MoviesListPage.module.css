@@ -38,6 +38,15 @@
   gap: 8px;
 }
 
+.scopeHintMessage {
+  width: 1322px;
+  max-width: 100%;
+  margin: -8px 0 0;
+  color: #ffc8a8;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
 .listContainer {
   width: 1322px;
   max-width: 100%;
@@ -46,6 +55,20 @@
   align-items: center;
   gap: 24px;
   justify-content: center;
+}
+
+.loadingMessage,
+.errorMessage {
+  margin: 0;
+  font-size: 14px;
+}
+
+.loadingMessage {
+  color: var(--text-secondary);
+}
+
+.errorMessage {
+  color: #ff4444;
 }
 
 @media (max-width: 860px) {

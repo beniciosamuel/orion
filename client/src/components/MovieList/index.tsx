@@ -4,11 +4,11 @@ import styles from "./MovieList.module.css";
 import { movieListMock } from "./movieListMock";
 
 export type MovieListItem = {
-  id: number;
+  id: string | number;
   title: string;
   categories: string[];
   votePercentile: number;
-  posterUrl: string;
+  posterUrl?: string;
   url: string;
 };
 

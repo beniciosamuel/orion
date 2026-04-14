@@ -3,12 +3,17 @@ import { MovieCreateDTO, MovieUpdateDTO } from "./MovieDTO";
 import { MovieEntity } from "./MovieEntity";
 import { MovieRepository } from "./MovieRepository";
 import { MovieRatingRepository } from "../MovieRating/MovieRatingRepository";
+import { FileRepository } from "../File/FileRepository";
 
 type MovieWithRating = MovieEntity & {
   rating: number;
   movieRating: number;
   userRating: number | null;
   hasUserVoted: boolean;
+  images: {
+    posterUri: string | null;
+    backdropUri: string | null;
+  };
 };
 
 type MovieContributor = {
@@ -18,15 +23,22 @@ type MovieContributor = {
 };
 
 export class MovieUseCase {
-  private static async enrichWithRatings(
+  private static async enrichWithRatingsAndMedia(
     movies: MovieEntity[],
     userId: string | null,
     context: Context,
   ): Promise<MovieWithRating[]> {
+    const movieIds = movies.map((movie) => movie.id);
+
     const summaries = await Promise.all(
       movies.map((movie) =>
         MovieRatingRepository.getSummaryByMovieId(movie.id, userId, context),
       ),
+    );
+
+    const mediaByMovieId = await FileRepository.listMediaByMovieIds(
+      movieIds,
+      context,
     );
 
     return movies.map((movie, index) => {
@@ -38,6 +50,10 @@ export class MovieUseCase {
         movieRating: summary?.rating ?? 0,
         userRating: summary?.userRating ?? null,
         hasUserVoted: summary?.hasUserVoted ?? false,
+        images: mediaByMovieId[movie.id] ?? {
+          posterUri: null,
+          backdropUri: null,
+        },
       };
     });
   }
@@ -84,7 +100,7 @@ export class MovieUseCase {
       return null;
     }
 
-    const [enrichedMovie] = await this.enrichWithRatings(
+    const [enrichedMovie] = await this.enrichWithRatingsAndMedia(
       [movie],
       userId,
       context,
@@ -145,7 +161,7 @@ export class MovieUseCase {
     const result = await MovieRepository.list(pagination, context);
 
     return {
-      data: await this.enrichWithRatings(result.data, userId, context),
+      data: await this.enrichWithRatingsAndMedia(result.data, userId, context),
       total: result.total,
     };
   }
@@ -165,7 +181,7 @@ export class MovieUseCase {
     const result = await this.search(filters, context);
 
     return {
-      data: await this.enrichWithRatings(result.data, userId, context),
+      data: await this.enrichWithRatingsAndMedia(result.data, userId, context),
       total: result.total,
     };
   }

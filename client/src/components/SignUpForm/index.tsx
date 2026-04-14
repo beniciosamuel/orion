@@ -1,49 +1,26 @@
 import { useTranslation } from "react-i18next";
 
-import { useState } from "react";
+import { useCreateUser } from "../../hooks/useCreateUser";
 import { Button } from "../Button";
 import { Input } from "../Input";
 import styles from "./SignUpForm.module.css";
 
-const handleLogin = (e: React.FormEvent) => {
-  e.preventDefault();
-  console.log("Login form submitted");
-};
-
 export const SignUpForm: React.FC = () => {
   const { t } = useTranslation();
-  const [isSubmitting] = useState(false);
-
-  const [signUpForm, setSignUpForm] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    password: "",
-    confirmPassword: "",
-  });
-
-  const handleSignUpInputChange = (
-    field: keyof typeof signUpForm,
-    value: string,
-  ) => {
-    setSignUpForm((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
-  };
-
-  // Validation errors
-  const [signUpErrors] = useState<{
-    name?: string;
-    email?: string;
-    phone?: string;
-    password?: string;
-    confirmPassword?: string;
-  }>({});
+  const {
+    formData,
+    errors,
+    isSubmitting,
+    serverError,
+    handleInputChange,
+    handleSubmit,
+  } = useCreateUser();
 
   return (
     <div className={styles.formDock}>
-      <form onSubmit={handleLogin} className={styles.form}>
+      {serverError && <div className={styles.errorMessage}>{serverError}</div>}
+
+      <form onSubmit={handleSubmit} className={styles.form}>
         <div className={styles.formGroup}>
           <label htmlFor="sign-up-name" className={styles.label}>
             {t("auth.signup.name")}
@@ -51,14 +28,14 @@ export const SignUpForm: React.FC = () => {
           <Input
             id="sign-up-name"
             type="text"
-            hasError={Boolean(signUpErrors.name)}
-            value={signUpForm.name}
-            onChange={(e) => handleSignUpInputChange("name", e.target.value)}
+            hasError={Boolean(errors.name)}
+            value={formData.name}
+            onChange={(e) => handleInputChange("name", e.target.value)}
             placeholder={t("auth.signup.namePlaceholder")}
             disabled={isSubmitting}
           />
-          {signUpErrors.name && (
-            <span className={styles.errorText}>{signUpErrors.name}</span>
+          {errors.name && (
+            <span className={styles.errorText}>{errors.name}</span>
           )}
         </div>
 
@@ -69,14 +46,14 @@ export const SignUpForm: React.FC = () => {
           <Input
             id="sign-up-email"
             type="email"
-            hasError={Boolean(signUpErrors.email)}
-            value={signUpForm.email}
-            onChange={(e) => handleSignUpInputChange("email", e.target.value)}
+            hasError={Boolean(errors.email)}
+            value={formData.email}
+            onChange={(e) => handleInputChange("email", e.target.value)}
             placeholder={t("auth.signup.emailPlaceholder")}
             disabled={isSubmitting}
           />
-          {signUpErrors.email && (
-            <span className={styles.errorText}>{signUpErrors.email}</span>
+          {errors.email && (
+            <span className={styles.errorText}>{errors.email}</span>
           )}
         </div>
 
@@ -87,16 +64,14 @@ export const SignUpForm: React.FC = () => {
           <Input
             id="sign-up-password"
             type="password"
-            hasError={Boolean(signUpErrors.password)}
-            value={signUpForm.password}
-            onChange={(e) =>
-              handleSignUpInputChange("password", e.target.value)
-            }
+            hasError={Boolean(errors.password)}
+            value={formData.password}
+            onChange={(e) => handleInputChange("password", e.target.value)}
             placeholder={t("auth.signup.passwordPlaceholder")}
             disabled={isSubmitting}
           />
-          {signUpErrors.password && (
-            <span className={styles.errorText}>{signUpErrors.password}</span>
+          {errors.password && (
+            <span className={styles.errorText}>{errors.password}</span>
           )}
         </div>
 
@@ -107,18 +82,16 @@ export const SignUpForm: React.FC = () => {
           <Input
             id="sign-up-confirm-password"
             type="password"
-            hasError={Boolean(signUpErrors.confirmPassword)}
-            value={signUpForm.confirmPassword}
+            hasError={Boolean(errors.confirmPassword)}
+            value={formData.confirmPassword}
             onChange={(e) =>
-              handleSignUpInputChange("confirmPassword", e.target.value)
+              handleInputChange("confirmPassword", e.target.value)
             }
             placeholder={t("auth.signup.confirmPasswordPlaceholder")}
             disabled={isSubmitting}
           />
-          {signUpErrors.confirmPassword && (
-            <span className={styles.errorText}>
-              {signUpErrors.confirmPassword}
-            </span>
+          {errors.confirmPassword && (
+            <span className={styles.errorText}>{errors.confirmPassword}</span>
           )}
         </div>
 

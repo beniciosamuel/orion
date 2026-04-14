@@ -10,7 +10,7 @@ export type MovieCardProps = {
 };
 
 const DEFAULT_POSTER_URL =
-  "https://img.elo7.com.br/product/zoom/2692B33/big-poster-filme-bumblebee-lo01-tamanho-90x60-cm-presente-nerd.jpg?_gl=1*124bd3z*_gcl_au*OTE4NzkxMzY2LjE3NzU5NTk2OTM.*_ga*MTU2NDQ5NjAwMC4xNzc1OTU5Njk1*_ga_22YVRK2WCW*czE3NzU5NTk2OTQkbzEkZzAkdDE3NzU5NTk2OTQkajYwJGwwJGg2ODM0NTE5MzA.";
+  "https://storage.cloud.google.com/orion-cubos-movies-bucket/fallback-image.webp";
 
 export const MovieCard: React.FC<MovieCardProps> = ({
   title = "Bumblebee",

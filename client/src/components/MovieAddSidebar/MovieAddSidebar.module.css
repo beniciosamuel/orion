@@ -77,6 +77,16 @@
   min-height: 0;
 }
 
+.errorMessage {
+  padding: 12px 16px;
+  border: 1px solid rgba(255, 126, 103, 0.35);
+  border-radius: 4px;
+  background: rgba(255, 126, 103, 0.12);
+  color: #ffd2c8;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
 .fieldsLimit {
   width: 537px;
   max-width: 100%;
@@ -106,10 +116,91 @@
   font-weight: 600;
 }
 
+.textarea {
+  width: 100%;
+  min-height: 46px;
+  padding: 12px 16px;
+  border: 1px solid var(--input-border-inactive);
+  border-radius: 4px;
+  background: var(--input-bg);
+  color: var(--input-text);
+  font: inherit;
+  box-sizing: border-box;
+  resize: vertical;
+}
+
+.textarea:focus {
+  outline: none;
+  border-color: var(--input-border-active);
+  box-shadow: 0 0 0 3px var(--accent-focus-ring, rgba(142, 78, 198, 0.22));
+}
+
 .columns {
   display: grid;
   gap: 16px;
   grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.dropzoneGrid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.dropzone {
+  display: grid;
+  gap: 8px;
+  width: 100%;
+  text-align: left;
+  padding: 14px;
+  border: 1px dashed rgba(255, 255, 255, 0.28);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.04);
+  color: #f5f4f7;
+  cursor: pointer;
+  transition:
+    border-color 160ms ease,
+    background-color 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.dropzone:hover {
+  border-color: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.dropzoneActive {
+  border-color: #f3e08f;
+  background: rgba(243, 224, 143, 0.14);
+  box-shadow: 0 0 0 2px rgba(243, 224, 143, 0.3);
+}
+
+.dropzoneFilled {
+  border-style: solid;
+  border-color: rgba(85, 215, 168, 0.65);
+  background: rgba(85, 215, 168, 0.12);
+}
+
+.dropzoneTitle {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.dropzoneSubtitle {
+  font-size: 12px;
+  color: rgba(245, 244, 247, 0.76);
+}
+
+.dropzoneFileName {
+  font-size: 12px;
+  color: #d8d4dd;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.hiddenFileInput {
+  display: none;
 }
 
 .actions {
@@ -135,6 +226,10 @@
   }
 
   .columns {
+    grid-template-columns: 1fr;
+  }
+
+  .dropzoneGrid {
     grid-template-columns: 1fr;
   }
 
