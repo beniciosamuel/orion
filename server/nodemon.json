@@ -2,7 +2,7 @@
   "watch": ["src", "tsconfig.json"],
   "ext": "ts,json",
   "ignore": ["node_modules", "dist", "**/*.test.ts", "**/__tests__/**"],
-  "exec": "npm run build && node dist/index.js",
+  "exec": "npm run build && node dist/src/index.js",
   "quiet": true,
   "legacyWatch": true
 }

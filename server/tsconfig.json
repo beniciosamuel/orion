@@ -7,8 +7,7 @@
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "types": ["node", "jest"],
-    "noEmit": true
+    "types": ["node", "jest"]
   },
   "include": ["src/**/*", "tests/**/*", "database/**/*"]
 }

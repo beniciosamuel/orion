@@ -149,6 +149,62 @@ resolve_node_env() {
     fi
 }
 
+setup_local_pubsub_resources() {
+    local setup_enabled="${SETUP_LOCAL_PUBSUB:-true}"
+
+    if [ "${setup_enabled}" != "true" ]; then
+        print_warning "Skipping local Pub/Sub setup (SETUP_LOCAL_PUBSUB=${setup_enabled})"
+        return
+    fi
+
+    export PUBSUB_EMULATOR_HOST="${PUBSUB_EMULATOR_HOST:-127.0.0.1:8085}"
+    export PUBSUB_PROJECT_ID="${PUBSUB_PROJECT_ID:-orion-local}"
+
+    print_success "Configuring local Pub/Sub resources on ${PUBSUB_EMULATOR_HOST} (project: ${PUBSUB_PROJECT_ID})"
+
+    if ! node <<'NODE'
+        const { PubSub } = require("@google-cloud/pubsub");
+
+        const topicName = "notifyReleases";
+        const subscriptionName = "notifyReleases";
+
+        async function ensureLocalPubSubResources() {
+            const pubsub = new PubSub({
+                projectId: process.env.PUBSUB_PROJECT_ID,
+            });
+
+            const topic = pubsub.topic(topicName);
+            const [topicExists] = await topic.exists();
+
+            if (!topicExists) {
+                await pubsub.createTopic(topicName);
+                console.log(`Created Pub/Sub topic '${topicName}'`);
+            } else {
+                console.log(`Pub/Sub topic '${topicName}' already exists`);
+            }
+
+            const subscription = pubsub.subscription(subscriptionName);
+            const [subscriptionExists] = await subscription.exists();
+
+            if (!subscriptionExists) {
+                await topic.createSubscription(subscriptionName);
+                console.log(`Created Pub/Sub subscription '${subscriptionName}'`);
+            } else {
+                console.log(`Pub/Sub subscription '${subscriptionName}' already exists`);
+            }
+        }
+
+        ensureLocalPubSubResources().catch((error) => {
+            console.error("Failed to configure local Pub/Sub resources:", error.message);
+            process.exit(1);
+        });
+NODE
+    then
+        print_error "Local Pub/Sub setup failed. Ensure the Pub/Sub emulator is running and reachable at ${PUBSUB_EMULATOR_HOST}."
+        exit 1
+    fi
+}
+
 main() {
     SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
     SERVER_ROOT="$(dirname "$SCRIPT_DIR")"
@@ -169,6 +225,10 @@ main() {
     
     retrieve_secret
 
+    if [ "${NODE_ENV_RESOLVED}" = "development" ]; then
+        setup_local_pubsub_resources
+    fi
+
     echo ""
     echo "=========================================="
     print_success "Google Cloud setup complete"
@@ -185,7 +245,7 @@ main() {
     echo ""
 
     if [ "${NODE_ENV_RESOLVED}" = "production" ]; then
-        exec node ./dist/index.js
+        exec node ./dist/src/index.js
     else
         npx nodemon ./src/index.ts
     fi

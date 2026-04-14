@@ -52,11 +52,11 @@ export class UserRepository {
     const passwordHash = await context.password.encrypt(args.password);
 
     const result = await context.database.transaction(async (trx) => {
-      const [createdUser] = await trx("users")
+      const [createdUser] = await trx("user")
         .insert({
           full_name: args.fullName,
           email: args.email,
-          password_hash: passwordHash,
+          password: passwordHash,
         })
         .returning("*");
 

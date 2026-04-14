@@ -4,6 +4,10 @@ import { Context } from "../services/Context";
 import { UserEntity } from "../models/User/UserEntity";
 
 export class AuthContextMiddleware {
+  private static isPublicRoute(req: Request): boolean {
+    return req.method === "POST" && req.path === "/createUser";
+  }
+
   private static extractAuthToken(
     authorizationHeader: string | undefined,
   ): string | null {
@@ -70,10 +74,17 @@ export class AuthContextMiddleware {
   ): Promise<void> => {
     try {
       const context = await Context.initialize();
+
+      if (this.isPublicRoute(req)) {
+        req.context = context;
+        next();
+        return;
+      }
+
       const authToken = this.extractAuthToken(req.get("authorization"));
 
       if (authToken) {
-        context.model.user = await this.getUserFromAuthToken(
+        context.models.user = await this.getUserFromAuthToken(
           authToken,
           context,
         );

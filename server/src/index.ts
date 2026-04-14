@@ -14,6 +14,7 @@ import { ListMoviesController } from "./controllers/listMovies";
 import { SetMovieVoteController } from "./controllers/setMovieVote";
 import { UpdateUserThemeController } from "./controllers/updateUserTheme";
 import { NotifyReleasesQueue } from "./queues/notifyReleases";
+import { CreateUserController } from "./controllers/createUser";
 
 class PrivateExpress {
   private App: express.Application | null = null;
@@ -58,6 +59,7 @@ class PrivateExpress {
       UploadFileController.handler,
     );
 
+    this.App.post("/createUser", CreateUserController.handler);
     this.App.post("/movies/search", SearchMovieController.handler);
     this.App.post("/movies/list", ListMoviesController.handler);
     this.App.post("/movies/getById", GetMovieByIdController.handler);

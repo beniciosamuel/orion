@@ -41,22 +41,22 @@ export class UploadFileController {
       await FileUseCase.create(
         {
           ...dataRequestParsed.poster,
+          movieId: dataRequestParsed.movieId,
           uri: posterUri || "",
           isPoster: true,
           isCover: false,
         },
-        dataRequestParsed.movieId,
         context,
       );
 
       await FileUseCase.create(
         {
           ...dataRequestParsed.backdrop,
+          movieId: dataRequestParsed.movieId,
           uri: backdropUri || "",
           isPoster: false,
           isCover: true,
         },
-        dataRequestParsed.movieId,
         context,
       );
 

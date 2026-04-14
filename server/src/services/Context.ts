@@ -6,6 +6,7 @@ import { MessageBroker } from "./MessageBroker";
 import { DatabaseService } from "./Database";
 import { Password } from "./Password";
 import { StorageService } from "./Storage";
+import { UserEntity } from "../models/User/UserEntity";
 
 export class Context {
   public secrets: Secrets;
@@ -14,6 +15,9 @@ export class Context {
   public database: Knex;
   public password: Password;
   public storage: StorageService;
+  public models: {
+    user: UserEntity | null;
+  };
 
   constructor(args: {
     secrets: Secrets;
@@ -29,6 +33,9 @@ export class Context {
     this.database = args.database;
     this.password = args.password;
     this.storage = args.storage;
+    this.models = {
+      user: null,
+    };
   }
 
   static async initialize(): Promise<Context> {
