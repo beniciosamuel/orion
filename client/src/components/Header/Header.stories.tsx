@@ -24,7 +24,7 @@ export const Default: Story = {
       }}
       data-testid="header-wrapper"
     >
-      <Header />
+      <Header onSignOut={() => undefined} />
     </div>
   ),
   play: async ({ canvasElement }) => {

@@ -26,4 +26,10 @@ export class UserService {
       payload,
     );
   }
+  static async updateUserTheme(theme: "light" | "dark") {
+    return apiService.post<{
+      status: number;
+      data: { userId: string; theme: string };
+    }>("/updateUserTheme", { theme });
+  }
 }

@@ -1,5 +1,6 @@
 import { create } from "zustand";
 
+import { ThemePreferenceService } from "../services/ThemePreference";
 import { UserService } from "../services/UserService";
 
 export type SignUpField =
@@ -112,6 +113,12 @@ export const useCreateUserStore = create<CreateUserStoreState>((set, get) => ({
         isSubmitting: false,
         createdUserToken: response.token,
       });
+
+      try {
+        await ThemePreferenceService.syncStoredThemeToServer();
+      } catch (syncError) {
+        console.error("Failed to sync theme after user creation:", syncError);
+      }
 
       return true;
     } catch (error) {

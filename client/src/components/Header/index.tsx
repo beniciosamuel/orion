@@ -23,14 +23,16 @@ export const Header: React.FC<HeaderProps> = ({ onSignOut }) => {
 
       <div className={styles.actions}>
         <ThemeSwitcher className={styles.headerIcon} />
-        <Button
-          type="button"
-          variant="secondary"
-          size="compact"
-          onClick={onSignOut}
-        >
-          Sign Out
-        </Button>
+        {onSignOut ? (
+          <Button
+            type="button"
+            variant="secondary"
+            size="compact"
+            onClick={onSignOut}
+          >
+            Sign Out
+          </Button>
+        ) : null}
       </div>
     </header>
   );

@@ -1,6 +1,7 @@
 import { create } from "zustand";
 
 import { AuthService } from "../services/AuthService";
+import { ThemePreferenceService } from "../services/ThemePreference";
 
 export type LoginField = "email" | "password";
 
@@ -90,6 +91,12 @@ export const useLoginStore = create<LoginStoreState>((set, get) => ({
       set({
         isSubmitting: false,
       });
+
+      try {
+        await ThemePreferenceService.syncStoredThemeToServer();
+      } catch (syncError) {
+        console.error("Failed to sync theme after login:", syncError);
+      }
 
       return true;
     } catch (error) {
