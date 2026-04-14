@@ -17,8 +17,10 @@ import { UpdateMovieController } from "./controllers/updateMovie";
 import { DeleteMovieController } from "./controllers/deleteMovie";
 import { NotifyReleasesQueue } from "./queues/notifyReleases";
 import { CreateUserController } from "./controllers/createUser";
+import { CreateUserCodeController } from "./controllers/createUserCode";
 import { CreateMovieController } from "./controllers/createMovie";
 import { AuthenticateController } from "./controllers/authenticate";
+import { SendUserCodeQueue } from "./queues/sendUserCode";
 
 class PrivateExpress {
   private App: express.Application | null = null;
@@ -56,6 +58,7 @@ class PrivateExpress {
 
     this.App.post("/authenticate", AuthenticateController.handler);
     this.App.post("/createUser", CreateUserController.handler);
+    this.App.post("/createUserCode", CreateUserCodeController.handler);
     this.App.post("/createMovie", CreateMovieController.handler);
     this.App.post(
       "/uploadFiles",
@@ -74,6 +77,7 @@ class PrivateExpress {
     this.App.post("/updateUserTheme", UpdateUserThemeController.handler);
 
     MessageBroker.subscribe("notifyReleases", NotifyReleasesQueue.handler);
+    MessageBroker.subscribe("createUserCode", SendUserCodeQueue.handler);
 
     const secretsService = new Secrets();
 

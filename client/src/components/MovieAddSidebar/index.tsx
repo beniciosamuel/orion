@@ -235,14 +235,14 @@ export const MovieAddSidebar: React.FC<MovieAddSidebarProps> = ({
             >
               <path
                 d="M18 6L6 18"
-                stroke="white"
+                stroke="currentColor"
                 strokeWidth="2"
                 strokeLinecap="square"
                 strokeLinejoin="round"
               />
               <path
                 d="M6 6L18 18"
-                stroke="white"
+                stroke="currentColor"
                 strokeWidth="2"
                 strokeLinecap="square"
                 strokeLinejoin="round"

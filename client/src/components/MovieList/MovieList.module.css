@@ -20,6 +20,12 @@
   grid-template-rows: 1fr auto;
 }
 
+:global(body.theme-light) .listSection {
+  background: rgba(255, 255, 255, 0.84);
+  border: 1px solid rgba(26, 21, 35, 0.08);
+  box-shadow: 0 18px 48px rgba(26, 21, 35, 0.08);
+}
+
 .listGrid {
   display: grid;
   grid-template-columns: repeat(5, 235px);
@@ -27,6 +33,16 @@
   min-width: 1271px;
   overflow: auto;
   align-content: start;
+}
+
+:global(body.theme-light) .listGrid {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+:global(body.theme-light) .listGrid::-webkit-scrollbar {
+  width: 0;
+  height: 0;
 }
 
 .movieLink {
@@ -38,6 +54,10 @@
   outline: 2px solid #ffffff;
   outline-offset: 2px;
   border-radius: 4px;
+}
+
+:global(body.theme-light) .movieLink:focus-visible {
+  outline-color: #1a1523;
 }
 
 .movieCard {
@@ -123,5 +143,16 @@
 
   .movieCard {
     width: 100%;
+  }
+
+  .pagination {
+    width: 100%;
+  }
+
+  .paginationButton {
+    flex: 1 1 0;
+    min-width: 0;
+    width: 100%;
+    padding: 0 8px;
   }
 }

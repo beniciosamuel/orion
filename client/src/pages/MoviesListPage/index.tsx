@@ -43,13 +43,16 @@ export const MoviesListPage: React.FC = () => {
   return (
     <MainLayout>
       <section className={styles.page}>
-        <div className={styles.actions}>
+        <div className={styles.searchRow}>
           <SearchBar
             wrapperClassName={styles.search}
             placeholder={t("auth.movieList.searchPlaceholder")}
             value={searchTerm}
             onChange={(event) => setSearchTerm(event.target.value)}
           />
+        </div>
+
+        <div className={styles.actions}>
           <Button
             variant="secondary"
             size="compact"

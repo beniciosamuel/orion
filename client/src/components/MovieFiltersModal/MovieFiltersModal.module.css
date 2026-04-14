@@ -33,6 +33,17 @@
   padding: 16px;
 }
 
+:global(body.theme-light) .modal {
+  border-color: rgba(26, 21, 35, 0.08);
+  background: linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 0.98) 0%,
+    rgba(247, 244, 250, 0.98) 100%
+  );
+  box-shadow: 0 24px 80px rgba(26, 21, 35, 0.18);
+  color: #1a1523;
+}
+
 .header {
   display: flex;
   align-items: flex-start;
@@ -44,6 +55,10 @@
   margin: 0;
   font-size: 28px;
   line-height: 1.1;
+}
+
+:global(body.theme-light) .title {
+  color: #1a1523;
 }
 
 .closeButton {
@@ -66,6 +81,10 @@
     transform 160ms ease-in-out;
 }
 
+:global(body.theme-light) .closeButton {
+  color: #1a1523;
+}
+
 .closeButton:hover {
   background: transparent;
   transform: translateY(-1px);
@@ -75,6 +94,10 @@
   margin: 12px 0 0;
   color: #c8c0cf;
   line-height: 1.5;
+}
+
+:global(body.theme-light) .description {
+  color: #5e5568;
 }
 
 .form {
@@ -98,6 +121,11 @@
   overflow: visible;
 }
 
+:global(body.theme-light) .fieldsLimit {
+  border-color: rgba(26, 21, 35, 0.08);
+  background: rgba(255, 255, 255, 0.76);
+}
+
 .section {
   display: grid;
   gap: 12px;
@@ -106,6 +134,10 @@
 .sectionTitle {
   margin: 0;
   font-size: 16px;
+}
+
+:global(body.theme-light) .sectionTitle {
+  color: #1f172b;
 }
 
 .genreGrid {
@@ -123,6 +155,12 @@
   border-radius: 12px;
   background: rgba(255, 255, 255, 0.03);
   cursor: pointer;
+}
+
+:global(body.theme-light) .checkboxCard {
+  border-color: rgba(26, 21, 35, 0.08);
+  background: rgba(26, 21, 35, 0.03);
+  color: #1a1523;
 }
 
 .checkboxCard input {

@@ -4,6 +4,7 @@ import React from "react";
 import styles from "./ThemeSwitcher.module.css";
 import { SunIcon, MoonIcon } from "../Icons";
 import { ThemePreferenceService } from "../../services/ThemePreference";
+import { useTheme } from "../../contexts/ThemeContext";
 
 type ThemeSwitcherProps = ButtonHTMLAttributes<HTMLButtonElement>;
 
@@ -11,19 +12,11 @@ export const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
   className,
   ...buttonProps
 }) => {
-  const [theme, setTheme] = React.useState<"light" | "dark">(() =>
-    ThemePreferenceService.getStoredTheme(),
-  );
-
-  React.useEffect(() => {
-    document.body.classList.toggle("theme-light", theme === "light");
-    ThemePreferenceService.setStoredTheme(theme);
-  }, [theme]);
+  const { theme, setTheme } = useTheme();
 
   const toggleTheme = async () => {
     const newTheme = theme === "light" ? "dark" : "light";
     setTheme(newTheme);
-    ThemePreferenceService.setStoredTheme(newTheme);
 
     try {
       await ThemePreferenceService.syncStoredThemeToServer();
@@ -32,7 +25,6 @@ export const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
       // Revert theme on error
       const revertedTheme = newTheme === "light" ? "dark" : "light";
       setTheme(revertedTheme);
-      ThemePreferenceService.setStoredTheme(revertedTheme);
     }
   };
 

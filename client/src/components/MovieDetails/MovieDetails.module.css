@@ -16,6 +16,16 @@
   box-sizing: border-box;
 }
 
+:global(body.theme-light) .wrapper {
+  background: linear-gradient(
+    90deg,
+    #fdfcff 0%,
+    rgba(253, 252, 255, 0.84) 50%,
+    rgba(253, 252, 255, 0) 100%
+  );
+  border: 1px solid rgba(26, 21, 35, 0.08);
+}
+
 .wrapper::before {
   content: "";
   position: absolute;
@@ -47,6 +57,17 @@
   z-index: 0;
 }
 
+:global(body.theme-light) .wrapper::after {
+  background:
+    linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.96) 0%,
+      rgba(255, 255, 255, 0.9) 40%,
+      rgba(255, 255, 255, 0.6) 100%
+    ),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.2), rgba(245, 242, 250, 0.4));
+}
+
 .wrapper > * {
   position: relative;
   z-index: 1;
@@ -72,10 +93,18 @@
   text-transform: uppercase;
 }
 
+:global(body.theme-light) .title {
+  color: #1a1523;
+}
+
 .originalTitle {
   margin: 0;
   color: #d4d7dd;
   font-size: 0.95rem;
+}
+
+:global(body.theme-light) .originalTitle {
+  color: #5e5568;
 }
 
 .actions {
@@ -133,6 +162,11 @@
   padding: 14px;
 }
 
+:global(body.theme-light) .overviewBox {
+  border-color: rgba(26, 21, 35, 0.08);
+  background: rgba(255, 255, 255, 0.82);
+}
+
 .sectionTitle {
   margin: 0 0 6px;
   font-size: 0.875rem;
@@ -142,10 +176,18 @@
   letter-spacing: 0.04em;
 }
 
+:global(body.theme-light) .sectionTitle {
+  color: #1f172b;
+}
+
 .sectionContent {
   margin: 0;
   color: #d5d9e1;
   line-height: 1.45;
+}
+
+:global(body.theme-light) .sectionContent {
+  color: #4f465c;
 }
 
 .tags {
@@ -160,6 +202,11 @@
   padding: 14px;
 }
 
+:global(body.theme-light) .tags {
+  border-color: rgba(26, 21, 35, 0.08);
+  background: rgba(255, 255, 255, 0.82);
+}
+
 .tag {
   border-radius: 999px;
   border: 1px solid rgba(255, 255, 255, 0.15);
@@ -170,6 +217,12 @@
   letter-spacing: 0.02em;
   text-transform: uppercase;
   padding: 6px 10px;
+}
+
+:global(body.theme-light) .tag {
+  border-color: rgba(26, 21, 35, 0.12);
+  background: rgba(26, 21, 35, 0.04);
+  color: #1f172b;
 }
 
 .infoGrid {
@@ -203,6 +256,11 @@
   -webkit-backdrop-filter: blur(4px);
 }
 
+:global(body.theme-light) .infoCard {
+  border-color: rgba(26, 21, 35, 0.08);
+  background: rgba(255, 255, 255, 0.82);
+}
+
 .infoLabel {
   margin: 0;
   font-size: 0.7rem;
@@ -211,11 +269,19 @@
   color: #acb4c2;
 }
 
+:global(body.theme-light) .infoLabel {
+  color: #6a6175;
+}
+
 .infoValue {
   margin: 6px 0 0;
   color: #ffffff;
   font-size: 0.96rem;
   font-weight: 600;
+}
+
+:global(body.theme-light) .infoValue {
+  color: #1a1523;
 }
 
 .voteCircle {

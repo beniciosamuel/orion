@@ -94,4 +94,19 @@ export class UserUseCase {
       args.text,
     );
   }
+
+  static async createUserCode(
+    userId: string,
+    context: Context,
+  ): Promise<string> {
+    return UserRepository.createUserCode(userId, context);
+  }
+
+  static async verifyUserCode(
+    userId: string,
+    code: string,
+    context: Context,
+  ): Promise<boolean> {
+    return UserRepository.verifyUserCode(userId, code, context);
+  }
 }

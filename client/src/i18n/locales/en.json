@@ -12,6 +12,23 @@
       "submit": "Log in",
       "submitting": "Logging in..."
     },
+    "forgotPassword": {
+      "kicker": "Access recovery",
+      "title": "Send access code",
+      "subtitle": "Enter the email on your account to receive a recovery code.",
+      "email": "Email",
+      "emailPlaceholder": "Enter your email",
+      "helperText": "We use the code to confirm your identity before resetting the password.",
+      "backToLogin": "Back to login",
+      "submit": "Send code",
+      "submitting": "Sending...",
+      "success": "We sent a code to the provided email address.",
+      "errors": {
+        "emailRequired": "Email is required.",
+        "emailInvalid": "Email is invalid.",
+        "requestFailed": "We could not send the code. Please try again."
+      }
+    },
     "signup": {
       "title": "Create account",
       "name": "Name",

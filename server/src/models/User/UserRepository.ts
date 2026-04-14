@@ -131,4 +131,36 @@ export class UserRepository {
 
     return updated > 0;
   }
+
+  static async createUserCode(
+    userId: string,
+    context: Context,
+  ): Promise<string> {
+    const code = Math.random().toString(36).substring(2, 8).toUpperCase();
+
+    await context.database("user_code").insert({
+      user_id: userId,
+      code,
+    });
+
+    return code;
+  }
+
+  static async verifyUserCode(
+    userId: string,
+    code: string,
+    context: Context,
+  ): Promise<boolean> {
+    const record = await context
+      .database("user_code")
+      .where({ user_id: userId, code })
+      .first();
+
+    if (!record) {
+      return false;
+    }
+
+    await context.database("user_code").where({ id: record.id }).delete();
+    return true;
+  }
 }

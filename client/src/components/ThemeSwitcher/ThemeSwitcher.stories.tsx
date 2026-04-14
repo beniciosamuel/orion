@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-webpack5";
 import { expect, userEvent } from "storybook/test";
 
 import { ThemeSwitcher } from ".";
+import { ThemeProvider } from "../../contexts/ThemeContext";
 
 const meta: Meta<typeof ThemeSwitcher> = {
   title: "Components/ThemeSwitcher",
@@ -9,6 +10,13 @@ const meta: Meta<typeof ThemeSwitcher> = {
   parameters: {
     layout: "centered",
   },
+  decorators: [
+    (Story) => (
+      <ThemeProvider>
+        <Story />
+      </ThemeProvider>
+    ),
+  ],
 };
 
 export default meta;
@@ -36,7 +44,7 @@ export const Default: Story = {
     await expect(switcherButton).toBeInTheDocument();
     await expect(switcherButton).toHaveAttribute(
       "aria-label",
-      "Switch to light theme",
+      "Switch to dark theme",
     );
     await expect(switcherButton).toHaveAttribute("aria-pressed", "true");
 
@@ -46,7 +54,7 @@ export const Default: Story = {
 
     await expect(switcherButton).toHaveAttribute(
       "aria-label",
-      "Switch to dark theme",
+      "Switch to light theme",
     );
     await expect(switcherButton).toHaveAttribute("aria-pressed", "false");
   },

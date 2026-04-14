@@ -1,5 +1,4 @@
 import { Context } from "../../services/Context";
-import { MessageBroker } from "../../services/MessageBroker";
 import { MovieUseCase } from "../../models/Movie/MovieUseCase";
 import { UserUseCase } from "../../models/User/UserUseCase";
 
@@ -36,12 +35,15 @@ export class NotifyReleasesQueue {
     );
   }
 
-  static async handler(subscriptionName = "notifyReleases"): Promise<void> {
+  static async handler(data: { releaseId: string }): Promise<void> {
     try {
-      MessageBroker.subscribe(subscriptionName, this.process);
-      console.info(`NotifyReleasesQueue subscribed to ${subscriptionName}.`);
+      await this.process(data);
+      console.log(`Notification sent for release ${data.releaseId}`);
     } catch (error) {
-      console.error("Error in NotifyReleasesQueue:", error);
+      console.error(
+        `Failed to send notification for release ${data.releaseId}:`,
+        error,
+      );
     }
   }
 }

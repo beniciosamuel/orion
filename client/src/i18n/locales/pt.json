@@ -12,6 +12,23 @@
       "submit": "Entrar",
       "submitting": "Entrando..."
     },
+    "forgotPassword": {
+      "kicker": "Recuperação de acesso",
+      "title": "Enviar código de acesso",
+      "subtitle": "Informe o e-mail cadastrado para receber um código de recuperação.",
+      "email": "E-mail",
+      "emailPlaceholder": "Digite seu e-mail",
+      "helperText": "Usamos o código para validar sua identidade antes de redefinir a senha.",
+      "backToLogin": "Voltar ao login",
+      "submit": "Enviar código",
+      "submitting": "Enviando...",
+      "success": "Enviamos um código para o e-mail informado.",
+      "errors": {
+        "emailRequired": "E-mail é obrigatório.",
+        "emailInvalid": "E-mail inválido.",
+        "requestFailed": "Não foi possível enviar o código. Tente novamente."
+      }
+    },
     "signup": {
       "title": "Criar conta",
       "name": "Nome",

@@ -1,4 +1,5 @@
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 
 import { useLogin } from "../../hooks/useLogin";
 import { Button } from "../Button";
@@ -7,6 +8,7 @@ import styles from "./LoginForm.module.css";
 
 export const LoginForm: React.FC = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const {
     formData,
     errors,
@@ -57,10 +59,19 @@ export const LoginForm: React.FC = () => {
           )}
         </div>
 
-        <div className={styles.formActionsRow}>
-          <Button type="button" variant="link" size="full">
+        <div className={styles.forgotPasswordRow}>
+          <Button
+            type="button"
+            variant="link"
+            size="compact"
+            className={styles.forgotPasswordButton}
+            onClick={() => navigate("/forgot-password")}
+          >
             {t("auth.login.forgotPassword")}
           </Button>
+        </div>
+
+        <div className={styles.formActionsRow}>
           <Button
             type="submit"
             variant="primary"

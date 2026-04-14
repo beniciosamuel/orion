@@ -8,15 +8,24 @@
   box-sizing: border-box;
 }
 
+.searchRow,
 .actions {
   width: 1322px;
   max-width: 100%;
+  margin: 0 auto;
+}
+
+.searchRow {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.actions {
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-end;
   align-items: center;
   gap: 12px;
-  margin: 0 auto;
 }
 
 .search {
@@ -30,6 +39,10 @@
 
 .filterButton {
   width: auto;
+}
+
+:global(body.theme-light) .filterButton {
+  color: #ffffff;
 }
 
 .filterButtonContent {
@@ -77,7 +90,41 @@
     gap: 16px;
   }
 
+  .searchRow,
+  .actions {
+    width: 100%;
+  }
+
   .actions {
     justify-content: flex-end;
+  }
+}
+
+@media (max-width: 600px) {
+  .searchRow,
+  .actions {
+    width: min(488px, 100%);
+  }
+
+  .searchRow {
+    justify-content: flex-start;
+  }
+
+  .actions {
+    flex-direction: row;
+    align-items: stretch;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+  }
+
+  .search {
+    width: min(488px, 100%);
+  }
+
+  .addMovieButton,
+  .filterButton {
+    flex: 1 1 0;
+    width: auto;
+    min-width: 0;
   }
 }
