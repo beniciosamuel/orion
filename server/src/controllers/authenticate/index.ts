@@ -27,19 +27,27 @@ export class AuthenticateController {
         await AuthTokenUseCase.create(user.id, context);
       }
 
-      return res.status(200).json({ user, authToken: authToken[0]?.token });
+      return res
+        .status(200)
+        .json({
+          id: user.id,
+          scope: user.scope,
+          authToken: authToken[0]?.token,
+        });
     } catch (error) {
+      const cause = error instanceof Error ? error.message : "Unknown error";
+
       if (error instanceof Error && error.message.includes("not found")) {
-        return res.status(404).json({ error: error.message });
+        return res.status(404).json({ error: error.message, cause });
       }
       if (
         error instanceof Error &&
         error.message.includes("Invalid password")
       ) {
-        return res.status(401).json({ error: error.message });
+        return res.status(401).json({ error: error.message, cause });
       }
 
-      return res.status(500).json({ error: "Internal Server Error" });
+      return res.status(500).json({ error: "Internal Server Error", cause });
     }
   }
 }

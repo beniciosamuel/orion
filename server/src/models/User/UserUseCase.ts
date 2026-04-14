@@ -19,8 +19,8 @@ export class UserUseCase {
     }
 
     const isPasswordValid = await context.password.verify(
-      args.password,
       user.password,
+      args.password,
     );
 
     if (!isPasswordValid) {

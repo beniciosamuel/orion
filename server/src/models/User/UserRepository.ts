@@ -12,7 +12,7 @@ export class UserRepository {
     id: string,
     context: Context,
   ): Promise<UserEntity | null> {
-    const result = await context.database("users").where({ id }).first();
+    const result = await context.database("user").where({ id }).first();
 
     if (!result) {
       return null;
@@ -25,7 +25,7 @@ export class UserRepository {
     email: string,
     context: Context,
   ): Promise<UserEntity | null> {
-    const result = await context.database("users").where({ email }).first();
+    const result = await context.database("user").where({ email }).first();
 
     if (!result) {
       return null;
@@ -39,7 +39,7 @@ export class UserRepository {
     context: Context,
   ): Promise<UserEntity[]> {
     const results = await context
-      .database("users")
+      .database("user")
       .where("full_name", "like", `%${fullName}%`);
 
     return results.map((result) => UserEntity.fromRecord(result));
@@ -77,7 +77,7 @@ export class UserRepository {
     context: Context,
   ): Promise<boolean> {
     const updated = await context
-      .database("users")
+      .database("user")
       .where("id", id)
       .whereNull("deleted_at")
       .update({
@@ -93,7 +93,7 @@ export class UserRepository {
 
   static async delete(id: string, context: Context): Promise<boolean> {
     const result = await context
-      .database("users")
+      .database("user")
       .where("id", id)
       .whereNull("deleted_at")
       .update({ deleted_at: new Date().toISOString() });

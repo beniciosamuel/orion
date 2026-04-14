@@ -15,6 +15,8 @@ import { SetMovieVoteController } from "./controllers/setMovieVote";
 import { UpdateUserThemeController } from "./controllers/updateUserTheme";
 import { NotifyReleasesQueue } from "./queues/notifyReleases";
 import { CreateUserController } from "./controllers/createUser";
+import { CreateMovieController } from "./controllers/createMovie";
+import { AuthenticateController } from "./controllers/authenticate";
 
 class PrivateExpress {
   private App: express.Application | null = null;
@@ -50,21 +52,22 @@ class PrivateExpress {
 
     const upload = multer({ storage: multer.memoryStorage() });
 
-    this.App.get(
-      "uploadFiles",
+    this.App.post("/authenticate", AuthenticateController.handler);
+    this.App.post("/createUser", CreateUserController.handler);
+    this.App.post("/createMovie", CreateMovieController.handler);
+    this.App.post(
+      "/uploadFiles",
       upload.fields([
         { name: "poster", maxCount: 1 },
         { name: "backdrop", maxCount: 1 },
       ]),
       UploadFileController.handler,
     );
-
-    this.App.post("/createUser", CreateUserController.handler);
-    this.App.post("/movies/search", SearchMovieController.handler);
-    this.App.post("/movies/list", ListMoviesController.handler);
-    this.App.post("/movies/getById", GetMovieByIdController.handler);
+    this.App.get("/movies/search", SearchMovieController.handler);
+    this.App.get("/movies/list", ListMoviesController.handler);
+    this.App.get("/movies/getById", GetMovieByIdController.handler);
     this.App.post("/movies/setMovieVote", SetMovieVoteController.handler);
-    this.App.post("/users/updateTheme", UpdateUserThemeController.handler);
+    this.App.post("/updateUserTheme", UpdateUserThemeController.handler);
 
     MessageBroker.subscribe("notifyReleases", NotifyReleasesQueue.handler);
 

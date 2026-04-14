@@ -13,13 +13,13 @@ export class UpdateUserThemeController {
 
       const authenticatedUser = (
         context as Context & {
-          model?: {
+          models?: {
             user?: {
               id: string;
             };
           };
         }
-      ).model?.user;
+      ).models?.user;
 
       if (!authenticatedUser) {
         return res.status(401).json({ error: "Unauthorized" });
@@ -45,18 +45,22 @@ export class UpdateUserThemeController {
         },
       });
     } catch (error) {
+      const cause = error instanceof Error ? error.message : "Unknown error";
+
       if (error instanceof Error && error.name === "ZodError") {
-        return res.status(400).json({ error: "Invalid request payload" });
+        return res
+          .status(400)
+          .json({ error: "Invalid request payload", cause });
       }
 
       if (
         error instanceof Error &&
         error.message.includes("User settings not found")
       ) {
-        return res.status(404).json({ error: error.message });
+        return res.status(404).json({ error: error.message, cause });
       }
 
-      return res.status(500).json({ error: "Internal Server Error" });
+      return res.status(500).json({ error: "Internal Server Error", cause });
     }
   }
 }

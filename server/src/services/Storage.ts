@@ -31,13 +31,19 @@ export class StorageService {
       contentType: file.mimetype,
     });
 
-    blobStream.on("error", (err) => {
-      console.error("Error uploading file to GCS:", err);
-      throw err;
+    await new Promise<void>((resolve, reject) => {
+      blobStream.on("error", (err) => {
+        console.error("Error uploading file to GCS:", err);
+        reject(err);
+      });
+
+      blobStream.on("finish", () => {
+        resolve();
+      });
+
+      blobStream.end(file.buffer);
     });
 
-    blobStream.end(file.buffer);
-
-    return `${bucketName}/${fileName}`;
+    return `https://storage.googleapis.com/${bucketName}/${fileName}`;
   }
 }

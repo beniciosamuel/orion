@@ -9,7 +9,10 @@ export class UploadFileController {
     try {
       const context = req.context ?? (await Context.initialize());
 
+      console.log("Received file upload request with body:", req.body);
+
       const dataRequestParsed = UploadFileRequestSchema.parse(req.body);
+
       const files = req.files as {
         [fieldname: string]: {
           mimetype: string;
@@ -62,8 +65,10 @@ export class UploadFileController {
 
       res.status(201).json({ message: "File uploaded successfully" });
     } catch (error) {
+      const cause = error instanceof Error ? error.message : "Unknown error";
+
       console.error("Error handling file upload:", error);
-      res.status(500).json({ error: "Failed to upload file" });
+      return res.status(500).json({ error: "Failed to upload file", cause });
     }
   }
 }

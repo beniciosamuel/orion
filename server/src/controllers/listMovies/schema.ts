@@ -2,8 +2,8 @@ import * as z from "zod";
 
 export const ListMoviesRequestSchema = z.object({
   pagination: z.object({
-    page: z.number().int().min(1),
-    pageSize: z.number().int().min(1),
+    page: z.coerce.number().int().min(1),
+    pageSize: z.coerce.number().int().min(1),
   }),
 });
 

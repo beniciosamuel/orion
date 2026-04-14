@@ -14,13 +14,13 @@ export class SetMovieVoteController {
 
       const authenticatedUser = (
         context as Context & {
-          model?: {
+          models?: {
             user?: {
               id: string;
             };
           };
         }
-      ).model?.user;
+      ).models?.user;
 
       if (!authenticatedUser) {
         return res.status(401).json({ error: "Unauthorized" });
@@ -60,11 +60,15 @@ export class SetMovieVoteController {
         },
       });
     } catch (error) {
+      const cause = error instanceof Error ? error.message : "Unknown error";
+
       if (error instanceof Error && error.name === "ZodError") {
-        return res.status(400).json({ error: "Invalid request payload" });
+        return res
+          .status(400)
+          .json({ error: "Invalid request payload", cause });
       }
 
-      return res.status(500).json({ error: "Internal Server Error" });
+      return res.status(500).json({ error: "Internal Server Error", cause });
     }
   }
 }

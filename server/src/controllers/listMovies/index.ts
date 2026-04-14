@@ -7,7 +7,25 @@ import { ListMoviesRequestSchema } from "./schema";
 export class ListMoviesController {
   static async handler(req: Request, res: Response): Promise<Response> {
     try {
-      const { pagination } = ListMoviesRequestSchema.parse(req.body);
+      const queryPagination =
+        req.query.pagination && typeof req.query.pagination === "object"
+          ? (req.query.pagination as Record<string, unknown>)
+          : {};
+
+      const { pagination } = ListMoviesRequestSchema.parse({
+        pagination: {
+          page:
+            req.query.page ??
+            queryPagination.page ??
+            req.body?.pagination?.page ??
+            req.body?.page,
+          pageSize:
+            req.query.pageSize ??
+            queryPagination.pageSize ??
+            req.body?.pagination?.pageSize ??
+            req.body?.pageSize,
+        },
+      });
 
       const context = req.context ?? (await Context.initialize());
 
@@ -39,11 +57,15 @@ export class ListMoviesController {
         },
       });
     } catch (error) {
+      const cause = error instanceof Error ? error.message : "Unknown error";
+
       if (error instanceof Error && error.name === "ZodError") {
-        return res.status(400).json({ error: "Invalid request payload" });
+        return res
+          .status(400)
+          .json({ error: "Invalid request payload", cause });
       }
 
-      return res.status(500).json({ error: "Internal Server Error" });
+      return res.status(500).json({ error: "Internal Server Error", cause });
     }
   }
 }

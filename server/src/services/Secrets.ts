@@ -87,7 +87,10 @@ export class Secrets {
       throw new Error("GCS_BUCKET_NAME secret is required");
     });
 
-    return `https://storage.googleapis.com/${bucketName}`;
+    return bucketName
+      .replace("https://storage.googleapis.com/", "")
+      .replace("gs://", "")
+      .trim();
   }
 
   async getResendApiKey(): Promise<string> {

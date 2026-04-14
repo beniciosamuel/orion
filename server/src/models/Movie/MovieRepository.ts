@@ -162,6 +162,7 @@ export class MovieRepository {
     context: Context,
   ): Promise<MovieEntity> {
     const result = await context.database.transaction(async (trx) => {
+      console.log("Creating movie with title:", args.title);
       const [createdMovie] = await trx("movie")
         .insert({
           resume_title: args.resumeTitle,
@@ -182,10 +183,14 @@ export class MovieRepository {
         })
         .returning("*");
 
+      console.log("Movie created with ID:", createdMovie.id);
+
       await trx("movie_contributors").insert({
         movie_id: createdMovie.id,
         user_id: args.userId,
       });
+
+      console.log("Movie contributor record created for user ID:", args.userId);
 
       return createdMovie;
     });

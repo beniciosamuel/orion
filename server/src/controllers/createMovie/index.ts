@@ -12,14 +12,14 @@ export class CreateMovieController {
 
       const authenticatedUser = (
         context as Context & {
-          model?: {
+          models?: {
             user?: {
               id: string;
               scope: "viewer" | "editor" | "admin";
             };
           };
         }
-      ).model?.user;
+      ).models?.user;
 
       if (!authenticatedUser) {
         return res.status(401).json({ error: "Unauthorized" });
@@ -43,10 +43,16 @@ export class CreateMovieController {
 
       res.status(201).json({ movie });
     } catch (error) {
+      const cause = error instanceof Error ? error.message : "Unknown error";
+
       if (error instanceof Error && error.message.includes("already exists")) {
-        return res.status(409).json({ error: error.message });
+        return res.status(409).json({ error: error.message, cause });
       }
-      res.status(500).json({ error: "Internal server error" });
+
+      return res.status(500).json({
+        error: "Internal server error",
+        cause,
+      });
     }
   }
 }
