@@ -29,6 +29,29 @@
         "requestFailed": "We could not send the code. Please try again."
       }
     },
+    "resetPassword": {
+      "kicker": "Reset password",
+      "title": "Create a new password",
+      "subtitle": "Enter the code sent to your email and choose a new password.",
+      "code": "Code",
+      "codePlaceholder": "Enter the code you received",
+      "newPassword": "New password",
+      "newPasswordPlaceholder": "Enter your new password",
+      "confirmPassword": "Confirm new password",
+      "confirmPasswordPlaceholder": "Repeat your new password",
+      "helperText": "The password must be between 8 and 20 characters.",
+      "back": "Back",
+      "submit": "Update password",
+      "submitting": "Updating...",
+      "success": "Password updated successfully.",
+      "errors": {
+        "missingUserId": "We could not identify the user. Go back and request a new code.",
+        "codeRequired": "Code is required.",
+        "passwordLength": "The new password must be between 8 and 20 characters.",
+        "passwordMismatch": "Passwords do not match.",
+        "requestFailed": "We could not update the password. Please try again."
+      }
+    },
     "signup": {
       "title": "Create account",
       "name": "Name",

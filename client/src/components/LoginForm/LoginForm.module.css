@@ -192,18 +192,17 @@
   margin-top: -4px;
 }
 
-.forgotPasswordRow {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: -8px;
-}
-
 .formActionsRow {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
   margin-top: 4px;
+  flex-wrap: nowrap;
+}
+
+.forgotPasswordButton {
+  flex-shrink: 0;
 }
 
 /* Responsive */

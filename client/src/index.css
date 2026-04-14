@@ -1,5 +1,11 @@
 /* Global color tokens: single source of truth for action states. */
 :root {
+  --bg: #0f1115;
+  --panel: #171b22;
+  --panel-alt: #10141b;
+  --text-primary: #f7f8fa;
+  --text-secondary: #9aa3b2;
+
   --color-primary-default: #8e4ec6;
   --color-primary-hover: #9a5cd0;
   --color-primary-active: #8457aa;
@@ -33,6 +39,12 @@
 }
 
 body.theme-light {
+  --bg: #f7f8fa;
+  --panel: #ffffff;
+  --panel-alt: #eef0f4;
+  --text-primary: #1a191b;
+  --text-secondary: #6f6d78;
+
   --input-bg: #ffffff;
   --input-text: #1a191b;
   --input-placeholder: #6f6d78;
@@ -42,6 +54,8 @@ body.theme-light {
 
 body {
   margin: 0;
+  background: var(--bg);
+  color: var(--text-primary);
   font-family:
     "Roboto",
     "Segoe UI",

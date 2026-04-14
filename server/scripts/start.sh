@@ -165,32 +165,33 @@ setup_local_pubsub_resources() {
     if ! node <<'NODE'
         const { PubSub } = require("@google-cloud/pubsub");
 
-        const topicName = "notifyReleases";
-        const subscriptionName = "notifyReleases";
+        const topics = ["notifyReleases", "createUserCode"];
 
         async function ensureLocalPubSubResources() {
             const pubsub = new PubSub({
                 projectId: process.env.PUBSUB_PROJECT_ID,
             });
 
-            const topic = pubsub.topic(topicName);
-            const [topicExists] = await topic.exists();
+            for (const topicName of topics) {
+                const topic = pubsub.topic(topicName);
+                const [topicExists] = await topic.exists();
 
-            if (!topicExists) {
-                await pubsub.createTopic(topicName);
-                console.log(`Created Pub/Sub topic '${topicName}'`);
-            } else {
-                console.log(`Pub/Sub topic '${topicName}' already exists`);
-            }
+                if (!topicExists) {
+                    await pubsub.createTopic(topicName);
+                    console.log(`Created Pub/Sub topic '${topicName}'`);
+                } else {
+                    console.log(`Pub/Sub topic '${topicName}' already exists`);
+                }
 
-            const subscription = pubsub.subscription(subscriptionName);
-            const [subscriptionExists] = await subscription.exists();
+                const subscription = pubsub.subscription(topicName);
+                const [subscriptionExists] = await subscription.exists();
 
-            if (!subscriptionExists) {
-                await topic.createSubscription(subscriptionName);
-                console.log(`Created Pub/Sub subscription '${subscriptionName}'`);
-            } else {
-                console.log(`Pub/Sub subscription '${subscriptionName}' already exists`);
+                if (!subscriptionExists) {
+                    await topic.createSubscription(topicName);
+                    console.log(`Created Pub/Sub subscription '${topicName}'`);
+                } else {
+                    console.log(`Pub/Sub subscription '${topicName}' already exists`);
+                }
             }
         }
 

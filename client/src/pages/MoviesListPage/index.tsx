@@ -14,7 +14,7 @@ import styles from "./MoviesListPage.module.css";
 export const MoviesListPage: React.FC = () => {
   const { t } = useTranslation();
   const userScope = localStorage.getItem("userScope");
-  const isViewerUser = userScope === "viewer";
+  const canAddMovie = userScope === "editor" || userScope === "admin";
   const {
     movies,
     currentPage,
@@ -64,26 +64,16 @@ export const MoviesListPage: React.FC = () => {
               Filtros
             </span>
           </Button>
-          <Button
-            size="compact"
-            className={styles.addMovieButton}
-            onClick={() => setIsAddSidebarOpen(true)}
-            disabled={isViewerUser}
-            title={
-              isViewerUser
-                ? "Somente usuarios editor ou admin podem adicionar filmes."
-                : undefined
-            }
-          >
-            Adicionar Filme
-          </Button>
+          {canAddMovie && (
+            <Button
+              size="compact"
+              className={styles.addMovieButton}
+              onClick={() => setIsAddSidebarOpen(true)}
+            >
+              Adicionar Filme
+            </Button>
+          )}
         </div>
-
-        {isViewerUser && (
-          <p className={styles.scopeHintMessage}>
-            Seu usuario possui perfil viewer e nao pode adicionar filmes.
-          </p>
-        )}
 
         <div className={styles.listContainer}>
           {error && <p className={styles.errorMessage}>{error}</p>}
@@ -104,11 +94,13 @@ export const MoviesListPage: React.FC = () => {
           selectedGenres={selectedGenres}
           onApplyGenres={setSelectedGenres}
         />
-        <MovieAddSidebar
-          isOpen={isAddSidebarOpen}
-          onClose={() => setIsAddSidebarOpen(false)}
-          onMovieCreated={() => fetchMovies()}
-        />
+        {canAddMovie && (
+          <MovieAddSidebar
+            isOpen={isAddSidebarOpen}
+            onClose={() => setIsAddSidebarOpen(false)}
+            onMovieCreated={() => fetchMovies()}
+          />
+        )}
       </section>
     </MainLayout>
   );

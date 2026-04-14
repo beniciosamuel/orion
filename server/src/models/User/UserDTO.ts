@@ -28,7 +28,6 @@ export interface UserCreateDTO {
 }
 
 export interface UserUpdateDTO {
-  id: string;
   fullName?: string;
   email?: string;
   password?: string;

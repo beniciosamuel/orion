@@ -37,8 +37,11 @@ export const ForgotPasswordForm: React.FC = () => {
     setSuccessMessage(null);
 
     try {
-      await AuthService.createUserCode({ email: normalizedEmail });
+      const response = await AuthService.createUserCode({
+        email: normalizedEmail,
+      });
       setSuccessMessage(t("auth.forgotPassword.success"));
+      navigate(`/reset-password?userId=${encodeURIComponent(response.userId)}`);
     } catch (error) {
       setErrorMessage(
         error instanceof Error

@@ -59,7 +59,7 @@ export const LoginForm: React.FC = () => {
           )}
         </div>
 
-        <div className={styles.forgotPasswordRow}>
+        <div className={styles.formActionsRow}>
           <Button
             type="button"
             variant="link"
@@ -69,9 +69,6 @@ export const LoginForm: React.FC = () => {
           >
             {t("auth.login.forgotPassword")}
           </Button>
-        </div>
-
-        <div className={styles.formActionsRow}>
           <Button
             type="submit"
             variant="primary"

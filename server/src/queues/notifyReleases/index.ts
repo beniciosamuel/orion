@@ -37,7 +37,7 @@ export class NotifyReleasesQueue {
 
   static async handler(data: { releaseId: string }): Promise<void> {
     try {
-      await this.process(data);
+      await NotifyReleasesQueue.process(data);
       console.log(`Notification sent for release ${data.releaseId}`);
     } catch (error) {
       console.error(

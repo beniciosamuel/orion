@@ -24,7 +24,7 @@ export class SendUserCodeQueue {
     const { userId, code } = data;
 
     try {
-      await this.send(userId, code);
+      await SendUserCodeQueue.send(userId, code);
       console.log(`Verification code sent to user ${userId}`);
     } catch (error) {
       console.error(

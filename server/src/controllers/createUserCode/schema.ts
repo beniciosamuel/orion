@@ -3,7 +3,7 @@ import * as z from "zod";
 export const createUserCodeSchema = z
   .object({
     userId: z.uuid().optional(),
-    email: z.string().email().optional(),
+    email: z.email().optional(),
   })
   .refine((data) => Boolean(data.userId || data.email), {
     message: "User ID or email is required",

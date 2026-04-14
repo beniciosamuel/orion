@@ -7,7 +7,10 @@ export class AuthContextMiddleware {
   private static isPublicRoute(req: Request): boolean {
     return (
       req.method === "POST" &&
-      (req.path === "/createUser" || req.path === "/authenticate")
+      (req.path === "/createUser" ||
+        req.path === "/authenticate" ||
+        req.path === "/createUserCode" ||
+        req.path === "/updateUserPassword")
     );
   }
 

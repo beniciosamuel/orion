@@ -21,6 +21,7 @@ import { CreateUserCodeController } from "./controllers/createUserCode";
 import { CreateMovieController } from "./controllers/createMovie";
 import { AuthenticateController } from "./controllers/authenticate";
 import { SendUserCodeQueue } from "./queues/sendUserCode";
+import { UpdateUserPasswordController } from "./controllers/updateUserPassword";
 
 class PrivateExpress {
   private App: express.Application | null = null;
@@ -59,6 +60,7 @@ class PrivateExpress {
     this.App.post("/authenticate", AuthenticateController.handler);
     this.App.post("/createUser", CreateUserController.handler);
     this.App.post("/createUserCode", CreateUserCodeController.handler);
+    this.App.post("/updateUserPassword", UpdateUserPasswordController.handler);
     this.App.post("/createMovie", CreateMovieController.handler);
     this.App.post(
       "/uploadFiles",

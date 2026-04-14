@@ -12,6 +12,18 @@ export interface CreateUserCodePayload {
 
 export interface CreateUserCodeResponse {
   message: string;
+  userId: string;
+}
+
+export interface UpdateUserPasswordPayload {
+  userId: string;
+  code: string;
+  newPassword: string;
+}
+
+export interface UpdateUserPasswordResponse {
+  message: string;
+  result: boolean;
 }
 
 export interface AuthenticateResponse {
@@ -35,5 +47,12 @@ export class AuthService {
       "/createUserCode",
       payload,
     );
+  }
+
+  static async updateUserPassword(payload: UpdateUserPasswordPayload) {
+    return apiService.post<
+      UpdateUserPasswordResponse,
+      UpdateUserPasswordPayload
+    >("/updateUserPassword", payload);
   }
 }

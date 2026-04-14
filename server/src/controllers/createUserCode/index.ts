@@ -36,7 +36,10 @@ export class CreateUserCodeController {
         code,
       });
 
-      return res.status(201).json({ message: "Verification code sent" });
+      return res.status(201).json({
+        message: "Verification code sent",
+        userId: targetUserId,
+      });
     } catch (error) {
       console.error("Error creating user code:", error);
       return res.status(500).json({ error: "Internal server error" });
