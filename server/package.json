@@ -22,10 +22,12 @@
   "author": "beniciosamuel",
   "license": "ISC",
   "devDependencies": {
-    "@eslint/js": "^10.0.1",
+    "@eslint/js": "^9.39.1",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
     "@types/jest": "^30.0.0",
+    "@types/multer": "^2.1.0",
+    "@types/uuid": "^10.0.0",
     "eslint": "^9.39.4",
     "eslint-plugin-import": "^2.32.0",
     "globals": "^17.4.0",
@@ -46,6 +48,7 @@
     "multer": "^2.1.1",
     "pg": "^8.20.0",
     "redis": "^5.11.0",
-    "resend": "^6.11.0"
+    "resend": "^6.11.0",
+    "zod": "^4.3.6"
   }
 }

@@ -10,7 +10,8 @@ export class AuthContextMiddleware {
       (req.path === "/createUser" ||
         req.path === "/authenticate" ||
         req.path === "/createUserCode" ||
-        req.path === "/updateUserPassword")
+        req.path === "/updateUserPassword" ||
+        req.path === "/cronjobs/getReleasedMovies")
     );
   }
 

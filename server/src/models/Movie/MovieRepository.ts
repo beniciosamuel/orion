@@ -1,4 +1,5 @@
 import { Context } from "../../services/Context";
+import { Cache } from "../../services/Cache";
 import { MovieCreateDTO, MovieUpdateDTO } from "./MovieDTO";
 import { MovieEntity } from "./MovieEntity";
 
@@ -109,8 +110,8 @@ export class MovieRepository {
     });
   }
 
-  private static async invalidateListCache(context: Context): Promise<void> {
-    await context.cache.delByPattern(this.getListCachePattern());
+  private static async invalidateListCache(): Promise<void> {
+    await Cache.delByPattern(this.getListCachePattern());
   }
 
   static async listReleasedFromDay(
@@ -311,7 +312,7 @@ export class MovieRepository {
       return createdMovie;
     });
 
-    await this.invalidateListCache(context);
+    await this.invalidateListCache();
 
     return MovieEntity.fromRecord(result);
   }
@@ -345,7 +346,7 @@ export class MovieRepository {
       });
 
     if (updated > 0) {
-      await this.invalidateListCache(context);
+      await this.invalidateListCache();
     }
 
     return updated > 0;
@@ -359,7 +360,7 @@ export class MovieRepository {
       .update({ deleted_at: new Date().toISOString() });
 
     if (deleted > 0) {
-      await this.invalidateListCache(context);
+      await this.invalidateListCache();
     }
 
     return deleted > 0;

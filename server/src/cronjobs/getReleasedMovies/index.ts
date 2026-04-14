@@ -12,6 +12,12 @@ export class GetReleasedMoviesCronJob {
         context,
       );
 
+      console.log(`Found ${releasedMovies.length} movie(s) released today.`);
+      if (!releasedMovies.length) {
+        console.info("No movies released today.");
+        return;
+      }
+
       if (!releasedMovies.length) {
         console.info("No movies released today.");
         return;

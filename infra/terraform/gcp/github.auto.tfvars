@@ -1,11 +1,6 @@
-project_id                      = "my-gcp-project"
-region                          = "us-central1"
-scheduler_service_account_email = "scheduler-invoker@my-gcp-project.iam.gserviceaccount.com"
-cloud_run_base_url              = "https://orion-worker-abc-uc.a.run.app"
-
 pubsub_topics = [
   "orion-movie-events",
-  "orion-notifications"
+  "orion-notifications",
 ]
 
 cloud_run_cron_jobs = {

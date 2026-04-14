@@ -22,6 +22,7 @@ import { CreateMovieController } from "./controllers/createMovie";
 import { AuthenticateController } from "./controllers/authenticate";
 import { SendUserCodeQueue } from "./queues/sendUserCode";
 import { UpdateUserPasswordController } from "./controllers/updateUserPassword";
+import { GetReleasedMoviesCronJob } from "./cronjobs/getReleasedMovies";
 
 class PrivateExpress {
   private App: express.Application | null = null;
@@ -77,13 +78,25 @@ class PrivateExpress {
     this.App.post("/movies/deleteMovie", DeleteMovieController.handler);
     this.App.post("/movies/setMovieVote", SetMovieVoteController.handler);
     this.App.post("/updateUserTheme", UpdateUserThemeController.handler);
+    this.App.post("/cronjobs/getReleasedMovies", async (_req, res, next) => {
+      try {
+        await GetReleasedMoviesCronJob.execute();
+        res.status(202).json({ message: "Cron job executed" });
+      } catch (error) {
+        next(error);
+      }
+    });
 
     MessageBroker.subscribe("notifyReleases", NotifyReleasesQueue.handler);
     MessageBroker.subscribe("createUserCode", SendUserCodeQueue.handler);
 
     const secretsService = new Secrets();
 
-    const serverPort = await secretsService.getServerPort();
+    const envPort = Number(process.env.PORT);
+    const serverPort =
+      Number.isFinite(envPort) && envPort > 0
+        ? envPort
+        : await secretsService.getServerPort();
 
     this.Server.listen(serverPort, () => {
       console.info(`Server is running on port ${serverPort}`);
