@@ -93,8 +93,9 @@
   border-radius: 4px;
   color: #ff4444;
   font-size: 14px;
-  margin-bottom: 24px;
+  margin-bottom: 12px;
   text-align: center;
+  word-break: break-word;
 }
 
 .successMessage {
@@ -112,6 +113,7 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
+  flex: 1;
 }
 
 .formDock {
@@ -120,7 +122,10 @@
   border-radius: 4px;
   padding: 16px;
   width: min(412px, 100%);
-  height: 408px;
+  min-height: 408px;
+  height: auto;
+  display: flex;
+  flex-direction: column;
   box-sizing: border-box;
 }
 

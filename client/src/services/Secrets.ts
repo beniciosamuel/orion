@@ -50,7 +50,9 @@ export class Secrets {
       const SERVER_HOST = await this.getString("SERVER_HOST");
       const SERVER_PORT = await this.getString("SERVER_PORT");
 
-      return `http://${SERVER_HOST}:${SERVER_PORT}`;
+      return this.env === "production"
+        ? SERVER_HOST
+        : `http://${SERVER_HOST}:${SERVER_PORT}`;
     } catch {
       return "http://127.0.0.1:5000";
     }
