@@ -46,6 +46,12 @@ const mapGenreToServerGenre = (genre: string): string => {
   return genreMap[normalizedGenre] ?? genre;
 };
 
+const ratingToPercentile = (rating: number | null | undefined): number => {
+  const safeRating = rating ?? 0;
+
+  return Math.round((Math.min(5, Math.max(0, safeRating)) / 5) * 100);
+};
+
 export const useMoviesListStore = create<MoviesListStoreState>((set, get) => ({
   movies: [],
   currentPage: 1,
@@ -101,7 +107,7 @@ export const useMoviesListStore = create<MoviesListStoreState>((set, get) => ({
         id: movie.id,
         title: movie.title,
         categories: normalizeGenres(movie.genres),
-        votePercentile: movie.movieRating ?? movie.rating ?? 0,
+        votePercentile: ratingToPercentile(movie.movieRating ?? movie.rating),
         posterUrl: movie.images?.posterUri ?? undefined,
         url: "",
       }));

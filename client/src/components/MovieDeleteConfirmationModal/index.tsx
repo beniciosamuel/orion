@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { useState } from "react";
 
 import { Button } from "../Button";
 import styles from "./MovieDeleteConfirmationModal.module.css";
@@ -6,13 +7,16 @@ import styles from "./MovieDeleteConfirmationModal.module.css";
 type MovieDeleteConfirmationModalProps = {
   isOpen: boolean;
   onClose: () => void;
-  onConfirm: () => void;
+  onConfirm: () => void | Promise<void>;
   movieTitle?: string;
 };
 
 export const MovieDeleteConfirmationModal: React.FC<
   MovieDeleteConfirmationModalProps
 > = ({ isOpen, onClose, onConfirm, movieTitle }) => {
+  const [isConfirming, setIsConfirming] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
   useEffect(() => {
     if (!isOpen) {
       return;
@@ -28,6 +32,8 @@ export const MovieDeleteConfirmationModal: React.FC<
     };
 
     document.addEventListener("keydown", handleKeyDown);
+    setIsConfirming(false);
+    setErrorMessage(null);
 
     return () => {
       document.body.style.overflow = previousOverflow;
@@ -47,9 +53,21 @@ export const MovieDeleteConfirmationModal: React.FC<
     }
   };
 
-  const handleConfirm = (): void => {
-    onConfirm();
-    onClose();
+  const handleConfirm = async (): Promise<void> => {
+    try {
+      setIsConfirming(true);
+      setErrorMessage(null);
+      await onConfirm();
+      onClose();
+    } catch (error) {
+      setErrorMessage(
+        error instanceof Error
+          ? error.message
+          : "Falha ao excluir o filme. Tente novamente.",
+      );
+    } finally {
+      setIsConfirming(false);
+    }
   };
 
   return (
@@ -74,6 +92,10 @@ export const MovieDeleteConfirmationModal: React.FC<
             : "Tem certeza que deseja excluir este filme?"}
         </p>
 
+        {errorMessage ? (
+          <div className={styles.errorMessage}>{errorMessage}</div>
+        ) : null}
+
         <div className={styles.actions}>
           <Button
             variant="secondary"
@@ -81,6 +103,7 @@ export const MovieDeleteConfirmationModal: React.FC<
             className={styles.actionButton}
             type="button"
             onClick={onClose}
+            disabled={isConfirming}
             autoFocus
           >
             Cancelar
@@ -90,8 +113,9 @@ export const MovieDeleteConfirmationModal: React.FC<
             className={styles.actionButton}
             type="button"
             onClick={handleConfirm}
+            disabled={isConfirming}
           >
-            Excluir
+            {isConfirming ? "Excluindo..." : "Excluir"}
           </Button>
         </div>
       </div>

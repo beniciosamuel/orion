@@ -15,13 +15,13 @@ export class GetMovieByIdController {
 
       const authenticatedUser = (
         context as Context & {
-          model?: {
+          models?: {
             user?: {
               id: string;
             };
           };
         }
-      ).model?.user;
+      ).models?.user;
 
       const movie = await MovieUseCase.fromIdWithRating(
         id,
@@ -29,11 +29,20 @@ export class GetMovieByIdController {
         context,
       );
 
+      const contributors = await MovieUseCase.listContributorsByMovieId(
+        id,
+        context,
+      );
+      const isContributor = Boolean(
+        authenticatedUser?.id &&
+        contributors.some(({ userId }) => userId === authenticatedUser.id),
+      );
+
       if (!movie) {
         return res.status(404).json({ error: "Movie not found" });
       }
 
-      return res.status(200).json({ movie });
+      return res.status(200).json({ movie: { ...movie, isContributor } });
     } catch (error) {
       const cause = error instanceof Error ? error.message : "Unknown error";
 

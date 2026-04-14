@@ -14,7 +14,8 @@
 }
 
 .compact {
-  width: 110px;
+  width: auto;
+  min-width: 110px;
   white-space: nowrap;
 }
 

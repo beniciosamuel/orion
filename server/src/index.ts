@@ -13,6 +13,8 @@ import { GetMovieByIdController } from "./controllers/getMovieById";
 import { ListMoviesController } from "./controllers/listMovies";
 import { SetMovieVoteController } from "./controllers/setMovieVote";
 import { UpdateUserThemeController } from "./controllers/updateUserTheme";
+import { UpdateMovieController } from "./controllers/updateMovie";
+import { DeleteMovieController } from "./controllers/deleteMovie";
 import { NotifyReleasesQueue } from "./queues/notifyReleases";
 import { CreateUserController } from "./controllers/createUser";
 import { CreateMovieController } from "./controllers/createMovie";
@@ -66,6 +68,8 @@ class PrivateExpress {
     this.App.get("/movies/search", SearchMovieController.handler);
     this.App.get("/movies/list", ListMoviesController.handler);
     this.App.get("/movies/getById", GetMovieByIdController.handler);
+    this.App.post("/movies/updateMovie", UpdateMovieController.handler);
+    this.App.post("/movies/deleteMovie", DeleteMovieController.handler);
     this.App.post("/movies/setMovieVote", SetMovieVoteController.handler);
     this.App.post("/updateUserTheme", UpdateUserThemeController.handler);
 

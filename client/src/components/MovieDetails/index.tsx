@@ -23,10 +23,14 @@ export type MovieDetailsProps = {
   overview?: string;
   categories?: string[];
   posterUrl?: string;
+  backdropUrl?: string;
   votePercentile?: number;
   details?: MovieDetailsInfoItem[];
+  canEditMovie?: boolean;
+  voteButtonLabel?: string;
   onEdit?: () => void;
   onDelete?: () => void;
+  onVote?: () => void | Promise<void>;
 };
 
 export const MovieDetails: React.FC<MovieDetailsProps> = ({
@@ -37,10 +41,14 @@ export const MovieDetails: React.FC<MovieDetailsProps> = ({
   overview,
   categories,
   posterUrl,
+  backdropUrl,
   votePercentile = 86,
   details,
+  canEditMovie = true,
+  voteButtonLabel = "Registrar voto",
   onEdit,
   onDelete,
+  onVote,
 }) => {
   const { t } = useTranslation();
   const [movieData, setMovieData] = useState<MovieTableRecord | null>(
@@ -114,6 +122,11 @@ export const MovieDetails: React.FC<MovieDetailsProps> = ({
   const voteCircleStyle = {
     "--vote-percent": safeVotePercentile,
   } as CSSProperties;
+  const wrapperStyle = backdropUrl
+    ? ({
+        "--backdrop-image": `url(${backdropUrl})`,
+      } as CSSProperties)
+    : undefined;
 
   const detailsFallback: MovieDetailsInfoItem[] = [
     {
@@ -196,7 +209,7 @@ export const MovieDetails: React.FC<MovieDetailsProps> = ({
   ] = movieDetailsItems;
 
   return (
-    <section className={styles.wrapper}>
+    <section className={styles.wrapper} style={wrapperStyle}>
       <header className={styles.header}>
         <div className={styles.heading}>
           <h1 className={styles.title}>{resolvedTitle}</h1>
@@ -209,22 +222,37 @@ export const MovieDetails: React.FC<MovieDetailsProps> = ({
         </div>
 
         <div className={styles.actions}>
-          <Button
-            variant="primary"
-            size="compact"
-            type="button"
-            onClick={onEdit}
-          >
-            {t("auth.movieDetails.edit", { defaultValue: "Editar" })}
-          </Button>
-          <Button
-            variant="secondary"
-            size="compact"
-            type="button"
-            onClick={onDelete}
-          >
-            {t("auth.movieDetails.delete", { defaultValue: "Excluir" })}
-          </Button>
+          {onVote ? (
+            <Button
+              variant="primary"
+              size="compact"
+              type="button"
+              onClick={onVote}
+            >
+              {voteButtonLabel}
+            </Button>
+          ) : null}
+
+          {canEditMovie ? (
+            <>
+              <Button
+                variant="primary"
+                size="compact"
+                type="button"
+                onClick={onEdit}
+              >
+                {t("auth.movieDetails.edit", { defaultValue: "Editar" })}
+              </Button>
+              <Button
+                variant="secondary"
+                size="compact"
+                type="button"
+                onClick={onDelete}
+              >
+                {t("auth.movieDetails.delete", { defaultValue: "Excluir" })}
+              </Button>
+            </>
+          ) : null}
         </div>
       </header>
 
@@ -238,22 +266,37 @@ export const MovieDetails: React.FC<MovieDetailsProps> = ({
         />
 
         <div className={styles.mobileActions}>
-          <Button
-            variant="primary"
-            size="compact"
-            type="button"
-            onClick={onEdit}
-          >
-            {t("auth.movieDetails.edit", { defaultValue: "Editar" })}
-          </Button>
-          <Button
-            variant="secondary"
-            size="compact"
-            type="button"
-            onClick={onDelete}
-          >
-            {t("auth.movieDetails.delete", { defaultValue: "Excluir" })}
-          </Button>
+          {onVote ? (
+            <Button
+              variant="primary"
+              size="compact"
+              type="button"
+              onClick={onVote}
+            >
+              {voteButtonLabel}
+            </Button>
+          ) : null}
+
+          {canEditMovie ? (
+            <>
+              <Button
+                variant="primary"
+                size="compact"
+                type="button"
+                onClick={onEdit}
+              >
+                {t("auth.movieDetails.edit", { defaultValue: "Editar" })}
+              </Button>
+              <Button
+                variant="secondary"
+                size="compact"
+                type="button"
+                onClick={onDelete}
+              >
+                {t("auth.movieDetails.delete", { defaultValue: "Excluir" })}
+              </Button>
+            </>
+          ) : null}
         </div>
 
         <div className={styles.body}>

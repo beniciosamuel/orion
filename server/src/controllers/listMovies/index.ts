@@ -31,13 +31,13 @@ export class ListMoviesController {
 
       const authenticatedUser = (
         context as Context & {
-          model?: {
+          models?: {
             user?: {
               id: string;
             };
           };
         }
-      ).model?.user;
+      ).models?.user;
 
       const result = await MovieUseCase.listWithRating(
         pagination,

@@ -23,6 +23,10 @@ export interface CreateMoviePayload {
   releaseDate: string;
 }
 
+export interface UpdateMoviePayload extends CreateMoviePayload {
+  id: string;
+}
+
 export interface CreateMovieResponse {
   movie: {
     id: string;
@@ -37,6 +41,28 @@ export interface UploadMovieFilesPayload {
 
 export interface UploadMovieFilesResponse {
   message: string;
+}
+
+export interface DeleteMoviePayload {
+  id: string;
+}
+
+export interface DeleteMovieResponse {
+  message: string;
+}
+
+export interface SetMovieVotePayload {
+  movieId: string;
+  rating: number;
+}
+
+export interface SetMovieVoteResponse {
+  status: number;
+  data: {
+    movieId: string;
+    userId: string;
+    rating: number;
+  };
 }
 
 interface MoviesListApiResponseItem {
@@ -62,12 +88,57 @@ interface MoviesApiResponse {
   };
 }
 
+export interface MovieDetailsResponseItem {
+  id: string;
+  resumeTitle: string;
+  title: string;
+  description: string;
+  userComment: string | null;
+  director: string;
+  duration: number;
+  genres: string;
+  language: string;
+  ageRating: string;
+  budget: number | null;
+  revenue: number | null;
+  profit: number | null;
+  productionCompany: string | null;
+  trailerUrl: string | null;
+  releaseDate: string;
+  createdAt: string;
+  updatedAt: string;
+  rating: number;
+  movieRating: number;
+  userRating: number | null;
+  hasUserVoted: boolean;
+  isContributor?: boolean;
+  images: {
+    posterUri: string | null;
+    backdropUri: string | null;
+  };
+}
+
+interface MovieByIdApiResponse {
+  movie: MovieDetailsResponseItem;
+}
+
+interface UpdateMovieApiResponse {
+  movie: MovieDetailsResponseItem;
+}
+
 const apiService = new ApiService();
 
 export class MoviesService {
   static async createMovie(payload: CreateMoviePayload) {
     return apiService.post<CreateMovieResponse, CreateMoviePayload>(
       "/createMovie",
+      payload,
+    );
+  }
+
+  static async updateMovie(payload: UpdateMoviePayload) {
+    return apiService.post<UpdateMovieApiResponse, UpdateMoviePayload>(
+      "/movies/updateMovie",
       payload,
     );
   }
@@ -97,6 +168,27 @@ export class MoviesService {
     return apiService.get<MoviesApiResponse, MoviesPaginationRequest>(
       "/movies/list",
       pagination,
+    );
+  }
+
+  static async getMovieById(id: string) {
+    return apiService.get<MovieByIdApiResponse, { id: string }>(
+      "/movies/getById",
+      { id },
+    );
+  }
+
+  static async deleteMovie(payload: DeleteMoviePayload) {
+    return apiService.post<DeleteMovieResponse, DeleteMoviePayload>(
+      "/movies/deleteMovie",
+      payload,
+    );
+  }
+
+  static async setMovieVote(payload: SetMovieVotePayload) {
+    return apiService.post<SetMovieVoteResponse, SetMovieVotePayload>(
+      "/movies/setMovieVote",
+      payload,
     );
   }
 
