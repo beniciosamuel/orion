@@ -75,9 +75,9 @@ export class Secrets {
     const secrets = await this.getEnvSecrets();
 
     return {
-      host: secrets.REDIS_HOST || "127.0.0.1",
-      port: parseInt(secrets.REDIS_PORT ?? "6379", 10) || 6379,
-      username: secrets.REDIS_USERNAME || "",
+      host: secrets.REDIS_SOCKET_HOST || "127.0.0.1",
+      port: parseInt(secrets.REDIS_SOCKET_PORT ?? "6379", 10) || 6379,
+      username: secrets.REDIS_USER || "",
       password: secrets.REDIS_PASSWORD || "",
     };
   }
