@@ -2,54 +2,15 @@ import { Context } from "../../services/Context";
 import { Cache } from "../../services/Cache";
 import { MovieCreateDTO, MovieUpdateDTO } from "./MovieDTO";
 import { MovieEntity } from "./MovieEntity";
-
-interface SearchMovieFilters {
-  title?: string;
-  genres?: string[];
-}
-
-interface PaginationInput {
-  page: number;
-  pageSize: number;
-}
-
-interface PaginatedMovieResult {
-  data: MovieEntity[];
-  total: number;
-}
-
-type CachedMovieEntity = {
-  id: string;
-  resumeTitle: string;
-  title: string;
-  description: string;
-  userComment: string | null;
-  director: string;
-  duration: number;
-  genres: string;
-  language: string;
-  ageRating: string;
-  budget: string | null;
-  revenue: string | null;
-  profit: string | null;
-  productionCompany: string | null;
-  trailerUrl: string | null;
-  releaseDate: string;
-  createdAt: string;
-  updatedAt: string;
-  deletedAt: string | null;
-};
-
-interface CachedPaginatedMovieResult {
-  data: CachedMovieEntity[];
-  total: number;
-}
-
-interface MovieContributorResult {
-  userId: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
+import {
+  SearchMovieFilters,
+  PaginationInput,
+  PaginatedMovieResult,
+  AdvancedSearchMovieFilters,
+  CachedMovieEntity,
+  MovieContributorResult,
+  CachedPaginatedMovieResult,
+} from "./MovieDTO";
 
 export class MovieRepository {
   private static readonly listCachePrefix = "movies:list";
@@ -364,5 +325,66 @@ export class MovieRepository {
     }
 
     return deleted > 0;
+  }
+
+  static async searchWithFilters(
+    filters: AdvancedSearchMovieFilters,
+    pagination: PaginationInput,
+    context: Context,
+  ): Promise<PaginatedMovieResult> {
+    const query = context.database("movie").whereNull("deleted_at");
+
+    if (filters.title) {
+      query.where("title", "ilike", `%${filters.title}%`);
+    }
+
+    if (filters.genres?.length) {
+      query.andWhere((builder) => {
+        filters.genres?.forEach((genre, index) => {
+          if (index === 0) {
+            builder.where("genres", "ilike", `%${genre}%`);
+            return;
+          }
+
+          builder.orWhere("genres", "ilike", `%${genre}%`);
+        });
+      });
+    }
+
+    if (filters.releaseDate) {
+      let dateStr: string;
+
+      if (filters.releaseDate instanceof Date) {
+        dateStr = filters.releaseDate.toISOString().split("T")[0];
+      } else {
+        dateStr = filters.releaseDate;
+      }
+
+      query.andWhereRaw("release_date::date = ?", [dateStr]);
+    }
+
+    if (typeof filters.duration === "number") {
+      query.andWhere("duration", filters.duration);
+    }
+
+    const countResult = await query
+      .clone()
+      .clearSelect()
+      .clearOrder()
+      .count<{ count: string }>("id as count")
+      .first();
+
+    const offset = (pagination.page - 1) * pagination.pageSize;
+
+    const results = await query
+      .clone()
+      .orderBy("created_at", "desc")
+      .offset(offset)
+      .limit(pagination.pageSize);
+
+    return {
+      data: results.map((result) => MovieEntity.fromRecord(result)),
+      total: Number(countResult?.count ?? 0),
+    };
   }
 }

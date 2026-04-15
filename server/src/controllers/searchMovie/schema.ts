@@ -43,13 +43,44 @@ export const SearchMovieRequestSchema = z
       },
       z.array(z.string().min(1)).min(1).optional(),
     ),
+    releaseDate: z.preprocess((value) => {
+      if (typeof value === "string" || value instanceof Date) {
+        const date = new Date(value);
+
+        return isNaN(date.getTime()) ? undefined : date;
+      }
+
+      return undefined;
+    }, z.date().optional()),
+    duration: z.preprocess((value) => {
+      if (typeof value === "string") {
+        const parsed = parseInt(value, 10);
+
+        return isNaN(parsed) ? undefined : parsed;
+      }
+
+      if (typeof value === "number") {
+        return Number.isInteger(value) && value > 0 ? value : undefined;
+      }
+
+      return undefined;
+    }, z.number().int().positive().optional()),
     pagination: z.object({
       page: z.coerce.number().int().min(1),
       pageSize: z.coerce.number().int().min(1),
     }),
   })
-  .refine((value) => Boolean(value.title || value.genres?.length), {
-    message: "At least one filter must be provided",
-  });
+  .refine(
+    (value) =>
+      Boolean(
+        value.title ||
+        value.genres?.length ||
+        value.releaseDate ||
+        value.duration,
+      ),
+    {
+      message: "At least one filter must be provided",
+    },
+  );
 
 export type SearchMovieRequestDTO = z.infer<typeof SearchMovieRequestSchema>;

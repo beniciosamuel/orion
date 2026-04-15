@@ -12,22 +12,25 @@ export class SearchMovieController {
           ? (req.query.pagination as Record<string, unknown>)
           : {};
 
-      const { title, genres, pagination } = SearchMovieRequestSchema.parse({
-        title: req.query.title ?? req.body?.title,
-        genres: req.query.genres ?? req.body?.genres,
-        pagination: {
-          page:
-            req.query.page ??
-            queryPagination.page ??
-            req.body?.pagination?.page ??
-            req.body?.page,
-          pageSize:
-            req.query.pageSize ??
-            queryPagination.pageSize ??
-            req.body?.pagination?.pageSize ??
-            req.body?.pageSize,
-        },
-      });
+      const { title, genres, pagination, releaseDate, duration } =
+        SearchMovieRequestSchema.parse({
+          title: req.query.title ?? req.body?.title,
+          genres: req.query.genres ?? req.body?.genres,
+          releaseDate: req.query.releaseDate ?? req.body?.releaseDate,
+          duration: req.query.duration ?? req.body?.duration,
+          pagination: {
+            page:
+              req.query.page ??
+              queryPagination.page ??
+              req.body?.pagination?.page ??
+              req.body?.page,
+            pageSize:
+              req.query.pageSize ??
+              queryPagination.pageSize ??
+              req.body?.pagination?.pageSize ??
+              req.body?.pageSize,
+          },
+        });
 
       const context = req.context ?? (await Context.initialize());
 
@@ -45,6 +48,8 @@ export class SearchMovieController {
         {
           title,
           genres,
+          releaseDate,
+          duration,
           pagination,
         },
         authenticatedUser?.id ?? null,

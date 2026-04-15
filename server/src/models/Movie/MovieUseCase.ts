@@ -133,6 +133,8 @@ export class MovieUseCase {
     filters: {
       title?: string;
       genres?: string[];
+      releaseDate?: string | Date;
+      duration?: number;
       pagination: {
         page: number;
         pageSize: number;
@@ -140,10 +142,12 @@ export class MovieUseCase {
     },
     context: Context,
   ): Promise<{ data: MovieEntity[]; total: number }> {
-    return MovieRepository.search(
+    return MovieRepository.searchWithFilters(
       {
         title: filters.title,
         genres: filters.genres,
+        releaseDate: filters.releaseDate,
+        duration: filters.duration,
       },
       filters.pagination,
       context,
@@ -170,6 +174,8 @@ export class MovieUseCase {
     filters: {
       title?: string;
       genres?: string[];
+      releaseDate?: string | Date;
+      duration?: number;
       pagination: {
         page: number;
         pageSize: number;
