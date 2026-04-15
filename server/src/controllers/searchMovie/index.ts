@@ -32,6 +32,14 @@ export class SearchMovieController {
           },
         });
 
+      console.log("Received search request with filters:", {
+        title,
+        genres,
+        releaseDate,
+        duration,
+        pagination,
+      });
+
       const context = req.context ?? (await Context.initialize());
 
       const authenticatedUser = (

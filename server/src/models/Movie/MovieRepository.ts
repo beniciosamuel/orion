@@ -188,8 +188,8 @@ export class MovieRepository {
     const cacheKey = this.getListCacheKey(pagination);
     const cachedList = await context.cache.get(cacheKey);
 
-    console.log(`Cache key for movie list: ${cacheKey}`);
-    console.log(`Cached list found: ${cachedList}`);
+    // console.log(`Cache key for movie list: ${cacheKey}`);
+    // console.log(`Cached list found: ${cachedList}`);
 
     if (cachedList) {
       const cachedResult = JSON.parse(cachedList) as CachedPaginatedMovieResult;
