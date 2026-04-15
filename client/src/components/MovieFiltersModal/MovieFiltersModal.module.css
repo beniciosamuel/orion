@@ -13,8 +13,10 @@
 
 .modal {
   width: min(569px, 100%);
+  max-width: 100vw;
   height: auto;
-  max-height: none;
+  max-height: 92vh;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -107,8 +109,8 @@
 }
 
 .fieldsLimit {
-  width: 537px;
-  max-width: 100%;
+  width: 100%;
+  max-width: 537px;
   height: auto;
   display: grid;
   align-content: start;
@@ -218,27 +220,40 @@
 
 @media (max-width: 640px) {
   .overlay {
-    padding: 12px;
+    padding: 8px;
     align-items: flex-end;
   }
 
   .modal {
+    width: 100vw;
+    max-width: 100vw;
+    min-width: 0;
     max-height: 92vh;
+    overflow-y: auto;
+    padding: 8px;
+    border-radius: 8px 8px 0 0;
+    gap: 12px;
   }
 
   .genreGrid,
   .columns {
     grid-template-columns: 1fr;
+    gap: 8px;
   }
 
   .fieldsLimit {
+    width: 100%;
+    max-width: 100vw;
     height: auto;
-    padding: 16px;
-    gap: 16px;
+    padding: 12px;
+    gap: 12px;
+    border-radius: 8px;
   }
 
   .actions {
     flex-direction: column-reverse;
+    gap: 8px;
+    padding-top: 0;
   }
 
   .actions > button {

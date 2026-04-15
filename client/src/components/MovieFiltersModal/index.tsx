@@ -2,12 +2,17 @@ import { useEffect, useRef, useState } from "react";
 
 import { Button } from "../Button";
 import styles from "./MovieFiltersModal.module.css";
+import { Input } from "../Input";
 
 type MovieFiltersModalProps = {
   isOpen: boolean;
   onClose: () => void;
   selectedGenres: string[];
+  releaseDate?: string;
+  duration?: number;
   onApplyGenres: (genres: string[]) => void;
+  onApplyReleaseDate?: (releaseDate: string) => void;
+  onApplyDuration?: (duration: number | undefined) => void;
 };
 
 const genreOptions = [
@@ -23,11 +28,21 @@ export const MovieFiltersModal: React.FC<MovieFiltersModalProps> = ({
   isOpen,
   onClose,
   selectedGenres,
+  releaseDate,
+  duration,
   onApplyGenres,
+  onApplyDuration,
+  onApplyReleaseDate,
 }) => {
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const [draftSelectedGenres, setDraftSelectedGenres] =
     useState<string[]>(selectedGenres);
+  const [draftReleaseDate, setDraftReleaseDate] = useState<string>(
+    releaseDate ?? "",
+  );
+  const [draftDuration, setDraftDuration] = useState<string>(
+    duration !== undefined ? String(duration) : "",
+  );
 
   useEffect(() => {
     if (isOpen) {
@@ -71,6 +86,12 @@ export const MovieFiltersModal: React.FC<MovieFiltersModalProps> = ({
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     onApplyGenres(draftSelectedGenres);
+    if (onApplyReleaseDate) {
+      onApplyReleaseDate(draftReleaseDate || "");
+    }
+    if (onApplyDuration) {
+      onApplyDuration(draftDuration ? parseInt(draftDuration, 10) : undefined);
+    }
     onClose();
   };
 
@@ -82,6 +103,17 @@ export const MovieFiltersModal: React.FC<MovieFiltersModalProps> = ({
 
       return [...currentGenres, genre];
     });
+  };
+
+  const handleReleaseDateChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const value = event.target.value;
+    setDraftReleaseDate(value);
+  };
+
+  const handleDurationChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setDraftDuration(event.target.value);
   };
 
   return (
@@ -153,6 +185,31 @@ export const MovieFiltersModal: React.FC<MovieFiltersModalProps> = ({
                     <span>{genre}</span>
                   </label>
                 ))}
+              </div>
+
+              <div>
+                <label className={styles.field}>
+                  <span className={styles.fieldLabel}>Data de lançamento</span>
+                  <Input
+                    type="date"
+                    name="releaseDate"
+                    value={draftReleaseDate}
+                    onChange={handleReleaseDateChange}
+                  />
+                </label>
+              </div>
+
+              <div>
+                <label className={styles.field}>
+                  <span className={styles.fieldLabel}>Duração (minutos)</span>
+                  <Input
+                    type="number"
+                    name="duration"
+                    min={1}
+                    value={draftDuration}
+                    onChange={handleDurationChange}
+                  />
+                </label>
               </div>
             </section>
           </div>

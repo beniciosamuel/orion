@@ -197,6 +197,8 @@ export class MoviesService {
     pageSize: number;
     title?: string;
     genres?: string[];
+    releaseDate?: string;
+    duration?: number;
   }) {
     const params = {
       page: args.page,
@@ -205,7 +207,11 @@ export class MoviesService {
       ...(args.genres && args.genres.length > 0
         ? { genres: args.genres.join(",") }
         : {}),
+      ...(args.releaseDate ? { releaseDate: args.releaseDate } : {}),
+      ...(args.duration !== undefined ? { duration: args.duration } : {}),
     };
+
+    console.log("Searching movies with params:", params);
 
     return apiService.get<
       MoviesApiResponse,
@@ -214,6 +220,8 @@ export class MoviesService {
         pageSize: number;
         title?: string;
         genres?: string;
+        releaseDate?: string;
+        duration?: number;
       }
     >("/movies/search", params);
   }

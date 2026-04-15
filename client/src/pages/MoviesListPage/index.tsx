@@ -22,11 +22,15 @@ export const MoviesListPage: React.FC = () => {
     pageNumbers,
     searchTerm,
     selectedGenres,
+    releaseDate,
+    duration,
     isLoading,
     error,
     setCurrentPage,
     setSearchTerm,
     setSelectedGenres,
+    setRelease,
+    setDuration,
     fetchMovies,
   } = useMoviesList();
   const [isFiltersModalOpen, setIsFiltersModalOpen] = useState(false);
@@ -94,7 +98,11 @@ export const MoviesListPage: React.FC = () => {
           isOpen={isFiltersModalOpen}
           onClose={() => setIsFiltersModalOpen(false)}
           selectedGenres={selectedGenres}
+          releaseDate={releaseDate}
+          duration={duration}
           onApplyGenres={setSelectedGenres}
+          onApplyReleaseDate={setRelease}
+          onApplyDuration={setDuration}
         />
         {canAddMovie && (
           <MovieAddSidebar

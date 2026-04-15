@@ -12,11 +12,15 @@ interface MoviesListStoreState {
   moviesPerPage: number;
   searchTerm: string;
   selectedGenres: string[];
+  releaseDate?: string;
+  duration?: number;
   isLoading: boolean;
   error: string | null;
   setCurrentPage: (page: SetStateAction<number>) => void;
   setSearchTerm: (value: string) => void;
   setSelectedGenres: (genres: string[]) => void;
+  setRelease: (releaseDate: string) => void;
+  setDuration: (duration: number | undefined) => void;
   fetchMovies: () => Promise<void>;
 }
 
@@ -79,8 +83,25 @@ export const useMoviesListStore = create<MoviesListStoreState>((set, get) => ({
       currentPage: 1,
     });
   },
+  setRelease: (releaseDate) => {
+    set({
+      releaseDate,
+    });
+  },
+  setDuration: (duration) => {
+    set({
+      duration,
+    });
+  },
   fetchMovies: async () => {
-    const { currentPage, moviesPerPage, searchTerm, selectedGenres } = get();
+    const {
+      currentPage,
+      moviesPerPage,
+      searchTerm,
+      selectedGenres,
+      releaseDate,
+      duration,
+    } = get();
 
     set({ isLoading: true, error: null });
 
@@ -89,19 +110,37 @@ export const useMoviesListStore = create<MoviesListStoreState>((set, get) => ({
       const mappedGenres = selectedGenres.map(mapGenreToServerGenre);
 
       const hasGenresFilter = mappedGenres.length > 0;
+      const hasReleaseDateFilter = !!releaseDate;
+      const hasDurationFilter =
+        duration !== undefined && duration !== null && duration !== 0;
+      const shouldUseSearch =
+        normalizedTerm ||
+        hasGenresFilter ||
+        hasReleaseDateFilter ||
+        hasDurationFilter;
 
-      const response =
-        normalizedTerm || hasGenresFilter
-          ? await MoviesService.searchMovies({
-              page: currentPage,
-              pageSize: moviesPerPage,
-              ...(normalizedTerm ? { title: normalizedTerm } : {}),
-              ...(hasGenresFilter ? { genres: mappedGenres } : {}),
-            })
-          : await MoviesService.listMovies({
-              page: currentPage,
-              pageSize: moviesPerPage,
-            });
+      console.log("Fetching movies with filters:", {
+        page: currentPage,
+        pageSize: moviesPerPage,
+        title: normalizedTerm,
+        genres: mappedGenres,
+        releaseDate,
+        duration,
+      });
+
+      const response = shouldUseSearch
+        ? await MoviesService.searchMovies({
+            page: currentPage,
+            pageSize: moviesPerPage,
+            ...(normalizedTerm ? { title: normalizedTerm } : {}),
+            ...(hasGenresFilter ? { genres: mappedGenres } : {}),
+            ...(hasReleaseDateFilter ? { releaseDate } : {}),
+            ...(hasDurationFilter ? { duration } : {}),
+          })
+        : await MoviesService.listMovies({
+            page: currentPage,
+            pageSize: moviesPerPage,
+          });
 
       const mappedMovies: MovieListItem[] = response.data.map((movie) => ({
         id: movie.id,

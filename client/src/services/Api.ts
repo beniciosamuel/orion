@@ -91,6 +91,10 @@ export class ApiService {
       },
     });
 
+    console.log(`GET ${url} with params:`, params);
+    console.log(`Response status: ${response.status}`);
+    console.log(`Response data:`, response.data);
+
     if (response.status < 200 || response.status >= 300) {
       throw new Error(
         `API request failed with status ${response.status}: ${response.statusText}`,
