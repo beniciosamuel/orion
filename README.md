@@ -2,6 +2,8 @@
 
 > Gerenciador de filmes — Desafio técnico Cubos
 
+[Serviço em Produção](https://orion-cubos-movies.web.app/login)
+
 <img src="./docs/img/orion_constelation.jpg" width="400" alt="Constelação de Orion" />
 
 ---
